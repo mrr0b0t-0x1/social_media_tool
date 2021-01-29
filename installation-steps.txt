@@ -1,0 +1,7 @@
+1. Install Python 3.6.0 virtual environment
+
+2. Install sherlock
+
+3. Install twint
+
+4. Install instagram-scraper
