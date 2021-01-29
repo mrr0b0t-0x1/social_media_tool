@@ -10,7 +10,7 @@ def gather_info(username):
     """
 
     # Target directory
-    result_dir = CWD / "results" / username / "instagram"
+    result_dir = CWD / "scripts" / "results" / username / "instagram"
 
     # Run instagram-scraper as a subprocess
     # subprocess.run([
@@ -23,7 +23,7 @@ def gather_info(username):
     #     "-m", "10"
     # ], shell=False)
     subprocess.run([
-        "python", "./venv/bin/instagram-scraper",
+        "python", CWD / "venv/bin/instagram-scraper",
         username,
         "--profile-metadata",
         "-m", "10",

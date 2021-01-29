@@ -11,7 +11,7 @@ def gather_info(username):
     """
 
     # Target directory
-    result_dir = CWD / "results" / username / "twitter"
+    result_dir = CWD / "scripts" / "results" / username / "twitter"
 
     # Using official Twitter API
     # API Keys
@@ -41,7 +41,7 @@ def gather_info(username):
     # Run twint as a subprocess
     # subprocess.run("twint -u " + username + " --user-full --json -o " + username + "-about-twitter.json", shell=True)
     subprocess.run([
-        "python", "./venv/bin/twint",
+        "python", CWD / "venv/bin/twint",
         "--username", username,
         "--user-full",
         "--json",
@@ -49,7 +49,7 @@ def gather_info(username):
     ], shell=False)
 
     subprocess.run([
-        "python", "./venv/bin/twint",
+        "python", CWD / "venv/bin/twint",
         "--username", username,
         "--timeline",
         "--limit", "5",

@@ -10,7 +10,7 @@ def gather_info(username):
     """
 
     # Target directory
-    result_dir = CWD / "results" / username / "reddit"
+    result_dir = CWD / "scripts" / "results" / username / "reddit"
 
     # Target URLs and headers
     overview_url = 'https://www.reddit.com/user/' + username + '/overview/.json'

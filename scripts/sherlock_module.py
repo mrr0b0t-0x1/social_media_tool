@@ -13,7 +13,7 @@ def check_username(username):
     # Run sherlock as a subprocess
     # res = subprocess.run("python3 /home/mrr0b0t/Downloads/Git_Repos/sherlock/sherlock/sherlock.py " + username + " --site Twitter --site Reddit --site Instagram --site Facebook --print-found --local --no-color", shell=True, stdout=subprocess.PIPE)
     res = subprocess.run([
-        "python", "./venv/src/sherlock/sherlock",
+        "python", CWD / "venv/src/sherlock/sherlock",
         username,
         "--site", "Twitter",
         "--site", "Reddit",

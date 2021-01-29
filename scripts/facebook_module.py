@@ -11,7 +11,7 @@ def gather_info(username):
     """
 
     # Target directory
-    result_dir = CWD / "results" / username / "facebook"
+    result_dir = CWD / "scripts" / "results" / username / "facebook"
 
     # Dictionary to store result data
     facebook_user_info = {

@@ -1,12 +1,6 @@
-import subprocess
 from globals import CWD
-from pathlib import Path
-from timer_module import Timer
-import sherlock_module
-import twitter_module
-import instagram_module
-import reddit_module
-import facebook_module
+from scripts.timer_module import Timer
+from scripts import reddit_module, sherlock_module, instagram_module, twitter_module
 
 # Main
 if __name__ == '__main__':
@@ -26,7 +20,7 @@ if __name__ == '__main__':
 
         for site in sites_found:
             # Create required directory
-            result_dir = CWD / "results" / username / site.lower().replace(' ', '_')
+            result_dir = CWD / "scripts" / "results" / username / site.lower().replace(' ', '_')
             try:
                 result_dir.mkdir(parents=True)
             except OSError as err:
