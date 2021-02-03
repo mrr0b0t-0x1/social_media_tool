@@ -39,7 +39,7 @@ def execute_module(site):
 if __name__ == '__main__':
     # Get username as input
     username = input("Enter a username : ")
-    # username = "billgates"
+    # username = "billgates"    # debug
 
     # Timer
     t = Timer()
@@ -48,10 +48,12 @@ if __name__ == '__main__':
 
     # Get the list of sites on which user exists
     sites_found = sherlock_module.check_username(username)
-    # sites_found = ['Twitter', 'Instagram', 'Reddit']  # For debug
+    # sites_found = ['Twitter', 'Instagram', 'Reddit']  # debug
 
+    # Make respective module directories
     make_dirs(sites_found)
 
+    # If sites found, execute respective modules concurrently
     if sites_found:
         with multiprocessing.Pool() as pool:
             pool.map(execute_module, sites_found)
