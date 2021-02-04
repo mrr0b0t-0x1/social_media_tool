@@ -1,6 +1,7 @@
 import subprocess
 from globals import CWD
 import json
+from colorama import Fore
 
 def gather_info(username):
     """
@@ -39,11 +40,11 @@ def gather_info(username):
         # Print result data
         print('\nInstagram Data:')
         print(json.dumps(data, indent=2))
-    except OSError as err:
-        print(err)
+    except Exception as err:
+        print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
 
     # Remove instagram-scraper's log file
     try:
         (CWD / "instagram-scraper.log").unlink()
-    except FileNotFoundError as err:
-        print(err)
+    except Exception as err:
+        print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))

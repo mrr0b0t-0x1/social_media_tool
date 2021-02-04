@@ -2,6 +2,7 @@ import requests
 from globals import *
 import json
 from random import randint
+from colorama import Fore
 
 # Generate random headers
 def generate_headers():
@@ -48,5 +49,5 @@ def gather_info(username):
         # Print result data
         print('\nReddit Data:')
         print(json.dumps(reddit_user_info, indent=2))
-    except OSError as err:
-        print(err)
+    except Exception as err:
+        print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))

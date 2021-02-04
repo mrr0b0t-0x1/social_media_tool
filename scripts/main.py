@@ -2,6 +2,7 @@ from globals import CWD
 from scripts.timer_module import Timer
 from scripts import reddit_module, sherlock_module, instagram_module, twitter_module, facebook_module
 import multiprocessing
+from colorama import Fore
 
 
 def make_dirs(sites):
@@ -10,10 +11,9 @@ def make_dirs(sites):
             # Create required directory
             result_dir = CWD / "scripts" / "results" / username / site.lower().replace(' ', '_')
             try:
-                result_dir.mkdir(parents=True)
-            except OSError as err:
-                # print(err)
-                pass
+                result_dir.mkdir(parents=True, exist_ok=True)
+            except Exception as err:
+                print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
 
 
 # Execute respective site modules

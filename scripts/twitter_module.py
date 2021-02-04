@@ -1,5 +1,6 @@
 import subprocess
 import json
+from colorama import Fore
 from globals import CWD
 # import tweepy
 
@@ -66,8 +67,8 @@ def gather_info(username):
             for line in about:
                 temp_dict = json.loads(line)
                 twitter_user_info.append(temp_dict)
-    except OSError as err:
-        print(err)
+    except Exception as err:
+        print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
 
     try:
         with open(result_dir / (username + "-timeline-twitter.json"), 'r') as timeline:
@@ -75,8 +76,8 @@ def gather_info(username):
             for line in timeline:
                 temp_dict = json.loads(line)
                 twitter_user_info.append(temp_dict)
-    except OSError as err:
-        print(err)
+    except Exception as err:
+        print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
 
     # TODO: Remove this in final build
     # Print result data
