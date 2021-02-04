@@ -12,6 +12,8 @@ def gather_info(username):
     :return:
     """
 
+    print('Fetching Twitter Data...\n')
+
     # Target directory
     result_dir = CWD / "scripts" / "results" / username / "twitter"
 
@@ -87,4 +89,4 @@ def gather_info(username):
     # Print result data
     # print('\nTwitter Data:')
     # print(json.dumps(twitter_user_info, indent=2))
-    print('\nTwitter data fetched\n')
+    print('Twitter data fetched\n')

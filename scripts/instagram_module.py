@@ -10,26 +10,29 @@ def gather_info(username):
     :return:
     """
 
+    print('Fetching Instagram Data...\n')
+
     # Target directory
     result_dir = CWD / "scripts" / "results" / username / "instagram"
 
     # Run instagram-scraper as a subprocess
-    # subprocess.run([
-    #     "python",
-    #     "./venv/bin/instagram-scraper",
-    #     "-u", "pyvma_1990",
-    #     "-p", "i652HD9dkbUFWLMGn647",
-    #     username,
-    #     "--profile-metadata",
-    #     "-m", "10"
-    # ], shell=False)
     subprocess.run([
-        "python", CWD / "venv/bin/instagram-scraper",
+        "python",
+        "./venv/bin/instagram-scraper",
+        "-u", "pyvma_1990",
+        "-p", "i652HD9dkbUFWLMGn647",
         username,
         "--profile-metadata",
         "-m", "10",
         "-d", result_dir
     ], shell=False)
+    # subprocess.run([
+    #     "python", CWD / "venv/bin/instagram-scraper",
+    #     username,
+    #     "--profile-metadata",
+    #     "-m", "10",
+    #     "-d", result_dir
+    # ], shell=False)
 
     # Read data from result file
     try:
@@ -40,7 +43,7 @@ def gather_info(username):
         # Print result data
         # print('\nInstagram Data:')
         # print(json.dumps(data, indent=2))
-        print('\nInstagram data fetched\n')
+        print('Instagram data fetched\n')
     except Exception as err:
         print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
 

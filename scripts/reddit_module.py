@@ -23,6 +23,8 @@ def gather_info(username):
     :return:
     """
 
+    print('Fetching Reddit Data...\n')
+
     # Target directory
     result_dir = CWD / "scripts" / "results" / username / "reddit"
 
@@ -47,6 +49,6 @@ def gather_info(username):
         # Print result data
         # print('\nReddit Data:')
         # print(json.dumps(reddit_user_info, indent=2))
-        print('\nReddit data fetched\n')
+        print('Reddit data fetched\n')
     except Exception as err:
         print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
