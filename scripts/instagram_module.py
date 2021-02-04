@@ -38,8 +38,9 @@ def gather_info(username):
 
         # TODO: Remove this in final build
         # Print result data
-        print('\nInstagram Data:')
-        print(json.dumps(data, indent=2))
+        # print('\nInstagram Data:')
+        # print(json.dumps(data, indent=2))
+        print('\nInstagram data fetched\n')
     except Exception as err:
         print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
 
