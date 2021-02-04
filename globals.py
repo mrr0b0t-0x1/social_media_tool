@@ -1,4 +1,5 @@
 from pathlib import Path
+from random import randint
 
 # Sets current working directory
 # as constant variable
@@ -29,3 +30,14 @@ REFERERS = [
     "https://www.ecosia.org/",
     "https://www.aol.com/"
 ]
+
+HEADERS = {
+    'Host': '',
+    'User-Agent': '',
+    'Accept': 'text/html,application/xhtml+xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8',
+    'Referer': '',
+    'Connection': 'keep-alive',
+    'DNT': '1',
+    "Upgrade-Insecure-Requests": "1"
+}

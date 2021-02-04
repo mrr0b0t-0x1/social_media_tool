@@ -6,16 +6,12 @@ from colorama import Fore
 
 # Generate random headers
 def generate_headers():
-    headers = {
-        'Host': 'www.reddit.com',
-        'User-Agent': USER_AGENTS[randint(0, len(USER_AGENTS) - 1)],
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8',
-        'Referer': REFERERS[randint(0, len(REFERERS) - 1)],
-        'Connection': 'keep-alive',
-        'DNT': '1',
-        "Upgrade-Insecure-Requests": "1"
-    }
+    headers = HEADERS
+
+    headers['Host'] = 'www.reddit.com'
+    headers['User-Agent'] = USER_AGENTS[randint(0, len(USER_AGENTS) - 1)]
+    headers['Referer'] = REFERERS[randint(0, len(REFERERS) - 1)]
+
     return headers
 
 
