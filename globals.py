@@ -27,5 +27,5 @@ REFERERS = [
     "https://www.ask.com/",
     "https://yandex.com/",
     "https://www.ecosia.org/",
-    "https://www.aol.com/",
+    "https://www.aol.com/"
 ]
