@@ -50,7 +50,7 @@ def gather_info(username):
         "--user-full",
         "--json",
         "--output", result_dir / (username + "-about-twitter.json")
-    ], shell=False)
+    ], shell=False, stdout=subprocess.DEVNULL, check=True)
 
     # Sleep for 5 seconds to avoid getting banned
     time.sleep(5)
@@ -62,7 +62,7 @@ def gather_info(username):
         "--limit", "5",
         "--json",
         "--output", result_dir / (username + "-timeline-twitter.json")
-    ], shell=False)
+    ], shell=False, stdout=subprocess.DEVNULL, check=True)
 
     # Read data from result files and store in twitter_user_info
     twitter_user_info = []

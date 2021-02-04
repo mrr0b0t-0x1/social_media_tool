@@ -18,14 +18,14 @@ def gather_info(username):
     # Run instagram-scraper as a subprocess
     subprocess.run([
         "python",
-        "./venv/bin/instagram-scraper",
+        "./venv/bin/instagram-scraper", "-q",
         "-u", "pyvma_1990",
         "-p", "i652HD9dkbUFWLMGn647",
         username,
         "--profile-metadata",
         "-m", "10",
         "-d", result_dir
-    ], shell=False)
+    ], shell=False, stdout=subprocess.DEVNULL, check=True)
     # subprocess.run([
     #     "python", CWD / "venv/bin/instagram-scraper",
     #     username,
