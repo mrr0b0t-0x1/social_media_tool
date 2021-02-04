@@ -1,5 +1,4 @@
 from pathlib import Path
-from random import randint
 
 # Sets current working directory
 # as constant variable
