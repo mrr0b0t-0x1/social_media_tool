@@ -2,6 +2,7 @@ import subprocess
 import json
 from colorama import Fore
 from globals import CWD
+import time
 # import tweepy
 
 def gather_info(username):
@@ -49,6 +50,9 @@ def gather_info(username):
         "--output", result_dir / (username + "-about-twitter.json")
     ], shell=False)
 
+    # Sleep for 5 seconds to avoid getting banned
+    time.sleep(5)
+
     subprocess.run([
         "python", CWD / "venv/bin/twint",
         "--username", username,
@@ -81,5 +85,6 @@ def gather_info(username):
 
     # TODO: Remove this in final build
     # Print result data
-    print('\nTwitter Data:')
-    print(json.dumps(twitter_user_info, indent=2))
+    # print('\nTwitter Data:')
+    # print(json.dumps(twitter_user_info, indent=2))
+    print('\nTwitter data fetched\n')
