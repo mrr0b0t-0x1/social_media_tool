@@ -52,8 +52,8 @@ def gather_info(username):
         "--output", result_dir / (username + "-about-twitter.json")
     ], shell=False, stdout=subprocess.DEVNULL, check=True)
 
-    # Sleep for 5 seconds to avoid getting banned
-    time.sleep(5)
+    # Sleep for 2 seconds to avoid getting banned
+    time.sleep(2)
 
     subprocess.run([
         "python", CWD / "venv/bin/twint",

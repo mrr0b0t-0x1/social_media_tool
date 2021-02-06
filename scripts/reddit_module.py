@@ -36,8 +36,8 @@ def gather_info(username):
 
     # Request the JSON data of user
     reddit_user_info['overview'] = requests.get(url=overview_url, headers=headers).json()
-    # Sleep for 5 seconds to avoid getting banned
-    time.sleep(5)
+    # Sleep for 2 seconds to avoid getting banned
+    time.sleep(2)
     reddit_user_info['about'] = requests.get(url=about_url, headers=headers).json()
 
     # Store result data to file
