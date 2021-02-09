@@ -1,6 +1,6 @@
 from globals import CWD
 from scripts.timer_module import Timer
-from scripts import reddit_module, sherlock_module, instagram_module, twitter_module, facebook_module
+from scripts import reddit_module, sherlock_module, instagram_module, twitter_module, facebook_module, validate_username
 import multiprocessing
 from colorama import Fore
 
@@ -12,8 +12,8 @@ def make_dirs(sites):
             result_dir = CWD / "scripts" / "results" / username / site.lower().replace(' ', '_')
             try:
                 result_dir.mkdir(parents=True, exist_ok=True)
-            except Exception as err:
-                print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
+            except Exception as e:
+                print(Fore.RED + type(e).__name__ + Fore.RESET + ": " + str(e))
 
 
 # Execute respective site modules
@@ -38,7 +38,15 @@ def execute_module(site):
 # Main
 if __name__ == '__main__':
     # Get username as input
-    username = input("Enter a username : ")
+    username = ''
+    while True:
+        try:
+            username = str(input("Enter a username: "))
+            # Validate the username
+            if validate_username.validate(username):
+                break
+        except Exception as err:
+            print(err)
     # username = "billgates"    # debug
 
     # Timer
@@ -48,7 +56,7 @@ if __name__ == '__main__':
 
     # Get the list of sites on which user exists
     sites_found = sherlock_module.check_username(username)
-    # sites_found = ['Twitter', 'Instagram', 'Reddit']  # debug
+    # sites_found = ['Twitter', 'Instagram', 'Reddit']    # debug
 
     # Make respective module directories
     make_dirs(sites_found)
