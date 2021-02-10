@@ -16,23 +16,23 @@ def gather_info(username):
     result_dir = CWD / "scripts" / "results" / username / "instagram"
 
     # Run instagram-scraper as a subprocess
-    subprocess.run([
-        "python",
-        "./venv/bin/instagram-scraper", "-q",
-        "-u", "pyvma_1990",
-        "-p", "i652HD9dkbUFWLMGn647",
-        username,
-        "--profile-metadata",
-        "-m", "10",
-        "-d", result_dir
-    ], shell=False, stdout=subprocess.DEVNULL, check=True)
     # subprocess.run([
-    #     "python", CWD / "venv/bin/instagram-scraper",
+    #     "python", CWD / "venv/bin/instagram-scraper", "-q",
+    #     "-u", "pyvma_1990",
+    #     "-p", "i652HD9dkbUFWLMGn647",
     #     username,
     #     "--profile-metadata",
     #     "-m", "10",
     #     "-d", result_dir
-    # ], shell=False)
+    # ], shell=False, stdout=subprocess.DEVNULL, check=True)
+    subprocess.run([
+        "python", CWD / "venv/bin/instagram-scraper", "-q",
+        username,
+        "--profile-metadata",
+        "--include-location",
+        "-m", "10",
+        "-d", result_dir
+    ], shell=False, stdout=subprocess.DEVNULL, check=True)
 
     # Read data from result file
     try:
