@@ -31,8 +31,8 @@ def execute_module(site):
         instagram_module.gather_info(username)
 
     # Facebook
-    elif site == 'Facebook':
-        facebook_module.gather_info(username)
+    # elif site == 'Facebook':
+    #     facebook_module.gather_info(username)
 
 
 # Main
