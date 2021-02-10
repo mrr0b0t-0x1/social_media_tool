@@ -1,0 +1,8 @@
+#!/home/mrr0b0t/PycharmProjects/social_media_tool/venv1/bin/python
+# Copyright 2014-2017, Damian Johnson and The Tor Project
+# See LICENSE for licensing information
+
+import stem.interpreter
+
+if __name__ == '__main__':
+  stem.interpreter.main()
