@@ -1,4 +1,5 @@
 colorama==0.4.4
+futures==3.1.1
 instagram-scraper==1.9.1
   moviepy==1.0.3
     decorator==4.4.2
@@ -26,7 +27,6 @@ pipdeptree==2.0.0
   pip==21.0.1
 python-socks==1.1.0
 requests-futures==1.0.0
-  futures==3.1.1
   requests==2.24.0
     certifi==2020.6.20
     chardet==3.0.4
@@ -40,6 +40,8 @@ requests-html==0.10.0
   parse==1.19.0
   pyppeteer==0.2.5
     appdirs==1.4.4
+    importlib-metadata==2.1.1
+      zipp==3.4.0
     pyee==8.1.0
     tqdm==4.56.0
     urllib3==1.25.10
