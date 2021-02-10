@@ -840,7 +840,3 @@ def gather_info(username):
         print('\nThere is no facebook profile or page by this name. Please try again.\n')
 
     print('Facebook data fetched\n')
-
-
-def __main__():
-    gather_info('')
