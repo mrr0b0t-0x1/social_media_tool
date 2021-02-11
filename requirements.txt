@@ -1,4 +1,36 @@
 colorama==0.4.4
+facebook-scraper==0.2.19
+  dateparser==1.0.0
+    python-dateutil==2.8.1
+      six==1.15.0
+    pytz==2020.1
+    regex==2020.11.13
+    tzlocal==2.1
+      pytz==2020.1
+  requests-html==0.10.0
+    bs4==0.0.1
+      beautifulsoup4==4.9.3
+        soupsieve==2.0.1
+    fake-useragent==0.1.11
+    parse==1.19.0
+    pyppeteer==0.2.5
+      appdirs==1.4.4
+      importlib-metadata==2.1.1
+        zipp==3.4.0
+      pyee==8.1.0
+      tqdm==4.56.0
+      urllib3==1.25.10
+      websockets==8.1
+    pyquery==1.4.3
+      cssselect==1.1.0
+      lxml==4.6.2
+    requests==2.24.0
+      certifi==2020.6.20
+      chardet==3.0.4
+      idna==2.10
+      urllib3==1.25.10
+    w3lib==1.22.0
+      six==1.15.0
 futures==3.1.1
 instagram-scraper==1.9.1
   moviepy==1.0.3
@@ -32,30 +64,6 @@ requests-futures==1.0.0
     chardet==3.0.4
     idna==2.10
     urllib3==1.25.10
-requests-html==0.10.0
-  bs4==0.0.1
-    beautifulsoup4==4.9.3
-      soupsieve==2.0.1
-  fake-useragent==0.1.11
-  parse==1.19.0
-  pyppeteer==0.2.5
-    appdirs==1.4.4
-    importlib-metadata==2.1.1
-      zipp==3.4.0
-    pyee==8.1.0
-    tqdm==4.56.0
-    urllib3==1.25.10
-    websockets==8.1
-  pyquery==1.4.3
-    cssselect==1.1.0
-    lxml==4.6.2
-  requests==2.24.0
-    certifi==2020.6.20
-    chardet==3.0.4
-    idna==2.10
-    urllib3==1.25.10
-  w3lib==1.22.0
-    six==1.15.0
 setuptools==28.8.0
 torrequest==0.1.0
   PySocks==1.7.1
@@ -65,7 +73,7 @@ torrequest==0.1.0
     idna==2.10
     urllib3==1.25.10
   stem==1.8.0
-twint==2.1.21
+-e git+git@github.com:mrr0b0t-0x1/social_media_tool.git@967ca53cfac4d6d0f333b3dde3ed86843cb03e87#egg=twint
   aiodns==2.0.0
     pycares==3.1.1
       cffi==1.14.3
