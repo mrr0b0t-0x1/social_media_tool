@@ -1,0 +1,3 @@
+[submodule "venv1/src/sherlock"]
+	path = venv1/src/sherlock
+	url = https://github.com/sherlock-project/sherlock.git
