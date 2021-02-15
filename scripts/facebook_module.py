@@ -279,12 +279,10 @@ def gather_user_info(username, home_soup, result_dir):
 
                 # Save the image files to a directory
                 try:
-                    (result_dir / "photos").mkdir(exist_ok=True)
-
                     filename = photo_url.split('/')[-1].split('?')[0]
                     photo = requests.get(photo_url, stream=True)
 
-                    with open(result_dir / "photos" / filename, 'wb') as user_photo:
+                    with open(result_dir / filename, 'wb') as user_photo:
                         user_photo.write(photo.content)
 
                 except Exception as e:
@@ -596,12 +594,10 @@ def gather_page_info(username, home_soup, result_dir):
 
                     # Save the image files to a directory
                     try:
-                        (result_dir / "photos").mkdir(exist_ok=True)
-
                         filename = image_url.split('/')[-1].split('?')[0]
                         photo = requests.get(image_url, stream=True)
 
-                        with open(result_dir / "photos" / filename, 'wb') as user_photo:
+                        with open(result_dir / filename, 'wb') as user_photo:
                             user_photo.write(photo.content)
 
                     except Exception as e:
