@@ -590,7 +590,7 @@ def gather_page_info(username, home_soup, result_dir):
                     facebook_page_info['photos'][i] = image_url
 
                     # Sleep for 1 second to avoid getting banned
-                    time.sleep(round(uniform(1, 3), 1))
+                    # time.sleep(round(uniform(1, 3), 1))
 
                     # Save the image files to a directory
                     # try:
