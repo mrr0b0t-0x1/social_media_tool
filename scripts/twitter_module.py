@@ -45,7 +45,7 @@ def gather_info(username):
     # Run twint as a subprocess
     # subprocess.run("twint -u " + username + " --user-full --json -o " + username + "-about-twitter.json", shell=True)
     subprocess.run([
-        "python", CWD / "venv/bin/twint",
+        "python", CWD / "venv1/bin/twint",
         "--username", username,
         "--user-full",
         "--json",
@@ -56,7 +56,7 @@ def gather_info(username):
     time.sleep(2)
 
     subprocess.run([
-        "python", CWD / "venv/bin/twint",
+        "python", CWD / "venv1/bin/twint",
         "--username", username,
         "--timeline",
         "--limit", "5",

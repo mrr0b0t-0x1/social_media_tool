@@ -7,6 +7,7 @@ import time
 from random import randint, uniform
 from globals import *
 from colorama import Fore
+from facebook_scraper import get_posts
 
 # Generate new headers each time the program is run
 headers = {
@@ -277,17 +278,15 @@ def gather_user_info(username, home_soup, result_dir):
                 )
 
                 # Save the image files to a directory
-                try:
-                    (result_dir / "photos").mkdir(exist_ok=True)
-
-                    filename = photo_url.split('/')[-1].split('?')[0]
-                    photo = requests.get(photo_url, stream=True)
-
-                    with open(result_dir / "photos" / filename, 'wb') as user_photo:
-                        user_photo.write(photo.content)
-
-                except Exception as e:
-                    print(Fore.RED + type(e).__name__ + Fore.RESET + ": " + str(e))
+                # try:
+                #     filename = photo_url.split('/')[-1].split('?')[0]
+                #     photo = requests.get(photo_url, stream=True)
+                #
+                #     with open(result_dir / filename, 'wb') as user_photo:
+                #         user_photo.write(photo.content)
+                #
+                # except Exception as e:
+                #     print(Fore.RED + type(e).__name__ + Fore.RESET + ": " + str(e))
 
                 # Sleep for 1 second to avoid getting banned
                 time.sleep(round(uniform(1, 3), 1))
@@ -361,7 +360,7 @@ def gather_user_info(username, home_soup, result_dir):
         with open(result_dir / (username + "-fb-user.json"), "w+") as handle:
             json.dump(facebook_user_info, handle, indent=2)
     except Exception as err:
-        print(err)
+        print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
 
     # TODO: Remove this in final build
     # Print result data
@@ -373,6 +372,7 @@ def gather_page_info(username, home_soup, result_dir):
     # Dictionary to store result data
     facebook_page_info = {
         "about": {},
+        "posts": {},
         "photos": {},
         "videos": {},
         "events": {},
@@ -510,6 +510,26 @@ def gather_page_info(username, home_soup, result_dir):
         else:
             facebook_page_info['about']['milestones'] = "N/A"
 
+    # Get Posts
+    def get_page_posts():
+        json_posts = {}
+
+        # Run facebook-scraper
+        posts = get_posts(username, pages=3)
+
+        for i, post in enumerate(posts):
+            json_posts[i] = post
+            # Convert date time object to string
+            if json_posts[i]['time']:
+                json_posts[i]['time'] = str(json_posts[i]['time'])
+
+        # Store the posts data to JSON file
+        try:
+            with open(result_dir / (username + "-fb-page-posts.json"), 'w+', encoding='utf-8') as jsonf:
+                jsonf.write(json.dumps(json_posts, indent=2, ))
+        except Exception as e:
+            print(Fore.RED + type(e).__name__ + Fore.RESET + ": " + str(e))
+
     # Get Photos
     def get_page_photos():
         # Fetch the Photos page
@@ -570,20 +590,18 @@ def gather_page_info(username, home_soup, result_dir):
                     facebook_page_info['photos'][i] = image_url
 
                     # Sleep for 1 second to avoid getting banned
-                    time.sleep(round(uniform(1, 3), 1))
+                    # time.sleep(round(uniform(1, 3), 1))
 
                     # Save the image files to a directory
-                    try:
-                        (result_dir / "photos").mkdir(exist_ok=True)
-
-                        filename = image_url.split('/')[-1].split('?')[0]
-                        photo = requests.get(image_url, stream=True)
-
-                        with open(result_dir / "photos" / filename, 'wb') as user_photo:
-                            user_photo.write(photo.content)
-
-                    except Exception as e:
-                        print(Fore.RED + type(e).__name__ + Fore.RESET + ": " + str(e))
+                    # try:
+                    #     filename = image_url.split('/')[-1].split('?')[0]
+                    #     photo = requests.get(image_url, stream=True)
+                    #
+                    #     with open(result_dir / filename, 'wb') as user_photo:
+                    #         user_photo.write(photo.content)
+                    #
+                    # except Exception as e:
+                    #     print(Fore.RED + type(e).__name__ + Fore.RESET + ": " + str(e))
 
                     # Sleep for 1 second to avoid getting banned
                     time.sleep(round(uniform(1, 3), 1))
@@ -785,6 +803,10 @@ def gather_page_info(username, home_soup, result_dir):
     # Sleep for 5 seconds to avoid getting banned
     time.sleep(round(uniform(5, 7), 1))
 
+    get_page_posts()
+
+    time.sleep(round(uniform(5, 7), 1))
+
     get_page_photos()
 
     time.sleep(round(uniform(5, 7), 1))
@@ -806,7 +828,7 @@ def gather_page_info(username, home_soup, result_dir):
         with open(result_dir / (username + '-fb-page.json'), 'w+') as handle:
             json.dump(facebook_page_info, handle, indent=2)
     except Exception as err:
-        print(err)
+        print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
 
 
 # Gather info about username

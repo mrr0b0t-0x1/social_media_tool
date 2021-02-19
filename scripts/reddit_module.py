@@ -42,7 +42,7 @@ def gather_info(username):
 
     # Store result data to file
     try:
-        with open(result_dir / (username + ".json"), "w+") as handle:
+        with open(result_dir / (username + "-reddit.json"), "w+") as handle:
             json.dump(reddit_user_info, handle, indent=2)
 
         # TODO: Remove this in final build
