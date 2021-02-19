@@ -2,6 +2,7 @@ from globals import CWD
 from scripts.timer_module import Timer
 from scripts import reddit_module, sherlock_module, instagram_module, twitter_module, facebook_module, validate_username
 import multiprocessing
+from scripts import database
 from colorama import Fore
 
 
@@ -46,27 +47,45 @@ if __name__ == '__main__':
             if validate_username.validate(username):
                 break
         except Exception as err:
-            print(err)
-    # username = "billgates"    # debug
+            print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
 
     # Timer
     t = Timer()
     # Start timer
     t.start()
 
-    # Get the list of sites on which user exists
-    sites_found = sherlock_module.check_username(username)
-    # sites_found = ['Twitter', 'Instagram', 'Reddit']    # debug
+    # Initialize database connection
+    with database.DatabaseConnection(username) as db:
 
-    # Make respective module directories
-    make_dirs(sites_found)
+        if not db.check_user():
+            print("\n" + username + " not in DB\n")
 
-    # If sites found, execute respective modules concurrently
-    if sites_found:
-        with multiprocessing.Pool() as pool:
-            pool.map(execute_module, sites_found)
-    else:
-        print('\nUsername not found on any of the social media websites\n')
+            # Get the list of sites on which user exists
+            sites_found = sherlock_module.check_username(username)
+            # sites_found = ['Twitter', 'Instagram', 'Reddit']    # debug
+
+            # Make respective module directories
+            make_dirs(sites_found)
+
+            # If sites found, execute respective modules concurrently
+            if sites_found:
+                try:
+                    with multiprocessing.Pool() as pool:
+                        pool.map(execute_module, sites_found)
+
+                    db.update_user()
+                except Exception as err:
+                    print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
+            else:
+                print('\nUsername not found on any of the social media websites\n')
+
+        else:
+            print("\n" + username + " in DB\n")
+
+            db.get_data()
+
+    # with database.DatabaseConnection('') as db:
+    #     db.reindex_db()
 
     # Stop timer
     t.stop()
