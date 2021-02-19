@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World App</title>
+    <link rel="stylesheet" href="photon.min.css">
+    <link rel="stylesheet" href="styles.css">
+    
+  </head>
+  <body>
+    <div class="mainWrapper">
+      <h1>Electron App</h1>
+    
+      <form>
+        <div class="form-group">
+          <label>UserName</label>
+          <input id="userName" type="text" class="form-control">
+        </div>  
+        <!-- <div class="form-group">
+          <label>Contents</label>
+          <textarea id="fileContents" class="form-control" rows="5"></textarea>
+        </div>     -->
+      </form>
+      <button id="btnSearch" class="btn btn-default">Search</button>
+      <button id="btngetdata" class="btn btn-default">GetData</button>
+    </div>
+    <script>
+      require('./index.js')
+    </script>
+  </body>
+</html>
