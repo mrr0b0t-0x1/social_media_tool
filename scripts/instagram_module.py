@@ -36,7 +36,7 @@ def gather_info(username):
 
     # Read data from result file
     try:
-        with open(result_dir / (username + "-instagram.json"), "r") as about:
+        with open(result_dir / (username + ".json"), "r") as about:
             data = json.load(about)
 
         # TODO: Remove this in final build
