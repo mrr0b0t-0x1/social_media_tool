@@ -1,5 +1,5 @@
 {
-  "name": "hello-world",
+  "name": "social_media_tool",
   "version": "1.0.0",
   "main": "main.js",
   "devDependencies": {
@@ -12,6 +12,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "mysql": "^2.18.1"
+    "python-shell": "^2.0.3"
   }
 }
