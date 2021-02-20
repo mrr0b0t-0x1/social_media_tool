@@ -16,17 +16,14 @@ class DatabaseConnection(object):
         self.user = Query()
         self.username = username
         self.result_dir = CWD / "scripts" / "results" / username
-        print('\nconnection initialized')
 
     def __enter__(self):
         # Return the database connection
-        print('\nconnection returned')
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         # Make sure the database connection gets closed
         self.db.close()
-        print('\nconnection closed')
 
     # Check if user exists in DB
     def check_user(self):
