@@ -3,7 +3,7 @@ import os
 
 # Sets current working directory
 # as constant variable
-CWD = Path(os.path.dirname(os.path.abspath(__file__)))
+ROOT_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
 
 # List of random User Agents
 USER_AGENTS = [
