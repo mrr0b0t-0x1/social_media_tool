@@ -1,6 +1,6 @@
 import subprocess
 import re
-from globals import CWD
+from globals import ROOT_DIR
 
 # Check username in Sherlock
 def check_username(username):
@@ -12,7 +12,7 @@ def check_username(username):
 
     # Run sherlock as a subprocess
     res = subprocess.run([
-        "python", CWD / "venv1/src/sherlock/sherlock",
+        "python", ROOT_DIR / "venv1/src/sherlock/sherlock",
         username,
         "--site", "Twitter",
         "--site", "Reddit",
@@ -27,7 +27,7 @@ def check_username(username):
 
     # Remove the text file made by Sherlock
     try:
-        (CWD / username).with_suffix('.txt').unlink()
+        (ROOT_DIR / username).with_suffix('.txt').unlink()
     except FileNotFoundError as err:
         print(err)
 

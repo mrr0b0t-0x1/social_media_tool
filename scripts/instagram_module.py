@@ -1,5 +1,5 @@
 import subprocess
-from globals import CWD
+from globals import ROOT_DIR
 import json
 from colorama import Fore
 
@@ -13,7 +13,7 @@ def gather_info(username):
     print('Fetching Instagram Data...\n')
 
     # Target directory
-    result_dir = CWD / "scripts" / "results" / username / "instagram"
+    result_dir = ROOT_DIR / "scripts" / "results" / username / "instagram"
 
     # Run instagram-scraper as a subprocess
     # subprocess.run([
@@ -26,7 +26,7 @@ def gather_info(username):
     #     "-d", result_dir
     # ], shell=False, stdout=subprocess.DEVNULL, check=True)
     subprocess.run([
-        "python", CWD / "venv1/bin/instagram-scraper", "-q",
+        "python", ROOT_DIR / "venv1/bin/instagram-scraper", "-q",
         username,
         "--profile-metadata",
         "--include-location",
@@ -49,6 +49,6 @@ def gather_info(username):
 
     # Remove instagram-scraper's log file
     try:
-        (CWD / "instagram-scraper.log").unlink()
+        (ROOT_DIR / "instagram-scraper.log").unlink()
     except Exception as err:
         print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))

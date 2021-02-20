@@ -4,7 +4,7 @@ from pprint import pprint
 from tinydb.storages import JSONStorage
 from tinydb.middlewares import CachingMiddleware
 from pathlib import Path
-from globals import CWD
+from globals import ROOT_DIR
 
 class DatabaseConnection(object):
 
@@ -12,10 +12,10 @@ class DatabaseConnection(object):
 
     def __init__(self, username):
         # Make a database connection and return it
-        self.db = TinyDB(CWD / "scripts" / "database" / "db.json", indent=2, storage=CachingMiddleware(JSONStorage))
+        self.db = TinyDB(ROOT_DIR / "scripts" / "database" / "db.json", indent=2, storage=CachingMiddleware(JSONStorage))
         self.user = Query()
         self.username = username
-        self.result_dir = CWD / "scripts" / "results" / username
+        self.result_dir = ROOT_DIR / "scripts" / "results" / username
 
     def __enter__(self):
         # Return the database connection
@@ -139,14 +139,14 @@ class DatabaseConnection(object):
 
     # Re-index DB in case of any operation failure
     def reindex_db(self):
-        data_dir = CWD / "scripts" / "results"
+        data_dir = ROOT_DIR / "scripts" / "results"
 
         for user_dir in data_dir.iterdir():
             if user_dir.is_dir():
                 uname = str(user_dir).split('/')[-1]
 
                 self.username = uname
-                self.result_dir = CWD / "scripts" / "results" / uname
+                self.result_dir = ROOT_DIR / "scripts" / "results" / uname
 
                 if not self.check_user():
                     self.update_user()

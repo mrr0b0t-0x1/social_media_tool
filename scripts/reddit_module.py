@@ -26,7 +26,7 @@ def gather_info(username):
     print('Fetching Reddit Data...\n')
 
     # Target directory
-    result_dir = CWD / "scripts" / "results" / username / "reddit"
+    result_dir = ROOT_DIR / "scripts" / "results" / username / "reddit"
 
     # Target URLs and headers
     reddit_user_info = {}

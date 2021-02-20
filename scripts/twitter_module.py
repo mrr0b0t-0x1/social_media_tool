@@ -1,7 +1,7 @@
 import subprocess
 import json
 from colorama import Fore
-from globals import CWD
+from globals import ROOT_DIR
 import time
 # import tweepy
 
@@ -15,7 +15,7 @@ def gather_info(username):
     print('Fetching Twitter Data...\n')
 
     # Target directory
-    result_dir = CWD / "scripts" / "results" / username / "twitter"
+    result_dir = ROOT_DIR / "scripts" / "results" / username / "twitter"
 
     # Using official Twitter API
     # API Keys
@@ -45,7 +45,7 @@ def gather_info(username):
     # Run twint as a subprocess
     # subprocess.run("twint -u " + username + " --user-full --json -o " + username + "-about-twitter.json", shell=True)
     subprocess.run([
-        "python", CWD / "venv1/bin/twint",
+        "python", ROOT_DIR / "venv1/bin/twint",
         "--username", username,
         "--user-full",
         "--json",
@@ -56,7 +56,7 @@ def gather_info(username):
     time.sleep(2)
 
     subprocess.run([
-        "python", CWD / "venv1/bin/twint",
+        "python", ROOT_DIR / "venv1/bin/twint",
         "--username", username,
         "--timeline",
         "--limit", "5",

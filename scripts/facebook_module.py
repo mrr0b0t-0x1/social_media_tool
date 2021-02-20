@@ -844,7 +844,7 @@ def gather_info(username):
     # Check if it is a FB profile or FB page
     if home_soup.find('meta', property='al:android:url') is not None:
         # Target directory
-        result_dir = CWD / "scripts" / "results" / username / "facebook"
+        result_dir = ROOT_DIR / "scripts" / "results" / username / "facebook"
 
         # If its a FB profile
         if 'fb://profile/' in home_soup.find('meta', property='al:android:url')['content']:
