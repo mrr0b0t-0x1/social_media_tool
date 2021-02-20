@@ -1,8 +1,9 @@
 from pathlib import Path
+import os
 
 # Sets current working directory
 # as constant variable
-CWD = Path.cwd()
+CWD = Path(os.path.dirname(os.path.abspath(__file__)))
 
 # List of random User Agents
 USER_AGENTS = [
