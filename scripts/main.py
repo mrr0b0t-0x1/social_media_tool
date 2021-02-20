@@ -1,8 +1,11 @@
-from globals import CWD
+import sys
+sys.path.append("..")
+
+from globals import ROOT_DIR
 from scripts.timer_module import Timer
-from scripts import reddit_module, sherlock_module, instagram_module, twitter_module, facebook_module, validate_username
-import multiprocessing
+from scripts import sherlock_module, reddit_module, instagram_module, twitter_module, facebook_module, validate_username
 from scripts import database
+import multiprocessing
 from colorama import Fore
 
 
@@ -10,7 +13,7 @@ def make_dirs(sites):
     if sites:
         for site in sites:
             # Create required directory
-            result_dir = CWD / "scripts" / "results" / username / site.lower().replace(' ', '_')
+            result_dir = ROOT_DIR / "scripts" / "results" / username / site.lower().replace(' ', '_')
             try:
                 result_dir.mkdir(parents=True, exist_ok=True)
             except Exception as e:
@@ -39,53 +42,53 @@ def execute_module(site):
 # Main
 if __name__ == '__main__':
     # Get username as input
-    username = ''
-    while True:
-        try:
-            username = str(input("Enter a username: "))
-            # Validate the username
-            if validate_username.validate(username):
-                break
-        except Exception as err:
-            print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
+    username = str(sys.argv[1])
 
-    # Timer
-    t = Timer()
-    # Start timer
-    t.start()
+    # Validate the username
+    result = validate_username.validate(username)
 
-    # Initialize database connection
-    with database.DatabaseConnection(username) as db:
+    if result == True:
 
-        if not db.check_user():
-            print("\n" + username + " not in DB\n")
+        # Timer
+        t = Timer()
+        # Start timer
+        t.start()
 
-            # Get the list of sites on which user exists
-            sites_found = sherlock_module.check_username(username)
-            # sites_found = ['Twitter', 'Instagram', 'Reddit']    # debug
+        # Initialize database connection
+        with database.DatabaseConnection(username) as db:
 
-            # Make respective module directories
-            make_dirs(sites_found)
+            if not db.check_user():
+                print(Fore.RED + "ERROR" + ": " + Fore.RESET + username + " not in DB")
 
-            # If sites found, execute respective modules concurrently
-            if sites_found:
-                try:
-                    with multiprocessing.Pool() as pool:
-                        pool.map(execute_module, sites_found)
+                # Get the list of sites on which user exists
+                # sites_found = sherlock_module.check_username(username)
+                # # sites_found = ['Twitter', 'Instagram', 'Reddit']    # debug
+                #
+                # # Make respective module directories
+                # make_dirs(sites_found)
+                #
+                # # If sites found, execute respective modules concurrently
+                # if sites_found:
+                #     try:
+                #         with multiprocessing.Pool() as pool:
+                #             pool.map(execute_module, sites_found)
+                #
+                #         db.update_user()
+                #     except Exception as err:
+                #         print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
+                # else:
+                #     print('\nUsername not found on any of the social media websites\n')
 
-                    db.update_user()
-                except Exception as err:
-                    print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
             else:
-                print('\nUsername not found on any of the social media websites\n')
+                print(Fore.RED + "ERROR" + ": " + Fore.RESET + username + " in DB")
 
-        else:
-            print("\n" + username + " in DB\n")
+                db.get_data()
 
-            db.get_data()
+        # with database.DatabaseConnection('') as db:
+        #     db.reindex_db()
 
-    # with database.DatabaseConnection('') as db:
-    #     db.reindex_db()
+        # Stop timer
+        t.stop()
 
-    # Stop timer
-    t.stop()
+    else:
+        print(Fore.RED + "ERROR" + Fore.RESET + ": " + result)
