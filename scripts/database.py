@@ -1,6 +1,5 @@
 import os
 from tinydb import TinyDB, Query
-from pprint import pprint
 from tinydb.storages import JSONStorage
 from tinydb.middlewares import CachingMiddleware
 from pathlib import Path
@@ -36,9 +35,7 @@ class DatabaseConnection(object):
     def get_data(self):
         if self.result_dir.exists():
             if self.check_user():
-                data = self.db.get(self.user.name == self.username)
-
-                pprint(data)
+                return self.db.get(self.user.name == self.username)
 
     # Update user data, insert if does not exist
     def update_user(self):
