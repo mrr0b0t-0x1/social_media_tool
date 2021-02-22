@@ -74,17 +74,24 @@ btngetdata.addEventListener('click', function(){
     let {PythonShell} = require('python-shell')
 
     let options = {
-        mode: 'text',
+        mode: 'json',
         pythonPath: '../venv1/bin/python',
         pythonOptions: ['-u'], // get print results in real-time
         scriptPath: '../scripts',
         args: [userName.value]
     };
 
+    const pyshell = new PythonShell('main.py', options);
+
     PythonShell.run('main.py', options, function (err, results) {
-        if (err) throw err;
-        // results is an array consisting of messages collected during execution
-        console.log('results: ', results);
+      if (err) throw err;
+      // results is an array consisting of messages collected during execution
+        results.forEach(function (obj) {
+            if (obj.ERROR) { console.log("Error: " + obj.ERROR); }
+            else if (obj.ELAPSED_TIME) { console.log("Elapsed time: " + obj.ELAPSED_TIME); }
+            else if (obj.DATA) { console.log("Data: ", obj.DATA); }
+        });
+      // console.log(results);
     });
 
     // sends a message to the Python script via stdin
@@ -94,12 +101,12 @@ btngetdata.addEventListener('click', function(){
     //   // received a message sent from the Python script (a simple "print" statement)
     //   console.log(message);
     // });
-
-    // end the input stream and allow the process to exit
+    //
+    // // end the input stream and allow the process to exit
     // pyshell.end(function (err,code,signal) {
     //   if (err) throw err;
-    //   console.log('The exit code was: ' + code);
-    //   console.log('The exit signal was: ' + signal);
-    //   console.log('finished');
+    //   // console.log('The exit code was: ' + code);
+    //   // console.log('The exit signal was: ' + signal);
+    //   // console.log('finished');
     // });
 });
