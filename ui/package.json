@@ -1,7 +1,7 @@
 {
   "name": "social_media_tool",
   "version": "1.0.0",
-  "main": "main.js",
+  "main": "js/main.js",
   "devDependencies": {
     "electron": "^1.8.8"
   },
@@ -12,6 +12,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@popperjs/core": "^2.8.2",
+    "bootstrap": "^4.6.0",
+    "jquery": "^3.5.1",
     "python-shell": "^2.0.3"
   }
 }
