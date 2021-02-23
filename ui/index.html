@@ -15,36 +15,14 @@
     <title>Social Media Tool</title>
   </head>
   <body>
-    <div class="container h-100">
+    <div class="container">
       <div id="header" class="row text-center m-2 border-bottom pb-2">
         <div class="col-12">
           <h1 class="text-info">Social Media Tool</h1>
           <h5 class="mt-0 mb-4">Gather information about a user from multiple social networks</h5>
         </div>
       </div>
-<!--      <div id="searchDiv" class="row text-center m-3 pb-3">-->
-<!--        <div class="col-8 offset-2">-->
-<!--          <form>-->
-<!--            <div class="form-group mb-4">-->
-<!--              <label class="mb-2 fs-larger" for="userName">Enter a username:</label>-->
-<!--              <input id="userName" type="text" class="form-control fs-larger" placeholder="Ex: johndoe" autofocus>-->
-<!--            </div>-->
-<!--            &lt;!&ndash; <div class="form-group">-->
-<!--              <label>Contents</label>-->
-<!--              <textarea id="fileContents" class="form-control" rows="5"></textarea>-->
-<!--            </div>     &ndash;&gt;-->
-<!--          </form>-->
-<!--          <button id="btnSearch" class="btn btn-outline-primary w-25 btn-large border-primary fs-larger m-4"-->
-<!--                  data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false"-->
-<!--                  aria-controls="multiCollapseExample2">Search</button>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div id="resultView" class="row text-center m-auto">-->
-<!--        <div id="errorView" class="col-12"></div>-->
-<!--        <div id="dataView" class="col-12"></div>-->
-<!--        <div id="elapsedTime" class="col-12"></div>-->
-<!--      </div>-->
-      <div id="mainView" class="row h-100">
+      <div id="mainView" class="row">
         <div class="col-12">
           <div class="list-group text-center p-2" id="list-tab" role="tablist">
             <a class="list-group-item list-group-item-action active w-50 mr-0 fs-larger" id="list-search-list" data-toggle="list" href="#list-search" role="tab" aria-controls="search">Search</a>
@@ -60,7 +38,6 @@
                     <div class="form-group mb-4">
                       <label class="mb-2 fs-larger" for="userName">Enter a username:</label>
                       <input id="userName" type="text" class="form-control fs-larger" placeholder="Ex: johndoe" autofocus>
-                      <input id="resetForm" type="button" onclick="this.form.reset();" hidden>
                     </div>
                   </form>
                   <button id="btnSearch" class="btn btn-outline-primary w-50 btn-large border-primary fs-larger m-4 fade show">
@@ -69,20 +46,23 @@
                   <button id="btnSearchAgain" class="btn btn-outline-primary w-50 btn-large border-primary fs-larger m-4 fade hide d-none">
                     Search Again
                   </button>
-                  <button id="btnCancel" class="btn btn-outline-danger w-50 btn-large border-danger fs-larger m-2 fade hide d-none">
+                  <button id="btnCancel" class="btn btn-outline-danger w-50 btn-large border-danger fs-larger m-2 fade hide" disabled>
                     Cancel
                   </button>
                 </div>
-                <div id="liveResults" class="fade hide d-none col-10 offset-1 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 padded-horizontally-more scroll_enabled">
-                  <div class="border-secondary scroll_enabled h-100 p-2">
-                  </div>
+                <div id="liveResults" class="fade hide d-none col-10 offset-1 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 scroll_enabled">
+                  <div class="border-secondary scroll_enabled h-100 p-2"></div>
                 </div>
               </div>
             </div>
             <div class="tab-pane fade" id="list-results" role="tabpanel" aria-labelledby="list-results-list">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci beatae corporis debitis dicta explicabo
-              fuga fugiat harum, illum maxime minima necessitatibus nesciunt numquam praesentium, quasi quos sapiente
-              similique, velit vero!</div>
+              <div id="resultsDiv" class="row p-3" data-placeholder="hey">
+                <div id="noResults" class="col-12 text-center text-muted">
+                  <h4>Results will be displayed here</h4>
+                </div>
+                <div id="resultTabs" class="col-12 scroll_enabled d-none"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -94,60 +74,64 @@
     <script type="text/javascript"> require('bootstrap') </script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">
-      $(document).ready(function () {
-        const userName = document.getElementById('userName')
-        const usernameForm = document.getElementById('usernameForm')
-        const liveResults = document.getElementById('liveResults')
-        const btnSearch = document.getElementById('btnSearch')
-        const btnSearchAgain = document.getElementById('btnSearchAgain')
-        const btnCancel = document.getElementById('btnCancel')
-
-        function toggleLiveResults() { $('#searchBox, #liveResults').toggleClass(
-                  'offset-1 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3').toggleClass(
-                          'col-sm-6 col-md-6 col-lg-6');
-        }
-
-        $(btnSearch).click(function () {
-          if ($(liveResults).hasClass('hide')) {
-
-            setTimeout(function() {
-              $(liveResults).removeClass('hide').addClass('show');
-              $(btnSearch).addClass('d-none').attr('disabled', true);
-              // $(btnSearchAgain).attr('disabled', true);
-              $('#btnSearchAgain, #btnCancel').removeClass('hide').addClass('show');
-            }, 500);
-
-            toggleLiveResults();
-            $(liveResults).removeClass('d-none');
-            $(userName).attr('disabled', true);
-            $(btnSearch).removeClass('show').addClass('hide');
-            $('#btnSearchAgain, #btnCancel').removeClass('d-none');
-
-            liveResults.firstElementChild.innerHTML += "<span class='d-block'>>&emsp;<span class='text-info'>Starting search...</span></span>";
-          }
-        });
-
-        $(btnSearchAgain).click(function () {
-          if ($(liveResults).hasClass('show')) {
-
-            setTimeout(function() {
-              toggleLiveResults();
-              $(liveResults).addClass('d-none');
-              $(userName).attr('disabled', false);
-              $(btnSearch).removeClass('d-none hide').addClass('show');
-              $('#btnSearchAgain, #btnCancel').addClass('d-none');
-
-              $('#resetForm').click();
-              $(userName).focus();
-              liveResults.firstElementChild.innerHTML = '';
-            }, 500);
-
-            $(liveResults).removeClass('show').addClass('hide');
-            $(btnSearch).attr('disabled', false);
-            $('#btnSearchAgain, #btnCancel').removeClass('show').addClass('hide');
-          }
-        });
-      });
+      // $(document).ready(function () {
+      //   const userName = document.getElementById('userName')
+      //   const usernameForm = document.getElementById('usernameForm')
+      //   const liveResults = document.getElementById('liveResults')
+      //   const btnSearch = document.getElementById('btnSearch')
+      //   const btnSearchAgain = document.getElementById('btnSearchAgain')
+      //   const btnCancel = document.getElementById('btnCancel')
+      //
+      //   function toggleLiveResults() { $('#searchBox, #liveResults').toggleClass(
+      //             'offset-1 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3').toggleClass(
+      //                     'col-sm-6 col-md-6 col-lg-6');
+      //   }
+      //
+      //   $(btnSearch).click(function () {
+      //     if ($(liveResults).hasClass('hide')) {
+      //
+      //       setTimeout(function() {
+      //         $(liveResults).removeClass('hide').addClass('show');
+      //         $(btnSearch).addClass('d-none').attr('disabled', true);
+      //         // $(btnSearchAgain).attr('disabled', true);
+      //         $('#btnSearchAgain, #btnCancel').removeClass('hide').addClass('show');
+      //       }, 500);
+      //
+      //       toggleLiveResults();
+      //       $(liveResults).removeClass('d-none');
+      //       $(userName).attr('disabled', true);
+      //       $(btnSearch).removeClass('show').addClass('hide');
+      //       $('#btnSearchAgain, #btnCancel').removeClass('d-none');
+      //
+      //       liveResults.firstElementChild.innerHTML += "<span class='d-block'>>&emsp;<span class='text-info'>Starting search...</span></span>";
+      //     }
+      //   });
+      //
+      //   $(btnSearchAgain).click(function () {
+      //     if ($(liveResults).hasClass('show')) {
+      //
+      //       setTimeout(function() {
+      //         toggleLiveResults();
+      //         $(liveResults).addClass('d-none');
+      //         $(userName).attr('disabled', false);
+      //         $(btnSearch).removeClass('d-none hide').addClass('show');
+      //         $('#btnSearchAgain, #btnCancel').addClass('d-none');
+      //
+      //         $(usernameForm)[0].reset();
+      //         $(userName).focus();
+      //         liveResults.firstElementChild.innerHTML = '';
+      //       }, 500);
+      //
+      //       $(liveResults).removeClass('show').addClass('hide');
+      //       $(btnSearch).attr('disabled', false);
+      //       $('#btnSearchAgain, #btnCancel').removeClass('show').addClass('hide');
+      //     }
+      //   });
+      //
+      //   $(btnCancel).click(function () {
+      //
+      //   });
+      // });
     </script>
   </body>
 </html>
