@@ -7,6 +7,8 @@ from scripts import sherlock_module, reddit_module, instagram_module, twitter_mo
 from scripts import database
 import multiprocessing
 from colorama import Fore
+import json
+import time
 
 
 def make_dirs(sites):
@@ -17,7 +19,8 @@ def make_dirs(sites):
             try:
                 result_dir.mkdir(parents=True, exist_ok=True)
             except Exception as e:
-                print(Fore.RED + type(e).__name__ + Fore.RESET + ": " + str(e))
+                # print(Fore.RED + type(e).__name__ + Fore.RESET + ": " + str(e))
+                print(json.dumps({type(e).__name__: str(e)}))
 
 
 # Execute respective site modules
@@ -41,8 +44,10 @@ def execute_module(site):
 
 # Main
 if __name__ == '__main__':
+    # data = sys.stdin.readlines()
     # Get username as input
     username = str(sys.argv[1])
+    # username = str(json.loads(data[0]))
 
     # Validate the username
     result = validate_username.validate(username)
@@ -58,7 +63,8 @@ if __name__ == '__main__':
         with database.DatabaseConnection(username) as db:
 
             if not db.check_user():
-                print(Fore.RED + "ERROR" + ": " + Fore.RESET + username + " not in DB")
+                # print(json.dumps(Fore.RED + "ERROR" + ": " + Fore.RESET + username + " not in DB"))
+                print(json.dumps({"ERROR": username + " not in DB"}))
 
                 # Get the list of sites on which user exists
                 # sites_found = sherlock_module.check_username(username)
@@ -80,15 +86,17 @@ if __name__ == '__main__':
                 #     print('\nUsername not found on any of the social media websites\n')
 
             else:
-                print(Fore.RED + "ERROR" + ": " + Fore.RESET + username + " in DB")
+                # print(json.dumps(Fore.RED + "ERROR" + ": " + Fore.RESET + username + " in DB"))
+                print(json.dumps({"ERROR": username + " in DB"}))
 
-                db.get_data()
+                print(json.dumps({"DATA": db.get_data()}))
 
         # with database.DatabaseConnection('') as db:
         #     db.reindex_db()
 
         # Stop timer
-        t.stop()
+        print(json.dumps({"ELAPSED_TIME": t.stop()}))
 
     else:
-        print(Fore.RED + "ERROR" + Fore.RESET + ": " + result)
+        # print(json.dumps(Fore.RED + "ERROR" + Fore.RESET + ": " + result))
+        print(json.dumps({"ERROR": result}))
