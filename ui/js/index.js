@@ -1,76 +1,8 @@
-const fs = require('fs')
-const path = require('path')
+let userName = document.getElementById('userName')
 
-const {spawn} = require('child_process');
-
-const ROOT_DIR = path.resolve(__dirname, '..')
-
-
-btnSearch = document.getElementById('btnSearch')
-btngetdata = document.getElementById('btngetdata')
-
-userName = document.getElementById('userName')
-fileContents = document.getElementById('fileContents')
-
-
-let pathName = path.join(__dirname, 'Files')
-
+let btnSearch = document.getElementById('btnSearch')
 //Handling Click Event for Search Btn ------------------------------------------
 btnSearch.addEventListener('click', function(){
-    //let file = path.join(pathName, userName.value)
-    //let contents = fileContents.value
-    // fs.writeFile(file, contents, function(err) {
-    //     if(err) {
-    //         return console.log(err);
-    //     }
-
-    // }); 
-    //console.log("Name:"+ userName.value);
-
-    const childPython = spawn('python', ['../scripts/main.py',userName.value]);
-    childPython.stdout.on('data', (data) => {
-        console.log(`Python Script Output: ${data}`);
-    })
-
-});
-
-//Handling Click event for Getdata Btn  --------------------------------------------------------
-
-btngetdata.addEventListener('click', function(){
-    // var mysql = require('mysql');
-    //
-    // var connection = mysql.createConnection({
-    //     host:"localhost",
-    //     user:"root",
-    //     password:null,
-    //     database:"electron_test"
-    // });
-    //
-    // connection.connect((err) => {
-    //     if(err){
-    //         return console.log(err.stack);
-    //     }
-    //
-    //     console.log("Connection Established successfully");
-    // });
-
-
-    //Execute the Query
-
-    // $queryString = 'SELECT * FROM `contacts` WHERE `id` = "2";';
-    //
-    // connection.query($queryString, (err, rows, fields) => {
-    //     if(err)
-    //     {
-    //         return console.log("Some error occured",err);
-    //     }
-    //     console.log(rows);
-    // })
-    //
-    //
-    // connection.end(() => {
-    //     console.log("Connection Successfully Closed");
-    // });
     let {PythonShell} = require('python-shell')
 
     let options = {
@@ -81,26 +13,56 @@ btngetdata.addEventListener('click', function(){
         args: [userName.value]
     };
 
+    // PythonShell.run('main.py', options, function (err, results) {
+    //   if (err) throw err;
+    //   // results is an array consisting of messages collected during execution
+    //   //   let resultView = document.getElementById('resultView')
+    //     let dataView = document.getElementById('dataView')
+    //     let errorView = document.getElementById('errorView')
+    //     let elapsedTime = document.getElementById('elapsedTime')
+    //
+    //     // results.forEach(function (obj) {
+    //     //     if (obj.ERROR) {
+    //     //         errorView.innerHTML = "<div class='col-12'>Error: " + obj.ERROR + "</div>"
+    //     //         console.log("Error: " + obj.ERROR);
+    //     //     }
+    //     //     else if (obj.ELAPSED_TIME) {
+    //     //         elapsedTime.innerHTML = "<div class='col-12'>Error: " + obj.ELAPSED_TIME + "</div>"
+    //     //         console.log("Elapsed time: " + obj.ELAPSED_TIME);
+    //     //     }
+    //     //     else if (obj.DATA) {
+    //     //         dataView.innerHTML = "<div class='col-12'>Error: " + obj.DATA + "</div>"
+    //     //         console.log("Data: ", obj.DATA);
+    //     //     }
+    //     // });
+    //   // console.log(results);
+    // });
+
+    // // Create a pyshell
     const pyshell = new PythonShell('main.py', options);
 
-    PythonShell.run('main.py', options, function (err, results) {
-      if (err) throw err;
-      // results is an array consisting of messages collected during execution
-        results.forEach(function (obj) {
-            if (obj.ERROR) { console.log("Error: " + obj.ERROR); }
-            else if (obj.ELAPSED_TIME) { console.log("Elapsed time: " + obj.ELAPSED_TIME); }
-            else if (obj.DATA) { console.log("Data: ", obj.DATA); }
-        });
-      // console.log(results);
-    });
+    const liveResults = document.getElementById('liveResults')
 
-    // sends a message to the Python script via stdin
+    // // sends a message to the Python script via stdin
     // pyshell.send(userName.value);
 
-    // pyshell.on('message', function (message) {
-    //   // received a message sent from the Python script (a simple "print" statement)
-    //   console.log(message);
-    // });
+    pyshell.on('message', function (message) {
+      // received a message sent from the Python script (a simple "print" statement)
+      console.log(message);
+
+      if (message.ERROR) {
+            liveResults.firstElementChild.innerHTML += "<span class='d-block'>>&emsp;<span class='text-danger'>Error:</span> " + message.ERROR +"</span>"
+            console.log("Error: " + message.ERROR);
+        }
+        else if (message.ELAPSED_TIME) {
+            liveResults.firstElementChild.innerHTML += "<span class='d-block'>>&emsp;<span class='text-success'>Elapsed Time:</span> " + message.ELAPSED_TIME +"</span>"
+            console.log("Elapsed time: " + message.ELAPSED_TIME);
+        }
+        else if (message.DATA) {
+            liveResults.firstElementChild.innerHTML += "<span class='d-block'>>&emsp;<span class='text-info'>Data:</span> " + message.DATA +"</span>"
+            console.log("Data: ", message.DATA);
+        }
+    });
     //
     // // end the input stream and allow the process to exit
     // pyshell.end(function (err,code,signal) {
