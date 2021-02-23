@@ -10,7 +10,12 @@ let win;
 
 function createWindow () {
 
-  win = new BrowserWindow({width: 1024, height: 768})
+  win = new BrowserWindow({
+    width: 1024,
+    height: 768,
+    minWidth: 800,
+    minHeight: 600
+  })
 
   win.loadURL(url.format({
     pathname: path.join(__dirname, '../index.html'),
