@@ -5,6 +5,33 @@ from globals import ROOT_DIR
 import time
 # import tweepy
 
+def fix_timeline_file(file):
+    """
+    Fixes the format of JSON data stored in the Twitter timeline file
+    :param file:
+    :return:
+    """
+    timeline_data = {}
+
+    i = 0
+    try:
+        with open(file, 'r') as handle:
+            lines = handle.readlines()
+            for line in lines:
+                # Keep only latest 10 tweets
+                if i < 10:
+                    timeline_data[i] = json.loads(line)
+                    i += 1
+                else:
+                    break
+
+        with open(file, 'w') as handle:
+            handle.write(json.dumps(timeline_data, indent=2))
+
+    except Exception as e:
+        print(Fore.RED + type(e).__name__ + Fore.RESET + ": " + str(e))
+
+
 def gather_info(username):
     """
     Gathers information about a user from his Twitter profile
@@ -63,6 +90,10 @@ def gather_info(username):
         "--json",
         "--output", result_dir / (username + "-timeline-twitter.json")
     ], shell=False, stdout=subprocess.DEVNULL, check=True)
+
+    # Fix the timeline formatting of JSON data
+    if (result_dir / (username + "-timeline-twitter.json")).exists():
+        fix_timeline_file(str(result_dir / (username + "-timeline-twitter.json")))
 
     # Read data from result files and store in twitter_user_info
     twitter_user_info = []
