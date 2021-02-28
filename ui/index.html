@@ -18,40 +18,40 @@
     <div class="container">
       <div id="header" class="row text-center m-2 border-bottom pb-2">
         <div class="col-12">
-          <h1 class="text-info">Social Media Tool</h1>
+          <h1 class="text-primary">Social Media Tool</h1>
           <h5 class="mt-0 mb-4">Gather information about a user from multiple social networks</h5>
         </div>
       </div>
       <div id="mainView" class="row">
         <div class="col-12">
-          <div class="list-group text-center p-2" id="list-tab" role="tablist">
-            <a class="list-group-item list-group-item-action active w-50 mr-0 fs-larger" id="list-search-list" data-toggle="list" href="#list-search" role="tab" aria-controls="search">Search</a>
-            <a class="list-group-item list-group-item-action w-50 ml-0 fs-larger" id="list-results-list" data-toggle="list" href="#list-results" role="tab" aria-controls="profile">Results</a>
+          <div class="list-group text-center p-2" id="search-tab" role="tablist">
+            <a class="list-group-item list-group-item-action br-10px active w-50 mr-0 fs-larger" id="list-search-list" data-toggle="list" href="#list-search" role="tab" aria-controls="search"><h4>Search</h4></a>
+            <a class="list-group-item list-group-item-action br-10px w-50 ml-0 fs-larger" id="list-results-list" data-toggle="list" href="#list-results" role="tab" aria-controls="profile"><h4>Results</h4></a>
           </div>
         </div>
         <div class="col-12 h-75">
-          <div class="tab-content p-2" id="nav-tabContent">
+          <div class="tab-content p-2" id="search-tabContent">
             <div class="tab-pane fade show active" id="list-search" role="tabpanel" aria-labelledby="list-search-list">
               <div id="searchDiv" class="row m-3 pb-3">
                 <div id="searchBox" class="text-center col-10 offset-1 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
                   <form id="usernameForm">
                     <div class="form-group mb-4">
                       <label class="mb-2 fs-larger" for="userName">Enter a username:</label>
-                      <input id="userName" type="text" class="form-control fs-larger" placeholder="Ex: johndoe" autofocus>
+                      <input id="userName" type="text" class="form-control fs-larger br-7px p-20px" placeholder="Ex: johndoe" required autofocus>
                     </div>
                   </form>
-                  <button id="btnSearch" class="btn btn-outline-primary w-50 btn-large border-primary fs-larger m-4 fade show">
+                  <button id="btnSearchUser" class="btn btn-outline-primary w-50 br-7px p-8px btn-large border-primary fs-larger m-4 fade show">
                     Search
                   </button>
-                  <button id="btnSearchAgain" class="btn btn-outline-primary w-50 btn-large border-primary fs-larger m-4 fade hide d-none">
-                    Search Again
+                  <button id="btnNewSearch" class="btn btn-outline-primary w-50 br-7px p-8px btn-large border-primary fs-larger m-4 fade hide d-none">
+                    New Search
                   </button>
-                  <button id="btnCancel" class="btn btn-outline-danger w-50 btn-large border-danger fs-larger m-2 fade hide" disabled>
+                  <button id="btnCancelSearch" class="btn btn-outline-danger w-50 br-7px p-8px btn-large border-danger fs-larger mt-2 mb-0 fade hide" disabled>
                     Cancel
                   </button>
                 </div>
-                <div id="liveResults" class="fade hide d-none col-10 offset-1 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 scroll_enabled">
-                  <div class="border-secondary scroll_enabled h-100 p-2"></div>
+                <div id="liveResults" class="fade hide d-none col-10 offset-1 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 scroll-enabled">
+                  <div class="border-secondary scroll-enabled br-10px h-100 p-2"></div>
                 </div>
               </div>
             </div>
@@ -60,11 +60,50 @@
                 <div id="noResults" class="col-12 text-center text-muted">
                   <h4>Results will be displayed here</h4>
                 </div>
-                <div id="resultTabs" class="col-12 scroll_enabled d-none"></div>
+                <div id="resultTabs" class="col-12 scroll-enabled d-none">
+                  <div class="row">
+                    <div id="result-menu" class="col-4 scroll-enabled">
+                      <div id="user-resultTab" class="p-3">
+                        <h4 class="mt-2 mb-2 text-center"></h4>
+                      </div>
+                      <div class="list-group br-10px" id="results-tab" role="tablist">
+                        <a class="list-group-item list-group-item-action pl-3 fs-larger d-none" id="list-facebook-list" data-toggle="list" href="#list-facebook" role="tab" aria-controls="facebook">Facebook</a>
+                        <a class="list-group-item list-group-item-action pl-3 fs-larger d-none" id="list-instagram-list" data-toggle="list" href="#list-instagram" role="tab" aria-controls="instagram">Instagram</a>
+                        <a class="list-group-item list-group-item-action pl-3 fs-larger d-none" id="list-twitter-list" data-toggle="list" href="#list-twitter" role="tab" aria-controls="twitter">Twitter</a>
+                        <a class="list-group-item list-group-item-action pl-3 fs-larger d-none" id="list-reddit-list" data-toggle="list" href="#list-reddit" role="tab" aria-controls="reddit">Reddit</a>
+                        <a class="list-group-item list-group-item-action pl-3 fs-larger d-none" id="list-linkedin-list" data-toggle="list" href="#list-linkedin" role="tab" aria-controls="linkedin">LinkedIn</a>
+                      </div>
+                      <div class="row mt-4">
+                        <div class="col-6">
+                          <button id="btnUpdateUserData" class="btn btn-outline-primary w-100 br-7px p-8px btn-large h-100 border-primary fs-larger fade show">
+                            Update Data
+                          </button>
+                        </div>
+                        <div class="col-6">
+                          <button id="btnRemoveUserFromDB" class="btn btn-outline-danger w-100 br-7px p-8px btn-large h-100 border-danger fs-larger fade show">
+                            Remove Data
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-8">
+                      <div class="tab-content" id="results-tabContent">
+                        <div class="tab-pane scroll-enabled fade d-none" id="list-facebook" role="tabpanel" aria-labelledby="list-facebook-list"></div>
+                        <div class="tab-pane scroll-enabled fade d-none" id="list-instagram" role="tabpanel" aria-labelledby="list-instagram-list"></div>
+                        <div class="tab-pane scroll-enabled fade d-none" id="list-twitter" role="tabpanel" aria-labelledby="list-twitter-list"></div>
+                        <div class="tab-pane scroll-enabled fade d-none" id="list-reddit" role="tabpanel" aria-labelledby="list-reddit-list"></div>
+                        <div class="tab-pane scroll-enabled fade d-none" id="list-linkedin" role="tabpanel" aria-labelledby="list-linkedin-list"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <div id="alertsView" class="row">
+          <div class="col-6 offset-3 text-center"></div>
       </div>
     </div>
 
