@@ -1,4 +1,6 @@
 const fs = require('fs');
+const {PythonShell} = require('python-shell')
+const kill = require('tree-kill');
 
 $(document).ready(function () {
     const userName = document.getElementById('userName');
@@ -11,7 +13,6 @@ $(document).ready(function () {
     const resultsTabContent = document.getElementById('results-tabContent');
     const btnUpdateData = document.getElementById('btnUpdateUserData');
     const btnRemoveData = document.getElementById('btnRemoveUserFromDB');
-    const alertsView = document.getElementById('alertsView');
 
     const siteList = [
         'facebook',
@@ -20,6 +21,7 @@ $(document).ready(function () {
         'reddit',
         'linkedin'
     ];
+
     const tabAndPanes = {
         'facebook': [
             document.getElementById('list-facebook-list'),
@@ -48,6 +50,7 @@ $(document).ready(function () {
                       'col-sm-6 col-md-6 col-lg-6');
     }
 
+
     function showDismissableAlert(alert) {
         if ($('#alertsView > div').text().trim() !== '') {
             $('.alert').alert('close');
@@ -69,6 +72,7 @@ $(document).ready(function () {
             }, 5);
         }
     }
+
 
     function readJSONFile(path, callback) {
         try {
@@ -136,42 +140,21 @@ $(document).ready(function () {
         });
     }
 
-    // $('#results-tab').children().first().css(
-    //     'border-radius', '10px 10px 0 0'
-    // )
 
-    $('body').on('DOMSubtreeModified', resultsTabContent, function () {
-        if ($('#results-tabContent > div').text().trim() === '') {
-            $(resultTabs).addClass('d-none')
-            $('#noResults').removeClass('d-none')
-        } else {
-            $(resultTabs).removeClass('d-none')
-            $('#noResults').addClass('d-none')
-        }
-    });
-
-
-    $(btnSearchUser).click(function () {
-        showDismissableAlert({
-            'id': 'search-alert',
-            'class': 'alert-primary',
-            'msg': 'Starting search...'
-        });
-        // Execute backend script
-        let {PythonShell} = require('python-shell')
+    // Create a python-shell instance
+    function createPythonShell(args, btn) {
 
         let options = {
             mode: 'json',
             pythonPath: '../venv1/bin/python',
             pythonOptions: ['-u'], // get print results in real-time
             scriptPath: '../scripts',
-            args: [userName.value]
+            args: args
         };
 
         // Create a python-shell instance
         const pyshell = new PythonShell('main.py', options);
-
-        const liveResults = document.getElementById('liveResults')
+        console.log("pyshell child pid: " + pyshell.childProcess.pid)
 
         pyshell.on('message', function (message) {
             // Received a message sent from the Python script (a simple "print" statement)
@@ -205,22 +188,74 @@ $(document).ready(function () {
         // end the input stream and allow the process to exit
         pyshell.end(function (err,code,signal) {
             if (err) throw err;
+
             $(btnCancelSearch).attr('disabled', true)
             $(btnNewSearch).attr('disabled', false)
 
-            showDismissableAlert({
-                'id': 'done-alert',
-                'class': 'alert-success',
-                'msg': 'Done! Crunching data...'
-            });
-            setTimeout(function() {
-                $('#list-results-list').click()
-            }, 1000);
+            if (btn === btnSearchUser) {
+                showDismissableAlert({
+                    'id': 'done-alert',
+                    'class': 'alert-success',
+                    'msg': 'Done! Crunching data...'
+                });
+                setTimeout(function() {
+                    $('#list-results-list').click()
+                }, 1000);
+            }
+            else if (btn === btnCancelSearch) {
+                showDismissableAlert({
+                    'id': 'cancel-alert',
+                    'class': 'alert-danger',
+                    'msg': 'Cancelled!'
+                });
+            }
+            else if (btn === btnUpdateData) {
+                showDismissableAlert({
+                    'id': 'update-alert',
+                    'class': 'alert-success',
+                    'msg': 'User data updated!'
+                });
+            }
+            else if (btn === btnRemoveData) {
+                showDismissableAlert({
+                    'id': 'remove-alert',
+                    'class': 'alert-danger',
+                    'msg': 'User data removed!'
+                });
+            }
+
             console.log('The exit code was: ' + code);
             console.log('The exit signal was: ' + signal);
             console.log('finished');
         });
 
+        return pyshell;
+    }
+
+
+    $('body').on('DOMSubtreeModified', resultsTabContent, function () {
+        if ($('#results-tabContent > div').text().trim() === '') {
+            $(resultTabs).addClass('d-none')
+            $('#noResults').removeClass('d-none')
+        } else {
+            $(resultTabs).removeClass('d-none')
+            $('#noResults').addClass('d-none')
+        }
+    });
+
+
+    $(btnSearchUser).click(function () {
+        showDismissableAlert({
+            'id': 'search-alert',
+            'class': 'alert-primary',
+            'msg': 'Starting search...'
+        });
+
+        // Create a python-shell instance to get user data
+        let searchUser = createPythonShell(
+            ['--username', userName.value],
+            btnSearchUser
+        )
 
         // Make changes in UI
         if ($(liveResults).hasClass('hide')) {
@@ -248,10 +283,12 @@ $(document).ready(function () {
                 "<span class='text-info'>Starting search...</span></span>";
         }
 
-        $(btnCancelSearch).click(function (){
-            pyshell.kill()
+        $(btnCancelSearch).click(function () {
+            // Kill python-shell and all running child processes
+            kill(searchUser.childProcess.pid);
         });
     });
+
 
     $(btnNewSearch).click(function () {
         if ($(liveResults).hasClass('show')) {
@@ -283,6 +320,7 @@ $(document).ready(function () {
         }
     });
 
+
     $(btnCancelSearch).click(function () {
         $(btnCancelSearch)
             .attr('disabled', true)
@@ -293,19 +331,21 @@ $(document).ready(function () {
             "<span class='text-danger'>Interrupted!</span> Search cancelled.</span>";
     });
 
+
     $(btnUpdateData).click(function () {
-        showDismissableAlert({
-            'id': 'update-alert',
-            'class': 'alert-success',
-            'msg': 'Update button clicked'
-        });
+        // Create a python-shell instance to update user data
+        createPythonShell(
+            ['--username', userName.value],
+            btnUpdateData
+        )
     });
 
+
     $(btnRemoveData).click(function () {
-        showDismissableAlert({
-            'id': 'remove-alert',
-            'class': 'alert-danger',
-            'msg': 'Remove button clicked'
-        });
+        // Create a python-shell instance to remove user data
+        createPythonShell(
+            ['--remove-data', userName.value],
+            btnRemoveData
+        )
     });
 });
