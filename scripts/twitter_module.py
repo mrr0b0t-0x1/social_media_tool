@@ -29,7 +29,8 @@ def fix_timeline_file(file):
             handle.write(json.dumps(timeline_data, indent=2))
 
     except Exception as e:
-        print(Fore.RED + type(e).__name__ + Fore.RESET + ": " + str(e))
+        # print(Fore.RED + type(e).__name__ + Fore.RESET + ": " + str(e))
+        print(json.dumps({"ERROR": str(e)}))
 
 
 def gather_info(username):
@@ -39,7 +40,7 @@ def gather_info(username):
     :return:
     """
 
-    print('Fetching Twitter Data...\n')
+    print(json.dumps({"INFO": "Fetching Twitter Data..."}))
 
     # Target directory
     result_dir = ROOT_DIR / "scripts" / "results" / username / "twitter"
@@ -71,53 +72,53 @@ def gather_info(username):
 
     # Run twint as a subprocess
     # subprocess.run("twint -u " + username + " --user-full --json -o " + username + "-about-twitter.json", shell=True)
-    subprocess.run([
-        "python", ROOT_DIR / "venv1/bin/twint",
-        "--username", username,
-        "--user-full",
-        "--json",
-        "--output", result_dir / (username + "-about-twitter.json")
-    ], shell=False, stdout=subprocess.DEVNULL, check=True)
-
-    # Sleep for 2 seconds to avoid getting banned
-    time.sleep(2)
-
-    subprocess.run([
-        "python", ROOT_DIR / "venv1/bin/twint",
-        "--username", username,
-        "--timeline",
-        "--limit", "5",
-        "--json",
-        "--output", result_dir / (username + "-timeline-twitter.json")
-    ], shell=False, stdout=subprocess.DEVNULL, check=True)
-
-    # Fix the timeline formatting of JSON data
-    if (result_dir / (username + "-timeline-twitter.json")).exists():
-        fix_timeline_file(str(result_dir / (username + "-timeline-twitter.json")))
-
-    # Read data from result files and store in twitter_user_info
-    twitter_user_info = []
-
     try:
-        with open(result_dir / (username + "-about-twitter.json"), "r") as about:
-            twitter_user_info.append('About User')
-            for line in about:
-                temp_dict = json.loads(line)
-                twitter_user_info.append(temp_dict)
-    except Exception as err:
-        print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
+        subprocess.run([
+            "python", ROOT_DIR / "venv1/bin/twint",
+            "--username", username,
+            "--user-full",
+            "--json",
+            "--output", result_dir / (username + "-about-twitter.json")
+        ], shell=False, stdout=subprocess.DEVNULL, check=True)
 
-    try:
-        with open(result_dir / (username + "-timeline-twitter.json"), 'r') as timeline:
-            twitter_user_info.append('Timeline')
-            for line in timeline:
-                temp_dict = json.loads(line)
-                twitter_user_info.append(temp_dict)
+        # Sleep for 2 seconds to avoid getting banned
+        time.sleep(2)
+
+        subprocess.run([
+            "python", ROOT_DIR / "venv1/bin/twint",
+            "--username", username,
+            "--timeline",
+            "--limit", "5",
+            "--json",
+            "--output", result_dir / (username + "-timeline-twitter.json")
+        ], shell=False, stdout=subprocess.DEVNULL, check=True)
+
+        # Fix the timeline formatting of JSON data
+        if (result_dir / (username + "-timeline-twitter.json")).exists():
+            fix_timeline_file(str(result_dir / (username + "-timeline-twitter.json")))
+
+        # Read data from result files and store in twitter_user_info
+        # twitter_user_info = []
+
+        # with open(result_dir / (username + "-about-twitter.json"), "r") as about:
+        #     twitter_user_info.append('About User')
+        #     for line in about:
+        #         temp_dict = json.loads(line)
+        #         twitter_user_info.append(temp_dict)
+        #
+        # with open(result_dir / (username + "-timeline-twitter.json"), 'r') as timeline:
+        #     twitter_user_info.append('Timeline')
+        #     for line in timeline:
+        #         temp_dict = json.loads(line)
+        #         twitter_user_info.append(temp_dict)
+
+        print(json.dumps({"INFO": "Twitter data fetched"}))
+
     except Exception as err:
-        print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
+        # print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
+        print(json.dumps({"ERROR": str(err)}))
 
     # TODO: Remove this in final build
     # Print result data
     # print('\nTwitter Data:')
     # print(json.dumps(twitter_user_info, indent=2))
-    print('Twitter data fetched\n')

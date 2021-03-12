@@ -360,7 +360,8 @@ def gather_user_info(username, home_soup, result_dir):
         with open(result_dir / (username + "-fb-user.json"), "w+") as handle:
             json.dump(facebook_user_info, handle, indent=2)
     except Exception as err:
-        print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
+        # print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
+        print(json.dumps({"ERROR": str(err)}))
 
     # TODO: Remove this in final build
     # Print result data
@@ -528,7 +529,8 @@ def gather_page_info(username, home_soup, result_dir):
             with open(result_dir / (username + "-fb-page-posts.json"), 'w+', encoding='utf-8') as jsonf:
                 jsonf.write(json.dumps(json_posts, indent=2, ))
         except Exception as e:
-            print(Fore.RED + type(e).__name__ + Fore.RESET + ": " + str(e))
+            # print(Fore.RED + type(e).__name__ + Fore.RESET + ": " + str(e))
+            print(json.dumps({"ERROR": str(e)}))
 
     # Get Photos
     def get_page_photos():
@@ -828,37 +830,44 @@ def gather_page_info(username, home_soup, result_dir):
         with open(result_dir / (username + '-fb-page.json'), 'w+') as handle:
             json.dump(facebook_page_info, handle, indent=2)
     except Exception as err:
-        print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
+        # print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
+        print(json.dumps({"ERROR": str(err)}))
 
 
 # Gather info about username
 def gather_info(username):
 
-    print('Fetching Facebook Data...\n')
+    print(json.dumps({"INFO": "Fetching Facebook Data..."}))
 
-    # Fetch the home page
-    home_page = req_session.get('https://www.facebook.com/' + username, headers=headers)
-    # Create the BeautifulSoup object
-    home_soup = bs4.BeautifulSoup(home_page.text, 'html.parser')
+    try:
+        # Fetch the home page
+        home_page = req_session.get('https://www.facebook.com/' + username, headers=headers)
+        # Create the BeautifulSoup object
+        home_soup = bs4.BeautifulSoup(home_page.text, 'html.parser')
 
-    # Check if it is a FB profile or FB page
-    if home_soup.find('meta', property='al:android:url') is not None:
-        # Target directory
-        result_dir = ROOT_DIR / "scripts" / "results" / username / "facebook"
+        # Check if it is a FB profile or FB page
+        if home_soup.find('meta', property='al:android:url') is not None:
+            # Target directory
+            result_dir = ROOT_DIR / "scripts" / "results" / username / "facebook"
 
-        # If its a FB profile
-        if 'fb://profile/' in home_soup.find('meta', property='al:android:url')['content']:
-            gather_user_info(username, home_soup, result_dir)
+            # If its a FB profile
+            if 'fb://profile/' in home_soup.find('meta', property='al:android:url')['content']:
+                gather_user_info(username, home_soup, result_dir)
 
-        # If its a FB page
-        elif 'fb://page/' in home_soup.find('meta', property='al:android:url')['content']:
-            gather_page_info(username, home_soup, result_dir)
+                print(json.dumps({"INFO": "Facebook data fetched"}))
 
-        # If its not a FB profile or page
+            # If its a FB page
+            elif 'fb://page/' in home_soup.find('meta', property='al:android:url')['content']:
+                gather_page_info(username, home_soup, result_dir)
+
+                print(json.dumps({"INFO": "Facebook data fetched"}))
+
+            # If its not a FB profile or page
+            else:
+                print(json.dumps({"ERROR": "This doesn't seem to be a facebook profile or page. Please try again."}))
+
         else:
-            print("\nThis doesn't seem to be a facebook profile or page. Please try again.\n")
+            print(json.dumps({"ERROR": "There is no facebook profile or page by this name. Please try again."}))
 
-    else:
-        print('\nThere is no facebook profile or page by this name. Please try again.\n')
-
-    print('Facebook data fetched\n')
+    except Exception as err:
+        print(json.dumps({"ERROR": str(err)}))

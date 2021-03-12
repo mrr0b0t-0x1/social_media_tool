@@ -23,7 +23,7 @@ def gather_info(username):
     :return:
     """
 
-    print('Fetching Reddit Data...\n')
+    print(json.dumps({"INFO": "Fetching Reddit Data..."}))
 
     # Target directory
     result_dir = ROOT_DIR / "scripts" / "results" / username / "reddit"
@@ -34,14 +34,14 @@ def gather_info(username):
     about_url = 'https://www.reddit.com/user/' + username + '/about/.json'
     headers = generate_headers()
 
-    # Request the JSON data of user
-    reddit_user_info['overview'] = requests.get(url=overview_url, headers=headers).json()
-    # Sleep for 2 seconds to avoid getting banned
-    time.sleep(2)
-    reddit_user_info['about'] = requests.get(url=about_url, headers=headers).json()
-
-    # Store result data to file
     try:
+        # Request the JSON data of user
+        reddit_user_info['overview'] = requests.get(url=overview_url, headers=headers).json()
+        # Sleep for 2 seconds to avoid getting banned
+        time.sleep(2)
+        reddit_user_info['about'] = requests.get(url=about_url, headers=headers).json()
+
+        # Store result data to file
         with open(result_dir / (username + "-reddit.json"), "w+") as handle:
             json.dump(reddit_user_info, handle, indent=2)
 
@@ -49,6 +49,8 @@ def gather_info(username):
         # Print result data
         # print('\nReddit Data:')
         # print(json.dumps(reddit_user_info, indent=2))
-        print('Reddit data fetched\n')
+        print(json.dumps({"INFO": "Reddit data fetched"}))
+
     except Exception as err:
-        print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
+        # print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
+        print(json.dumps({"ERROR": str(err)}))

@@ -10,7 +10,7 @@ def gather_info(username):
     :return:
     """
 
-    print('Fetching Instagram Data...\n')
+    print(json.dumps({"INFO": "Fetching Instagram Data..."}))
 
     # Target directory
     result_dir = ROOT_DIR / "scripts" / "results" / username / "instagram"
@@ -25,30 +25,33 @@ def gather_info(username):
     #     "-m", "10",
     #     "-d", result_dir
     # ], shell=False, stdout=subprocess.DEVNULL, check=True)
-    subprocess.run([
-        "python", ROOT_DIR / "venv1/bin/instagram-scraper", "-q",
-        username,
-        "--profile-metadata",
-        "--include-location",
-        "-m", "10",
-        "-d", result_dir
-    ], shell=False, stdout=subprocess.DEVNULL, check=True)
-
-    # Read data from result file
     try:
-        with open(result_dir / (username + ".json"), "r") as about:
-            data = json.load(about)
+        subprocess.run([
+            "python", ROOT_DIR / "venv1/bin/instagram-scraper", "-q",
+            username,
+            "--profile-metadata",
+            "--include-location",
+            "-m", "10",
+            "-d", result_dir
+        ], shell=False, stdout=subprocess.DEVNULL, check=True)
+
+        # Read data from result file
+        # with open(result_dir / (username + ".json"), "r") as about:
+        #     data = json.load(about)
 
         # TODO: Remove this in final build
         # Print result data
         # print('\nInstagram Data:')
         # print(json.dumps(data, indent=2))
-        print('Instagram data fetched\n')
-    except Exception as err:
-        print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
 
-    # Remove instagram-scraper's log file
-    try:
-        (ROOT_DIR / "instagram-scraper.log").unlink()
+        # Remove instagram-scraper's log file
+        if (ROOT_DIR / "ui" / "instagram-scraper").with_suffix(".log").exists():
+            (ROOT_DIR / "ui" / "instagram-scraper").with_suffix(".log").unlink()
+        elif (ROOT_DIR / "instagram-scraper").with_suffix(".log").exists():
+            (ROOT_DIR / "instagram-scraper").with_suffix(".log").unlink()
+
+        print(json.dumps({"INFO": "Instagram data fetched"}))
+
     except Exception as err:
-        print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
+        # print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
+        print(json.dumps({"ERROR": str(err)}))
