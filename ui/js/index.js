@@ -1,11 +1,12 @@
-const fs = require('fs');
-const {PythonShell} = require('python-shell')
+const path = require('path');
+const { PythonShell } = require('python-shell')
 const kill = require('tree-kill');
 
 $(document).ready(function () {
     const userName = document.getElementById('userName');
     const usernameForm = document.getElementById('usernameForm');
     const liveResults = document.getElementById('liveResults');
+    const reindexDB = document.getElementById('reindexDB');
     const btnSearchUser = document.getElementById('btnSearchUser');
     const btnNewSearch = document.getElementById('btnNewSearch');
     const btnCancelSearch = document.getElementById('btnCancelSearch');
@@ -14,43 +15,16 @@ $(document).ready(function () {
     const btnUpdateData = document.getElementById('btnUpdateUserData');
     const btnRemoveData = document.getElementById('btnRemoveUserFromDB');
 
-    const siteList = [
-        'facebook',
-        'instagram',
-        'twitter',
-        'reddit',
-        'linkedin'
-    ];
+    // Import the get_data module to perform DB operations
+    const { parseDBData, siteList, tabAndPanes } = require( path.resolve(__dirname, './js/get_data.js') );
 
-    const tabAndPanes = {
-        'facebook': [
-            document.getElementById('list-facebook-list'),
-            document.getElementById('list-facebook')
-        ],
-        'instagram': [
-            document.getElementById('list-instagram-list'),
-            document.getElementById('list-instagram')
-        ],
-        'twitter': [
-            document.getElementById('list-twitter-list'),
-            document.getElementById('list-twitter')
-        ],
-        'reddit': [
-            document.getElementById('list-reddit-list'),
-            document.getElementById('list-reddit')
-        ],
-        'linkedin': [
-            document.getElementById('list-linkedin-list'),
-            document.getElementById('list-linkedin')
-        ]
-    }
-
+    // Toggle the live results box when "Search" or "New Search" button is clicked
     function toggleLiveResults() { $('#searchBox, #liveResults').toggleClass(
               'offset-1 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3').toggleClass(
                       'col-sm-6 col-md-6 col-lg-6');
     }
 
-
+    // Show a dismissable alert
     function showDismissableAlert(alert) {
         if ($('#alertsView > div').text().trim() !== '') {
             $('.alert').alert('close');
@@ -72,74 +46,6 @@ $(document).ready(function () {
             }, 5);
         }
     }
-
-
-    function readJSONFile(path, callback) {
-        try {
-            const data = fs.readFileSync(path);
-            const dataJSON = JSON.parse(data.toString());
-            return callback && callback(null, dataJSON);
-        } catch (err) {
-            return callback && callback(err);
-        }
-    }
-    function traverseDataTree(obj, site) {
-        Object.keys(obj).forEach(function (key) {
-            // console.log(key);
-            if (obj[key] !== null) {
-                if (obj[key] !== null && typeof obj[key] === 'object')
-                    traverseDataTree(obj[key], site);
-                else {
-                    tabAndPanes[site][1].innerHTML += key + ": " + obj[key] + "<br />"
-                    // console.log(nestKey + " -> " + key + ": " + obj[key]);
-                    // let txt = document.createElement("span");
-                    // txt.innerText = key + ": " + obj[key]
-                    // txt.innerHTML += "<br />"
-                    // parent.appendChild(txt);
-                }
-            }
-        });
-    }
-    function traverseDBTree(obj, site) {
-        Object.keys(obj).forEach(function (key) {
-            console.log(key);
-            if (obj[key] !== null) {
-                if (obj[key] !== null && typeof obj[key] === 'object')
-                    traverseDBTree(obj[key], site);
-                else {
-                    if (obj[key].split('.').pop() === 'json') {
-                        readJSONFile(obj[key], (err, data) => {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                console.log(data);
-                                traverseDataTree(data, site);
-                            }
-                        });
-                    }
-                    // tabAndPanes[site][1].innerHTML += key + ": " + obj[key] + "<br />"
-                    // console.log(nestKey + " -> " + key + ": " + obj[key]);
-                    // let txt = document.createElement("span");
-                    // txt.innerText = key + ": " + obj[key]
-                    // txt.innerHTML += "<br />"
-                    // parent.appendChild(txt);
-                }
-            }
-        });
-    }
-    function parseDBData(obj) {
-        // console.log(Object.keys(obj));
-        Object.keys(obj['sites_found']).forEach(function (site) {
-            if (siteList.includes(site)) {
-                // show those tabs whose sites are found
-                $(tabAndPanes[site][0]).removeClass('d-none');
-                $(tabAndPanes[site][1]).removeClass('d-none');
-
-                traverseDBTree(obj['sites_found'][site], site);
-            }
-        });
-    }
-
 
     // Create a python-shell instance
     function createPythonShell(args, btn) {
@@ -183,6 +89,11 @@ $(document).ready(function () {
                 $('#results-tabContent > div:first').addClass('show active');
                 $('#results-tab > a:not(.d-none):last').css('border-radius', '0 0 10px 10px');
             }
+
+            $("#liveResults > div").animate({
+                scrollTop: $("#liveResults > div")[0].scrollHeight,
+                animationTimingFunction: "ease-in-out"
+            }, 1000);
         });
 
         // end the input stream and allow the process to exit
@@ -192,7 +103,14 @@ $(document).ready(function () {
             $(btnCancelSearch).attr('disabled', true)
             $(btnNewSearch).attr('disabled', false)
 
-            if (btn === btnSearchUser) {
+            if (btn === reindexDB) {
+                showDismissableAlert({
+                    'id': 'reindex-alert',
+                    'class': 'alert-success',
+                    'msg': 'Database re-indexed'
+                });
+            }
+            else if (btn === btnSearchUser) {
                 showDismissableAlert({
                     'id': 'done-alert',
                     'class': 'alert-success',
@@ -232,7 +150,7 @@ $(document).ready(function () {
         return pyshell;
     }
 
-
+    // Show/Hide the "No results" div if results are empty/filled respectively
     $('body').on('DOMSubtreeModified', resultsTabContent, function () {
         if ($('#results-tabContent > div').text().trim() === '') {
             $(resultTabs).addClass('d-none')
@@ -243,7 +161,15 @@ $(document).ready(function () {
         }
     });
 
+    // Re-index DB
+    $(reindexDB).click( function () {
+        createPythonShell(
+            ['--reindex-db'],
+            reindexDB
+        )
+    });
 
+    // "Search" button actions
     $(btnSearchUser).click(function () {
         showDismissableAlert({
             'id': 'search-alert',
@@ -289,7 +215,7 @@ $(document).ready(function () {
         });
     });
 
-
+    // "New Search" button actions
     $(btnNewSearch).click(function () {
         if ($(liveResults).hasClass('show')) {
             setTimeout(function() {
@@ -320,7 +246,7 @@ $(document).ready(function () {
         }
     });
 
-
+    // "Cancel" button actions
     $(btnCancelSearch).click(function () {
         $(btnCancelSearch)
             .attr('disabled', true)
@@ -331,7 +257,7 @@ $(document).ready(function () {
             "<span class='text-danger'>Interrupted!</span> Search cancelled.</span>";
     });
 
-
+    // "Update data" button actions
     $(btnUpdateData).click(function () {
         // Create a python-shell instance to update user data
         createPythonShell(
@@ -340,7 +266,7 @@ $(document).ready(function () {
         )
     });
 
-
+    // "Remove data" button actions
     $(btnRemoveData).click(function () {
         // Create a python-shell instance to remove user data
         createPythonShell(
