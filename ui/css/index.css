@@ -17,6 +17,8 @@ body {
     min-height: calc(100vh - 15px) !important;
     max-height: calc(100vh - 15px) !important; }
 
+.fs-smaller {
+    font-size: 0.95rem !important; }
 .fs-larger {
     font-size: 1.05rem !important; }
 
@@ -28,6 +30,9 @@ body {
     padding: 8px !important; }
 .p-20px {
     padding: 20px !important; }
+
+.c-pointer {
+    cursor: pointer !important; }
 
 .scroll-enabled {
     overflow: auto;
