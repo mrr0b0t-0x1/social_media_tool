@@ -373,7 +373,6 @@ def gather_page_info(username, home_soup, result_dir):
     # Dictionary to store result data
     facebook_page_info = {
         "about": {},
-        "posts": {},
         "photos": {},
         "videos": {},
         "events": {},
