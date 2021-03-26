@@ -41,9 +41,11 @@ def gather_info(username):
         time.sleep(2)
         reddit_user_info['about'] = requests.get(url=about_url, headers=headers).json()
 
-        # Store result data to file
-        with open(result_dir / (username + "-reddit.json"), "w+") as handle:
-            json.dump(reddit_user_info, handle, indent=2)
+        # Store result data to respective files
+        with open(result_dir / (username + "-about-reddit.json"), "w+") as handle:
+            json.dump(reddit_user_info['about'], handle, indent=2)
+        with open(result_dir / (username + "-overview-reddit.json"), "w+") as handle:
+            json.dump(reddit_user_info['overview'], handle, indent=2)
 
         # TODO: Remove this in final build
         # Print result data
