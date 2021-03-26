@@ -147,3 +147,6 @@ class DatabaseConnection(object):
 
                 if not self.check_user():
                     self.update_user()
+                else:
+                    self.remove_user()
+                    self.update_user()
