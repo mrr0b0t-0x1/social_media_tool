@@ -60,21 +60,27 @@
             </div>
             <div class="tab-pane fade" id="list-results" role="tabpanel" aria-labelledby="list-results-list">
               <div id="resultsDiv" class="row p-3" data-placeholder="hey">
-                <div id="noResults" class="col-12 text-center text-muted">
-                  <h4>Results will be displayed here</h4>
-                </div>
-                <div id="resultTabs" class="col-12 scroll-enabled d-none">
+<!--                <div id="noResults" class="col-12 text-center text-muted">-->
+<!--                  <h4>Results will be displayed here</h4>-->
+<!--                </div>-->
+<!--                <div id="resultTabs" class="col-12 scroll-enabled d-none">-->
+                <div id="resultTabs" class="col-12 scroll-enabled">
                   <div class="row">
                     <div id="result-menu" class="col-4 scroll-enabled">
                       <div id="user-resultTab" class="p-3">
                         <h4 class="mt-2 mb-2 text-center"></h4>
                       </div>
                       <div class="list-group br-10px" id="results-tab" role="tablist">
-                        <a class="list-group-item list-group-item-action pl-3 fs-larger d-none" id="list-facebook-list" data-toggle="list" href="#list-facebook" role="tab" aria-controls="facebook">Facebook</a>
-                        <a class="list-group-item list-group-item-action pl-3 fs-larger d-none" id="list-instagram-list" data-toggle="list" href="#list-instagram" role="tab" aria-controls="instagram">Instagram</a>
-                        <a class="list-group-item list-group-item-action pl-3 fs-larger d-none" id="list-twitter-list" data-toggle="list" href="#list-twitter" role="tab" aria-controls="twitter">Twitter</a>
-                        <a class="list-group-item list-group-item-action pl-3 fs-larger d-none" id="list-reddit-list" data-toggle="list" href="#list-reddit" role="tab" aria-controls="reddit">Reddit</a>
-                        <a class="list-group-item list-group-item-action pl-3 fs-larger d-none" id="list-linkedin-list" data-toggle="list" href="#list-linkedin" role="tab" aria-controls="linkedin">LinkedIn</a>
+<!--                        <a class="list-group-item list-group-item-action pl-3 fs-larger d-none" id="list-facebook-list" data-toggle="list" href="#list-facebook" role="tab" aria-controls="facebook">Facebook</a>-->
+<!--                        <a class="list-group-item list-group-item-action pl-3 fs-larger d-none" id="list-instagram-list" data-toggle="list" href="#list-instagram" role="tab" aria-controls="instagram">Instagram</a>-->
+<!--                        <a class="list-group-item list-group-item-action pl-3 fs-larger d-none" id="list-twitter-list" data-toggle="list" href="#list-twitter" role="tab" aria-controls="twitter">Twitter</a>-->
+<!--                        <a class="list-group-item list-group-item-action pl-3 fs-larger d-none" id="list-reddit-list" data-toggle="list" href="#list-reddit" role="tab" aria-controls="reddit">Reddit</a>-->
+<!--                        <a class="list-group-item list-group-item-action pl-3 fs-larger d-none" id="list-linkedin-list" data-toggle="list" href="#list-linkedin" role="tab" aria-controls="linkedin">LinkedIn</a>-->
+                        <a class="list-group-item list-group-item-action pl-3 fs-larger active" id="list-facebook-list" data-toggle="list" href="#list-facebook" role="tab" aria-controls="facebook">Facebook</a>
+                        <a class="list-group-item list-group-item-action pl-3 fs-larger" id="list-instagram-list" data-toggle="list" href="#list-instagram" role="tab" aria-controls="instagram">Instagram</a>
+                        <a class="list-group-item list-group-item-action pl-3 fs-larger" id="list-twitter-list" data-toggle="list" href="#list-twitter" role="tab" aria-controls="twitter">Twitter</a>
+                        <a class="list-group-item list-group-item-action pl-3 fs-larger" id="list-reddit-list" data-toggle="list" href="#list-reddit" role="tab" aria-controls="reddit">Reddit</a>
+<!--                        <a class="list-group-item list-group-item-action pl-3 fs-larger" id="list-linkedin-list" data-toggle="list" href="#list-linkedin" role="tab" aria-controls="linkedin">LinkedIn</a>-->
                       </div>
                       <div class="row mt-4">
                         <div class="col-6">
@@ -91,11 +97,74 @@
                     </div>
                     <div class="col-8">
                       <div class="tab-content" id="results-tabContent">
-                        <div class="tab-pane scroll-enabled fade d-none" id="list-facebook" role="tabpanel" aria-labelledby="list-facebook-list"></div>
-                        <div class="tab-pane scroll-enabled fade d-none" id="list-instagram" role="tabpanel" aria-labelledby="list-instagram-list"></div>
-                        <div class="tab-pane scroll-enabled fade d-none" id="list-twitter" role="tabpanel" aria-labelledby="list-twitter-list"></div>
-                        <div class="tab-pane scroll-enabled fade d-none" id="list-reddit" role="tabpanel" aria-labelledby="list-reddit-list"></div>
-                        <div class="tab-pane scroll-enabled fade d-none" id="list-linkedin" role="tabpanel" aria-labelledby="list-linkedin-list"></div>
+<!--                        <div class="tab-pane scroll-enabled fade d-none" id="list-facebook" role="tabpanel" aria-labelledby="list-facebook-list"></div>-->
+<!--                        <div class="tab-pane scroll-enabled fade d-none" id="list-instagram" role="tabpanel" aria-labelledby="list-instagram-list"></div>-->
+<!--                        <div class="tab-pane scroll-enabled fade d-none" id="list-twitter" role="tabpanel" aria-labelledby="list-twitter-list"></div>-->
+<!--                        <div class="tab-pane scroll-enabled fade d-none" id="list-reddit" role="tabpanel" aria-labelledby="list-reddit-list"></div>-->
+<!--                        <div class="tab-pane scroll-enabled fade d-none" id="list-linkedin" role="tabpanel" aria-labelledby="list-linkedin-list"></div>-->
+                        <div class="tab-pane br-10px fade show active" id="list-facebook" role="tabpanel" aria-labelledby="list-facebook-list">
+                          <div id="fb-results" class="row">
+                            <div class="col-12">
+                              <div class="list-group text-center" id="list-tab-fb" role="tablist" style="flex-direction: row;">
+                                <a class="list-group-item list-group-item-action fs-default mr-0 c-pointer active" id="list-about-fb-list" data-toggle="list" href="#list-about-fb" role="tab" aria-controls="about-fb">About</a>
+                                <a class="list-group-item list-group-item-action fs-default ml-0 c-pointer" id="list-posts-fb-list" data-toggle="list" href="#list-posts-fb" role="tab" aria-controls="posts-fb">Posts</a>
+                              </div>
+                            </div>
+                            <div class="col-12">
+                              <div class="tab-content" id="nav-tabContent-fb">
+                                <div class="tab-pane scroll-enabled fade show active" id="list-about-fb" role="tabpanel" aria-labelledby="list-about-fb-list"></div>
+                                <div class="tab-pane scroll-enabled fade" id="list-posts-fb" role="tabpanel" aria-labelledby="list-posts-fb-list"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="tab-pane br-10px fade show" id="list-instagram" role="tabpanel" aria-labelledby="list-instagram-list">
+                          <div id="instagram-results" class="row">
+                            <div class="col-12">
+                              <div class="list-group text-center" id="list-tab-instagram" role="tablist" style="flex-direction: row;">
+                                <a class="list-group-item list-group-item-action fs-default mr-0 c-pointer active" id="list-about-instagram-list" data-toggle="list" href="#list-about-instagram" role="tab" aria-controls="about-instagram">About</a>
+                              </div>
+                            </div>
+                            <div class="col-12">
+                              <div class="tab-content" id="nav-tabContent-instagram">
+                                <div class="tab-pane scroll-enabled fade show active" id="list-about-instagram" role="tabpanel" aria-labelledby="list-about-instagram-list"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="tab-pane br-10px fade show" id="list-twitter" role="tabpanel" aria-labelledby="list-twitter-list">
+                          <div id="twitter-results" class="row">
+                            <div class="col-12">
+                              <div class="list-group text-center" id="list-tab-twitter" role="tablist" style="flex-direction: row;">
+                                <a class="list-group-item list-group-item-action fs-default mr-0 c-pointer active" id="list-about-twitter-list" data-toggle="list" href="#list-about-twitter" role="tab" aria-controls="about-twitter">About</a>
+                                <a class="list-group-item list-group-item-action fs-default ml-0 c-pointer" id="list-timeline-twitter-list" data-toggle="list" href="#list-timeline-twitter" role="tab" aria-controls="timeline-twitter">Posts</a>
+                              </div>
+                            </div>
+                            <div class="col-12">
+                              <div class="tab-content" id="nav-tabContent-twitter">
+                                <div class="tab-pane scroll-enabled fade show active" id="list-about-twitter" role="tabpanel" aria-labelledby="list-about-twitter-list"></div>
+                                <div class="tab-pane scroll-enabled fade" id="list-timeline-twitter" role="tabpanel" aria-labelledby="list-timeline-twitter-list"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="tab-pane br-10px fade show" id="list-reddit" role="tabpanel" aria-labelledby="list-reddit-list">
+                          <div id="reddit-results" class="row">
+                            <div class="col-12">
+                              <div class="list-group text-center" id="list-tab-reddit" role="tablist" style="flex-direction: row;">
+                                <a class="list-group-item list-group-item-action fs-default mr-0 c-pointer active" id="list-about-reddit-list" data-toggle="list" href="#list-about-reddit" role="tab" aria-controls="about-reddit">About</a>
+                                <a class="list-group-item list-group-item-action fs-default ml-0 c-pointer" id="list-overview-reddit-list" data-toggle="list" href="#list-overview-reddit" role="tab" aria-controls="overview-reddit">Overview</a>
+                              </div>
+                            </div>
+                            <div class="col-12">
+                              <div class="tab-content" id="nav-tabContent-reddit">
+                                <div class="tab-pane scroll-enabled fade show active" id="list-about-reddit" role="tabpanel" aria-labelledby="list-about-reddit-list"></div>
+                                <div class="tab-pane scroll-enabled fade" id="list-overview-reddit" role="tabpanel" aria-labelledby="list-overview-reddit-list"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+<!--                        <div class="tab-pane br-10px fade show" id="list-linkedin" role="tabpanel" aria-labelledby="list-linkedin-list"></div>-->
                       </div>
                     </div>
                   </div>

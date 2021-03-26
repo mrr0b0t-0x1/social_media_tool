@@ -82,7 +82,7 @@ $(document).ready(function () {
             else if (message.DATA) {
                 liveResults.firstElementChild.innerHTML += "<span class='d-block'><span class='text-grey'>❯</span>" +
                     "&emsp;<span class='text-info'>Data Fetched!</span></span>"
-                parseDBData(message.DATA);
+                parseDBData(userName.value, message.DATA);
                 // Show appropriate divs and add border-radius to last div
                 $('#user-resultTab > h4')[0].innerText = userName.value;
                 $('#results-tab > a:first').addClass('active');
@@ -151,15 +151,16 @@ $(document).ready(function () {
     }
 
     // Show/Hide the "No results" div if results are empty/filled respectively
-    $('body').on('DOMSubtreeModified', resultsTabContent, function () {
-        if ($('#results-tabContent > div').text().trim() === '') {
-            $(resultTabs).addClass('d-none')
-            $('#noResults').removeClass('d-none')
-        } else {
-            $(resultTabs).removeClass('d-none')
-            $('#noResults').addClass('d-none')
-        }
-    });
+    // $('body').on('DOMSubtreeModified', resultsTabContent, function () {
+    //     if ($('#results-tabContent > div').text().trim() === '') {
+    //         $(resultTabs).addClass('d-none')
+    //         $('#noResults').removeClass('d-none')
+    //     } else {
+    //         $(resultTabs).removeClass('d-none')
+    //         $('#noResults').addClass('d-none')
+    //     }
+    // });
+    $('#list-results-list').click();
 
     // Re-index DB
     $(reindexDB).click( function () {
@@ -274,4 +275,15 @@ $(document).ready(function () {
             btnRemoveData
         )
     });
+
+
+    $("#results-tabContent > div[id^='list-'] .list-group").each( function (i, div) {
+        if ($(div).children().length === 1) {
+            $(div).children().css({
+                "border": "1px solid #ddd",
+                "border-radius": "10px"
+            });
+        }
+    });
+    // console.log($("#results-tabContent div > .list-group").children().length);
 });

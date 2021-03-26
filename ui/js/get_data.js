@@ -1,5 +1,7 @@
 const fs = require('fs');
 
+let username;
+
 const siteList = [
     'facebook',
     'instagram',
@@ -29,17 +31,7 @@ const tabAndPanes = {
         document.getElementById('list-linkedin-list'),
         document.getElementById('list-linkedin')
     ]
-}
-
-function readJSONFile(path, callback) {
-    try {
-        const data = fs.readFileSync(path);
-        const dataJSON = JSON.parse(data.toString());
-        return callback && callback(null, dataJSON);
-    } catch (err) {
-        return callback && callback(err);
-    }
-}
+};
 
 // function traverseDataTree(obj, site) {
 //     Object.keys(obj).forEach(function (key) {
@@ -67,40 +59,56 @@ function readJSONFile(path, callback) {
 //         }
 //     });
 // }
-function traverseDataTree(obj, site, key=null) {
+function traverseDataTree(obj, site, section, key=null) {
+    let sectionName = "list" + section.split(username)[1];
+    if (sectionName.includes("fb")) {
+        sectionName = sectionName.substring(0, sectionName.lastIndexOf("-"));
+    }
+
+    const sectionElement = document.getElementById(sectionName);
+
     if (typeof obj === 'object') {
         if (Array.isArray(obj)) {
             for (const [idx, val] of obj.entries()) {
                 if (typeof val === 'object')
-                    traverseDataTree(val, site);
+                    traverseDataTree(val, site, section);
                 else
                     if (idx !== obj.length - 1)
-                        tabAndPanes[site][1].innerHTML += val + ", ";
+                        sectionElement.innerHTML += val + ", ";
                     else
-                        tabAndPanes[site][1].innerHTML += val + "<br />";
+                        sectionElement.innerHTML += val + "<br />";
             }
         }
         else {
             Object.keys(obj).forEach( function (key) {
                 if (obj[key] !== null && obj[key].length !== 0) {
                     if (typeof obj[key] === 'object') {
-                        tabAndPanes[site][1].innerHTML += key + ": <br />";
-                        traverseDataTree(obj[key], site);
+                        sectionElement.innerHTML += key + ": <br />";
+                        traverseDataTree(obj[key], site, section);
                     }
                     else
-                        traverseDataTree(obj[key], site, key);
+                        traverseDataTree(obj[key], site, section, key);
                 }
             })
         }
     } else {
         if (key)
-            tabAndPanes[site][1].innerHTML += key + ": " + obj + "<br />";
+            sectionElement.innerHTML += key + ": " + obj + "<br />";
+    }
+}
+
+function readJSONFile(path, callback) {
+    try {
+        const data = fs.readFileSync(path);
+        const dataJSON = JSON.parse(data.toString());
+        return callback && callback(null, dataJSON);
+    } catch (err) {
+        return callback && callback(err);
     }
 }
 
 function traverseDBTree(obj, site) {
     Object.keys(obj).forEach(function (key) {
-        console.log(key);
         if (obj[key] !== null) {
             if (obj[key] !== null && typeof obj[key] === 'object')
                 traverseDBTree(obj[key], site);
@@ -110,7 +118,7 @@ function traverseDBTree(obj, site) {
                         if (err) {
                             console.log(err);
                         } else {
-                            traverseDataTree(data, site);
+                            traverseDataTree(data, site, key);
                         }
                     });
                 }
@@ -119,7 +127,9 @@ function traverseDBTree(obj, site) {
     });
 }
 
-function parseDBData(obj) {
+function parseDBData(uname, obj) {
+    username = uname;
+
     Object.keys(obj['sites_found']).forEach(function (site) {
         if (siteList.includes(site)) {
             // show those tabs whose sites are found

@@ -17,6 +17,8 @@ body {
     min-height: calc(100vh - 15px) !important;
     max-height: calc(100vh - 15px) !important; }
 
+.fs-default {
+    font-size: 1rem;}
 .fs-smaller {
     font-size: 0.95rem !important; }
 .fs-larger {
@@ -36,6 +38,7 @@ body {
 
 .scroll-enabled {
     overflow: auto;
+    overflow-x: hidden;
     height: 100px; }
 .scroll-enabled::-webkit-scrollbar {
     width: 13px; }
@@ -53,6 +56,8 @@ body {
 
 .btn {
     white-space: normal !important; }
+.list-group-item+.list-group-item.active {
+    margin-top: 0; }
 
 #userName {
     cursor: text; }
@@ -66,6 +71,8 @@ body {
     cursor: pointer !important; }
 #mainView > div > .list-group > .list-group-item {
     border: 1px solid #ddd; }
+#mainView > div > .list-group > .list-group-item.active {
+    border: 0; }
 #mainView > div > .list-group > #list-search-list {
     border-right: 0;
     border-bottom-right-radius: 0 !important;
@@ -89,7 +96,7 @@ body {
     padding-left: 30px;
     align-self: center; }
 #liveResults div {
-    border: 1px solid #808080;
+    border: 1px solid #ddd !important;
     padding-left: 10px !important;
     padding-right: 10px !important; }
 .text-grey {
@@ -113,6 +120,31 @@ body {
     border-radius: 10px 10px 0 0;
     padding-top: 30px !important;
     padding-bottom: 30px !important; }
+
+#results-tabContent div > .list-group > .list-group-item {
+    border: 1px solid #ddd; }
+#results-tabContent div > .list-group > a {
+    border-right: 0; }
+#results-tabContent div > .list-group > a:first-child {
+    border-radius: 10px 0 0 10px; }
+#results-tabContent div > .list-group > a:last-child {
+    border-left: 0;
+    border-top-width: 1px;
+    border-radius: 0 10px 10px 0; }
+#results-tabContent div > .list-group > .list-group-item.active {
+    background-color: #edf1f5;
+    color: inherit; }
+
+#fb-results .tab-pane,
+#instagram-results .tab-pane,
+#twitter-results .tab-pane,
+#reddit-results .tab-pane,
+#linkedin-results .tab-pane {
+    min-height: 49vh;
+    max-height: 49vh;
+    margin: 12px 8px 0;
+}
+
 
 .alert {
     padding: 4px 20px !important;
