@@ -3,6 +3,12 @@ from globals import ROOT_DIR
 import json
 from colorama import Fore
 
+def fix_filename(username, result_dir):
+    if (result_dir / (username + ".json")).exists():
+        (result_dir / (username + ".json")).rename(
+            result_dir / (username + "-about-instagram.json")
+        )
+
 def gather_info(username):
     """
     Gathers information about a user from his Instagram profile
@@ -34,6 +40,8 @@ def gather_info(username):
             "-m", "10",
             "-d", result_dir
         ], shell=False, stdout=subprocess.DEVNULL, check=True)
+
+        fix_filename(username, result_dir)
 
         # Read data from result file
         # with open(result_dir / (username + ".json"), "r") as about:
