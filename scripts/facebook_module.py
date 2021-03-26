@@ -357,7 +357,7 @@ def gather_user_info(username, home_soup, result_dir):
 
     # Store result data to file
     try:
-        with open(result_dir / (username + "-fb-user.json"), "w+") as handle:
+        with open(result_dir / (username + "-about-fb-user.json"), "w+") as handle:
             json.dump(facebook_user_info, handle, indent=2)
     except Exception as err:
         # print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
@@ -525,7 +525,7 @@ def gather_page_info(username, home_soup, result_dir):
 
         # Store the posts data to JSON file
         try:
-            with open(result_dir / (username + "-fb-page-posts.json"), 'w+', encoding='utf-8') as jsonf:
+            with open(result_dir / (username + "-posts-fb-page.json"), 'w+', encoding='utf-8') as jsonf:
                 jsonf.write(json.dumps(json_posts, indent=2, ))
         except Exception as e:
             # print(Fore.RED + type(e).__name__ + Fore.RESET + ": " + str(e))
@@ -826,7 +826,7 @@ def gather_page_info(username, home_soup, result_dir):
 
     # Store result data to file
     try:
-        with open(result_dir / (username + '-fb-page.json'), 'w+') as handle:
+        with open(result_dir / (username + '-about-fb-page.json'), 'w+') as handle:
             json.dump(facebook_page_info, handle, indent=2)
     except Exception as err:
         # print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
