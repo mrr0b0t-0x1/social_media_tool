@@ -1,6 +1,6 @@
 {
   "_default": {
-    "5": {
+    "1": {
       "name": "billgates",
       "sites_found": {
         "facebook": {
@@ -34,52 +34,6 @@
           "dir_url": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/billgates/reddit",
           "billgates-overview-reddit": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/billgates/reddit/billgates-overview-reddit.json",
           "billgates-about-reddit": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/billgates/reddit/billgates-about-reddit.json"
-        }
-      }
-    },
-    "6": {
-      "name": "Cristiano",
-      "sites_found": {
-        "facebook": {
-          "dir_url": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/facebook",
-          "Cristiano-fb-page": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/facebook/Cristiano-fb-page.json",
-          "Cristiano-fb-page-posts": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/facebook/Cristiano-fb-page-posts.json"
-        },
-        "instagram": {
-          "dir_url": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram",
-          "Cristiano-instagram": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/Cristiano-instagram.json",
-          "photos": {
-            "0": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/157789763_452281525887523_7088277658642984161_n.jpg",
-            "1": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/158263053_170595254739600_5645171750409346550_n.jpg",
-            "2": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/158114212_447247429804330_5312489788079832507_n.jpg",
-            "3": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/157344119_111031747682156_2011047967708628459_n.jpg",
-            "4": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/157030490_1059349817877891_2593632452332916299_n.jpg",
-            "5": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/156365999_2713710702225979_2844922145709456231_n.jpg",
-            "6": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/156679936_498237494506269_102487103841835011_n.jpg",
-            "7": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/155199312_826311391303006_4179920712321396947_n.jpg",
-            "8": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/155804261_3765289496851493_9140665665586032941_n.jpg",
-            "9": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/156420272_246074447168692_8642138255707327116_n.jpg",
-            "10": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/155336019_471662084009836_4018341836920415485_n.jpg",
-            "11": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/155900588_457128465333058_1752391941626378228_n.jpg",
-            "12": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/154020572_111661897612991_2758414258490905368_n.jpg",
-            "13": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/153651505_908388516647404_2630321676718222999_n.jpg",
-            "14": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/153523227_272345644253720_8546185719400670720_n.jpg",
-            "15": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/152815836_145602020651491_5886701651653075836_n.jpg",
-            "16": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/152945061_847621612464793_2473783437893484710_n.jpg",
-            "17": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/152706523_253714769680786_1786526678592211796_n.jpg",
-            "18": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/152794883_3611674748928291_2437462888007478305_n.jpg",
-            "19": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/152476444_131050315564346_3193808382373372093_n.jpg",
-            "20": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/67310557_649773548849427_4130659181743046656_n.jpg"
-          }
-        },
-        "twitter": {
-          "dir_url": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/twitter",
-          "Cristiano-about-twitter": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/twitter/Cristiano-about-twitter.json",
-          "Cristiano-timeline-twitter": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/twitter/Cristiano-timeline-twitter.json"
-        },
-        "reddit": {
-          "dir_url": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/reddit",
-          "Cristiano-reddit": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/reddit/Cristiano-reddit.json"
         }
       }
     }
