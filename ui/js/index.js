@@ -50,7 +50,7 @@ $(document).ready(function () {
     // Create a python-shell instance
     function createPythonShell(args, btn) {
 
-        let options = {
+        const options = {
             mode: 'json',
             pythonPath: '../venv1/bin/python',
             pythonOptions: ['-u'], // get print results in real-time
@@ -160,7 +160,7 @@ $(document).ready(function () {
     //         $('#noResults').addClass('d-none')
     //     }
     // });
-    $('#list-results-list').click();
+    // $('#list-results-list').click();
 
     // Re-index DB
     $(reindexDB).click( function () {

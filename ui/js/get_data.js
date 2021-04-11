@@ -1,4 +1,7 @@
 const fs = require('fs');
+const { PythonShell } = require('python-shell')
+
+const liveResults = document.getElementById('liveResults');
 
 let username;
 
@@ -59,7 +62,7 @@ const tabAndPanes = {
 //         }
 //     });
 // }
-function traverseDataTree(obj, site, section, key=null) {
+function getCreateSection(section) {
     let sectionName = "list" + section.split(username)[1];
     if (sectionName.includes("fb")) {
         sectionName = sectionName.substring(0, sectionName.lastIndexOf("-"));
@@ -67,34 +70,138 @@ function traverseDataTree(obj, site, section, key=null) {
 
     const sectionElement = document.getElementById(sectionName);
 
-    if (typeof obj === 'object') {
-        if (Array.isArray(obj)) {
-            for (const [idx, val] of obj.entries()) {
-                if (typeof val === 'object')
-                    traverseDataTree(val, site, section);
-                else
-                    if (idx !== obj.length - 1)
-                        sectionElement.innerHTML += val + ", ";
-                    else
-                        sectionElement.innerHTML += val + "<br />";
-            }
-        }
-        else {
-            Object.keys(obj).forEach( function (key) {
-                if (obj[key] !== null && obj[key].length !== 0) {
-                    if (typeof obj[key] === 'object') {
-                        sectionElement.innerHTML += key + ": <br />";
-                        traverseDataTree(obj[key], site, section);
-                    }
-                    else
-                        traverseDataTree(obj[key], site, section, key);
-                }
-            })
-        }
-    } else {
-        if (key)
-            sectionElement.innerHTML += key + ": " + obj + "<br />";
+    // if (!sectionElement.firstElementChild) {
+    //     sectionElement.innerHTML =  '<div id="' + sectionName + '" class="row h-100">' +
+    //                                 '   <div class="col-12">' +
+    //                                 '       <table class="table table-striped">' +
+    //                                 '       </table>' +
+    //                                 '   </div>' +
+    //                                 '</div>';
+    // }
+
+    return sectionElement;
+}
+
+function generateID(length) {
+    let result = [];
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for ( let i = 0; i < length; i++ ) {
+        result.push( characters.charAt( Math.floor(Math.random() * charactersLength) ) );
     }
+   return result.join('');
+}
+
+function createTableElement(element) {
+    const id = generateID(6);
+
+    element =   '<table id="' + id + '" class="table">' +
+                '   <tr></tr>' +
+                '</table>';
+
+    return element;
+}
+
+function JSONToHTMLTable(data, sectionElement) {
+    const options = {
+        mode: 'json',
+        pythonPath: '../venv1/bin/python',
+        pythonOptions: ['-u'], // get print results in real-time
+        scriptPath: '../scripts',
+        args: ['--json-to-html', JSON.stringify(data)]
+    };
+
+    let response = null;
+
+    // PythonShell.run('main.py', options, function (err, results) {
+    //     if (err) throw err;
+    //     return results;
+    //     // if (results[0]['ERROR']) {
+    //     //     liveResults.firstElementChild.innerHTML += "<span class='d-block'><span class='text-grey'>❯</span>" +
+    //     //         "&emsp;<span class='text-danger'>Error: " + results[0]['ERROR'] + "</span></span>"
+    //     //     console.log("Error: " + results[0]['ERROR']);
+    //     // }
+    //     // else if (results[0]['DATA']) {
+    //     //     response = results[0]['DATA'];
+    //     // }
+    // });
+
+
+    // return response;
+
+    const pyshell = new PythonShell('main.py', options);
+
+    pyshell.on('message', function (message) {
+        if (message.ERROR) {
+            liveResults.firstElementChild.innerHTML += "<span class='d-block'><span class='text-grey'>❯</span>" +
+                "&emsp;<span class='text-danger'>Error: " + message.ERROR + "</span></span>"
+            console.log("Error: " + message.ERROR);
+        }
+        else if (message.DATA) {
+            sectionElement.innerHTML = message.DATA;
+        }
+    });
+
+
+}
+
+function traverseDataTree(obj, site, section, table, key=null) {
+    const sectionElement = getCreateSection(section);
+    JSONToHTMLTable(obj, sectionElement);
+
+    // console.log(sectionElement);
+
+    // sectionElement.querySelector(".col-12").innerHTML = JSONToHTMLTable(obj);
+
+    // if (!table)
+    //     table = sectionElement.querySelector(".table.table-striped");
+    //
+    // if (typeof obj === 'object') {
+    //     if (Array.isArray(obj)) {
+    //         for (const [idx, val] of obj.entries()) {
+    //             if (typeof val === 'object') {
+    //                 traverseDataTree(val, site, section, table);
+    //             }
+    //             else {
+    //                 // console.log('inside array if else');
+    //                 // if (idx !== obj.length - 1) {
+    //                 //     sectionElement.querySelector(".col-12").innerHTML += val + ", ";
+    //                 // }
+    //                 // else {
+    //                 //     sectionElement.querySelector(".col-12").innerHTML += val + "<br />";
+    //                 // }
+    //                 if (!table.firstElementChild)
+    //                     table.innerHTML += '<tr></tr>';
+    //                 else
+    //                     table.firstElementChild.innerHTML += '<td>' + val + '</td>';
+    //             }
+    //         }
+    //     }
+    //     else {
+    //         Object.keys(obj).forEach( function (key) {
+    //             if (obj[key] !== null && obj[key].length !== 0) {
+    //                 if (typeof obj[key] === 'object') {
+    //                     // sectionElement.querySelector(".col-12").innerHTML += key + ": <br />";
+    //                     let childTable = createTableElement();
+    //                     table.innerHTML +=  '<tr>' +
+    //                                         '   <td>' + key + '</td>' +
+    //                                         '   <td>' + childTable + '</td>' +
+    //                                         '</tr>';
+    //                     traverseDataTree(obj[key], site, section, childTable);
+    //                 }
+    //                 else
+    //                     traverseDataTree(obj[key], site, section, table, key);
+    //             }
+    //         })
+    //     }
+    // } else {
+    //     if (key)
+    //         // sectionElement.querySelector(".col-12").innerHTML += key + ": " + obj + "<br />";
+    //         table.innerHTML +=  '<tr>' +
+    //                             '   <td>' + key + '</td>' +
+    //                             '   <td>' + obj + '</td>' +
+    //                             '</tr>';
+    // }
 }
 
 function readJSONFile(path, callback) {
@@ -118,7 +225,7 @@ function traverseDBTree(obj, site) {
                         if (err) {
                             console.log(err);
                         } else {
-                            traverseDataTree(data, site, key);
+                            traverseDataTree(data, site, key, null);
                         }
                     });
                 }
