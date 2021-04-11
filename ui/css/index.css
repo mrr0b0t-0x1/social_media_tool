@@ -146,14 +146,16 @@ body {
     overflow-x: scroll; }
 
 #results-tabContent table {
-    white-space: normal; }
+    white-space: normal;
+    border-collapse: collapse; }
 #results-tabContent table tr,
 #results-tabContent table td {
     white-space: normal;
     overflow: hidden;
     word-break: break-word;
     text-overflow: ellipsis; }
-
+#results-tabContent table td {
+    padding: 0.4rem !important; }
 
 .alert {
     padding: 4px 20px !important;
