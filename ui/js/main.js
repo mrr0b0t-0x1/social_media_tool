@@ -11,9 +11,9 @@ let win;
 function createWindow () {
 
   win = new BrowserWindow({
-    width: 1024,
+    width: 1240,
     height: 768,
-    minWidth: 1024,
+    minWidth: 1240,
     minHeight: 768
   })
 
