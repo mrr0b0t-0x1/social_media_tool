@@ -3,7 +3,8 @@ sys.path.append("..")
 
 from globals import ROOT_DIR
 from scripts.timer_module import Timer
-from scripts import sherlock_module, reddit_module, instagram_module, twitter_module, facebook_module, validate_username
+from scripts import sherlock_module, reddit_module, instagram_module, \
+    twitter_module, facebook_module, validate_username, json_to_html_table
 from scripts import database
 import multiprocessing
 from colorama import Fore
@@ -20,7 +21,7 @@ def make_dirs(sites):
                 result_dir.mkdir(parents=True, exist_ok=True)
             except Exception as e:
                 # print(Fore.RED + type(e).__name__ + Fore.RESET + ": " + str(e))
-                print(json.dumps({type(e).__name__: str(e)}))
+                print(json.dumps({"ERROR": str(e)}))
 
 
 # Execute respective site modules
@@ -44,59 +45,87 @@ def execute_module(site):
 
 # Main
 if __name__ == '__main__':
-    # data = sys.stdin.readlines()
-    # Get username as input
-    username = str(sys.argv[1])
-    # username = str(json.loads(data[0]))
 
-    # Validate the username
-    result = validate_username.validate(username)
+    # Search or update data
+    if sys.argv[1] == '--username':
+        # Get username as input
+        username = str(sys.argv[2])
 
-    if result == True:
+        result = validate_username.validate(username)
 
-        # Timer
-        t = Timer()
-        # Start timer
-        t.start()
+        if result == True:
 
-        # Initialize database connection
-        with database.DatabaseConnection(username) as db:
+            # Timer
+            t = Timer()
+            # Start timer
+            t.start()
 
-            if not db.check_user():
-                # print(json.dumps(Fore.RED + "ERROR" + ": " + Fore.RESET + username + " not in DB"))
-                print(json.dumps({"ERROR": username + " not in DB"}))
+            # Initialize database connection
+            with database.DatabaseConnection(username) as db:
 
-                # Get the list of sites on which user exists
-                # sites_found = sherlock_module.check_username(username)
-                # # sites_found = ['Twitter', 'Instagram', 'Reddit']    # debug
-                #
-                # # Make respective module directories
-                # make_dirs(sites_found)
-                #
-                # # If sites found, execute respective modules concurrently
-                # if sites_found:
-                #     try:
-                #         with multiprocessing.Pool() as pool:
-                #             pool.map(execute_module, sites_found)
-                #
-                #         db.update_user()
-                #     except Exception as err:
-                #         print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
-                # else:
-                #     print('\nUsername not found on any of the social media websites\n')
+                if not db.check_user():
+                    # print(json.dumps(Fore.RED + "ERROR" + ": " + Fore.RESET + username + " not in DB"))
+                    print(json.dumps({"INFO": username + " does not exist in local database!"}))
 
-            else:
-                # print(json.dumps(Fore.RED + "ERROR" + ": " + Fore.RESET + username + " in DB"))
-                print(json.dumps({"ERROR": username + " in DB"}))
+                    # Get the list of sites on which user exists
+                    sites_found = sherlock_module.check_username(username)
+                    # sites_found = ['Twitter', 'Instagram', 'Reddit']    # debug
 
-                print(json.dumps({"DATA": db.get_data()}))
+                    # Make respective module directories
+                    make_dirs(sites_found)
 
-        # with database.DatabaseConnection('') as db:
-        #     db.reindex_db()
+                    # If sites found, execute respective modules concurrently
+                    if sites_found:
+                        try:
+                            with multiprocessing.Pool() as pool:
+                                pool.map(execute_module, sites_found)
 
-        # Stop timer
-        print(json.dumps({"ELAPSED_TIME": t.stop()}))
+                            # Update user data in DB
+                            db.update_user()
 
-    else:
-        # print(json.dumps(Fore.RED + "ERROR" + Fore.RESET + ": " + result))
-        print(json.dumps({"ERROR": result}))
+                            # Get data from DB
+                            print(json.dumps({"DATA": db.get_data()}))
+
+                        except Exception as err:
+                            # print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
+                            print(json.dumps({"ERROR": str(err)}))
+
+                    else:
+                        print(json.dumps({"ERROR": "Username not found on any of the social media websites."}))
+
+                else:
+                    # print(json.dumps(Fore.RED + "ERROR" + ": " + Fore.RESET + username + " in DB"))
+                    print(json.dumps({"INFO": username + " exists in local database!"}))
+
+                    # Get data from DB
+                    print(json.dumps({"DATA": db.get_data()}))
+
+            # Stop timer
+            print(json.dumps({"ELAPSED_TIME": t.stop()}))
+
+        else:
+            # print(json.dumps(Fore.RED + "ERROR" + Fore.RESET + ": " + result))
+            print(json.dumps({"ERROR": str(result)}))
+
+    # Convert JSON data to HTML Table format
+    elif sys.argv[1] == '--json-to-html':
+        data = json.loads(sys.argv[2])
+        try:
+            print(json.dumps({"DATA": json_to_html_table.convert(data)}))
+            # print(json_to_html_table.convert(data))
+        except Exception as err:
+            print(json.dumps({"ERROR": str(err)}))
+            # print(str(err))
+
+    # Remove Data
+    elif sys.argv[1] == '--remove-data':
+        username = str(sys.argv[2])
+        print(json.dumps({"INFO": str(username) + ' remove-db elif block'}))
+
+    # Re-index DB
+    elif sys.argv[1] == '--reindex-db':
+        try:
+            with database.DatabaseConnection('') as db:
+                db.reindex_db()
+        except Exception as e:
+            print(json.dumps({"ERROR": str(e)}))
