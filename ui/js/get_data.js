@@ -1,7 +1,11 @@
+const path = require('path');
 const fs = require('fs');
-const { PythonShell } = require('python-shell')
+const { PythonShell } = require('python-shell');
 
 const liveResults = document.getElementById('liveResults');
+
+// Import the export_data module to perform export operations
+const { exportData } = require( path.resolve(__dirname, './export_data.js') );
 
 let username;
 
@@ -36,6 +40,8 @@ const tabAndPanes = {
     ]
 };
 
+let sectionList = [];
+
 // function traverseDataTree(obj, site) {
 //     Object.keys(obj).forEach(function (key) {
 //         // console.log(key);
@@ -68,16 +74,9 @@ function getCreateSection(section) {
         sectionName = sectionName.substring(0, sectionName.lastIndexOf("-"));
     }
 
-    const sectionElement = document.getElementById(sectionName);
+    const sectionElement =  document.getElementById(sectionName);
 
-    // if (!sectionElement.firstElementChild) {
-    //     sectionElement.innerHTML =  '<div id="' + sectionName + '" class="row h-100">' +
-    //                                 '   <div class="col-12">' +
-    //                                 '       <table class="table table-striped">' +
-    //                                 '       </table>' +
-    //                                 '   </div>' +
-    //                                 '</div>';
-    // }
+    sectionList.push(sectionElement);
 
     return sectionElement;
 }
@@ -89,17 +88,7 @@ function generateID(length) {
     for ( let i = 0; i < length; i++ ) {
         result.push( characters.charAt( Math.floor(Math.random() * charactersLength) ) );
     }
-   return result.join('');
-}
-
-function createTableElement(element) {
-    const id = generateID(6);
-
-    element =   '<table id="' + id + '" class="table">' +
-                '   <tr></tr>' +
-                '</table>';
-
-    return element;
+    return result.join('');
 }
 
 function JSONToHTMLTable(data, sectionElement) {
@@ -111,24 +100,6 @@ function JSONToHTMLTable(data, sectionElement) {
         args: ['--json-to-html', JSON.stringify(data)]
     };
 
-    let response = null;
-
-    // PythonShell.run('main.py', options, function (err, results) {
-    //     if (err) throw err;
-    //     return results;
-    //     // if (results[0]['ERROR']) {
-    //     //     liveResults.firstElementChild.innerHTML += "<span class='d-block'><span class='text-grey'>❯</span>" +
-    //     //         "&emsp;<span class='text-danger'>Error: " + results[0]['ERROR'] + "</span></span>"
-    //     //     console.log("Error: " + results[0]['ERROR']);
-    //     // }
-    //     // else if (results[0]['DATA']) {
-    //     //     response = results[0]['DATA'];
-    //     // }
-    // });
-
-
-    // return response;
-
     const pyshell = new PythonShell('main.py', options);
 
     pyshell.on('message', function (message) {
@@ -139,19 +110,15 @@ function JSONToHTMLTable(data, sectionElement) {
         }
         else if (message.DATA) {
             sectionElement.innerHTML = message.DATA;
+
+            sectionElement.firstElementChild.id = "root" + generateID(4);
         }
     });
-
-
 }
 
 function traverseDataTree(obj, site, section, table, key=null) {
     const sectionElement = getCreateSection(section);
     JSONToHTMLTable(obj, sectionElement);
-
-    // console.log(sectionElement);
-
-    // sectionElement.querySelector(".col-12").innerHTML = JSONToHTMLTable(obj);
 
     // if (!table)
     //     table = sectionElement.querySelector(".table.table-striped");
@@ -248,8 +215,14 @@ function parseDBData(uname, obj) {
     });
 }
 
+function exportTables() {
+    exportData(username, sectionList);
+}
+
+// Export modules
 module.exports = {
     parseDBData: parseDBData,
     siteList: siteList,
-    tabAndPanes: tabAndPanes
+    tabAndPanes: tabAndPanes,
+    exportTables: exportTables
 }

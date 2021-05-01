@@ -14,9 +14,10 @@ $(document).ready(function () {
     const resultsTabContent = document.getElementById('results-tabContent');
     const btnUpdateData = document.getElementById('btnUpdateUserData');
     const btnRemoveData = document.getElementById('btnRemoveUserFromDB');
+    const btnExportData = document.getElementById("btnExportData");
 
     // Import the get_data module to perform DB operations
-    const { parseDBData, siteList, tabAndPanes } = require( path.resolve(__dirname, './js/get_data.js') );
+    const { parseDBData, siteList, tabAndPanes, exportTables } = require( path.resolve(__dirname, './js/get_data.js') );
 
     // Toggle the live results box when "Search" or "New Search" button is clicked
     function toggleLiveResults() { $('#searchBox, #liveResults').toggleClass(
@@ -275,6 +276,11 @@ $(document).ready(function () {
             btnRemoveData
         )
     });
+
+    // "Export" button actions
+    $(btnExportData).click( function () {
+        exportTables();
+    })
 
 
     $("#results-tabContent > div[id^='list-'] .list-group").each( function (i, div) {

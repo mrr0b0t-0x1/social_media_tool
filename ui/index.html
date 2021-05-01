@@ -83,14 +83,19 @@
 <!--                        <a class="list-group-item list-group-item-action pl-3 fs-larger" id="list-linkedin-list" data-toggle="list" href="#list-linkedin" role="tab" aria-controls="linkedin">LinkedIn</a>-->
                       </div>
                       <div class="row mt-4">
-                        <div class="col-6">
+                        <div class="col-6 mb-3">
                           <button id="btnUpdateUserData" class="btn btn-outline-primary w-100 br-7px p-8px btn-large h-100 border-primary fs-larger fade show">
                             Update Data
                           </button>
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 mb-3">
                           <button id="btnRemoveUserFromDB" class="btn btn-outline-danger w-100 br-7px p-8px btn-large h-100 border-danger fs-larger fade show">
                             Remove Data
+                          </button>
+                        </div>
+                        <div class="col-6 mb-3">
+                          <button id="btnExportData" class="btn btn-outline-dark w-100 br-7px p-8px btn-large h-100 border-dark fs-larger fade show">
+                            Export
                           </button>
                         </div>
                       </div>
@@ -181,68 +186,9 @@
 
     <!-- Scripts -->
     <script type="text/javascript"> window.$ = window.jQuery = require('jquery'); </script>
-    <script type="text/javascript"> require('@popperjs/core') </script>
+    <script type="text/javascript"> require('popper.js') </script>
     <script type="text/javascript"> require('bootstrap') </script>
     <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript">
-      // $(document).ready(function () {
-      //   const userName = document.getElementById('userName')
-      //   const usernameForm = document.getElementById('usernameForm')
-      //   const liveResults = document.getElementById('liveResults')
-      //   const btnSearch = document.getElementById('btnSearch')
-      //   const btnSearchAgain = document.getElementById('btnSearchAgain')
-      //   const btnCancel = document.getElementById('btnCancel')
-      //
-      //   function toggleLiveResults() { $('#searchBox, #liveResults').toggleClass(
-      //             'offset-1 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3').toggleClass(
-      //                     'col-sm-6 col-md-6 col-lg-6');
-      //   }
-      //
-      //   $(btnSearch).click(function () {
-      //     if ($(liveResults).hasClass('hide')) {
-      //
-      //       setTimeout(function() {
-      //         $(liveResults).removeClass('hide').addClass('show');
-      //         $(btnSearch).addClass('d-none').attr('disabled', true);
-      //         // $(btnSearchAgain).attr('disabled', true);
-      //         $('#btnSearchAgain, #btnCancel').removeClass('hide').addClass('show');
-      //       }, 500);
-      //
-      //       toggleLiveResults();
-      //       $(liveResults).removeClass('d-none');
-      //       $(userName).attr('disabled', true);
-      //       $(btnSearch).removeClass('show').addClass('hide');
-      //       $('#btnSearchAgain, #btnCancel').removeClass('d-none');
-      //
-      //       liveResults.firstElementChild.innerHTML += "<span class='d-block'>>&emsp;<span class='text-info'>Starting search...</span></span>";
-      //     }
-      //   });
-      //
-      //   $(btnSearchAgain).click(function () {
-      //     if ($(liveResults).hasClass('show')) {
-      //
-      //       setTimeout(function() {
-      //         toggleLiveResults();
-      //         $(liveResults).addClass('d-none');
-      //         $(userName).attr('disabled', false);
-      //         $(btnSearch).removeClass('d-none hide').addClass('show');
-      //         $('#btnSearchAgain, #btnCancel').addClass('d-none');
-      //
-      //         $(usernameForm)[0].reset();
-      //         $(userName).focus();
-      //         liveResults.firstElementChild.innerHTML = '';
-      //       }, 500);
-      //
-      //       $(liveResults).removeClass('show').addClass('hide');
-      //       $(btnSearch).attr('disabled', false);
-      //       $('#btnSearchAgain, #btnCancel').removeClass('show').addClass('hide');
-      //     }
-      //   });
-      //
-      //   $(btnCancel).click(function () {
-      //
-      //   });
-      // });
-    </script>
+<!--    <script type="text/javascript"></script>-->
   </body>
 </html>

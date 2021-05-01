@@ -148,12 +148,19 @@ body {
 #results-tabContent table {
     white-space: normal;
     border-collapse: collapse; }
-#results-tabContent table tr,
 #results-tabContent table td {
     white-space: normal;
     overflow: hidden;
     word-break: break-word;
-    text-overflow: ellipsis; }
+    -webkit-hyphens: auto; /* iOS 4.2+ */
+    -moz-hyphens: auto; /* Firefox 5+ */
+    -ms-hyphens: auto; /* IE 10+ */
+    hyphens: auto;
+}
+#results-tabContent table th {
+    white-space: nowrap;
+    overflow: hidden;
+}
 #results-tabContent table td {
     padding: 0.4rem !important; }
 

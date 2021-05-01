@@ -1,0 +1,20 @@
+#results-tabContent table[id^='root'] {
+    max-width: 1200px !important;
+}
+#results-tabContent table {
+    /*max-width: 1200px !important;*/
+    /*width: 40% !important;*/
+    border-collapse: collapse; }
+#results-tabContent table th {
+    white-space: nowrap;
+    overflow: hidden;
+    color: red;
+    max-width: 300px !important;
+}
+#results-tabContent table td {
+    white-space: normal;
+    overflow: hidden;
+    /*word-break: break-all;*/
+    padding: 0.4rem !important;
+    max-width: 300px !important;
+}
