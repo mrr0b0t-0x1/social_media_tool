@@ -875,7 +875,7 @@ def gather_info(username):
 
             # If the profile or page is not verified
             else:
-                print(json.dumps({"ERROR": username + " is not verified, unable to fetch data"}))
+                print(json.dumps({"ERROR": username + " is not verified on Facebook, unable to fetch data"}))
 
         else:
             print(json.dumps({"ERROR": "There is no facebook profile or page by this name. Please try again."}))
