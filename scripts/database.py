@@ -9,6 +9,13 @@ class DatabaseConnection(object):
 
     db, user, username, result_dir, site_dirs = None, None, None, None, None
 
+    profile_urls = {
+        'twitter': 'https://mobile.twitter.com/',
+        'facebook': 'https://www.facebook.com/',
+        'instagram': 'https://www.instagram.com/',
+        'reddit': 'https://www.reddit.com/user/'
+    }
+
     def __init__(self, username):
         # Make a database connection and return it
         self.db = TinyDB(ROOT_DIR / "scripts" / "database" / "db.json", indent=2, storage=CachingMiddleware(JSONStorage))
@@ -62,6 +69,12 @@ class DatabaseConnection(object):
                     data_files = site.glob('*.json')
                     for file in data_files:
                         filename = str(file).split('/')[-1].split('.json')[0]
+
+                        self.db.update(set_nested([
+                            'sites_found',
+                            site_name,
+                            'profile_url'
+                        ], self.profile_urls[site_name] + self.username), doc_ids=[doc_id])
 
                         self.db.update(set_nested([
                             'sites_found',
