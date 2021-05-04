@@ -83,7 +83,7 @@ def gather_info(username):
 
         # Check if user is verified
         if (result_dir / (username + "-about-twitter.json")).exists():
-            with open(result_dir / (username + "-about-twitter.json")) as handle:
+            with open(result_dir / (username + "-about-twitter.json"), "r") as handle:
                 about = json.load(handle)
 
                 # If not verified, remove the fetched file and exit
