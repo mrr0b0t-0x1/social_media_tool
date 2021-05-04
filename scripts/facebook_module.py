@@ -840,30 +840,42 @@ def gather_info(username):
 
     try:
         # Fetch the home page
-        home_page = req_session.get('https://www.facebook.com/' + username, headers=headers)
+        home_page = req_html_session.get('https://www.facebook.com/' + username, headers=headers)
+
+        # Let the page render
+        home_page.html.render(sleep=2, timeout=30)
+
         # Create the BeautifulSoup object
-        home_soup = bs4.BeautifulSoup(home_page.text, 'html.parser')
+        home_soup = bs4.BeautifulSoup(home_page.html.html, 'html.parser')
 
         # Check if it is a FB profile or FB page
         if home_soup.find('meta', property='al:android:url') is not None:
             # Target directory
             result_dir = ROOT_DIR / "scripts" / "results" / username / "facebook"
 
-            # If its a FB profile
-            if 'fb://profile/' in home_soup.find('meta', property='al:android:url')['content']:
-                gather_user_info(username, home_soup, result_dir)
+            # Check if the profile or page is verified
+            if home_soup.find('a', class_='_56_f _5dzy _5d-1 _3twv _33v-') is not None\
+                    or home_soup.find('i', class_='sp_6GzVah_U6-w sx_1a3bfc') is not None:
 
-                print(json.dumps({"INFO": "Facebook data fetched"}))
+                # If its a FB profile
+                if 'fb://profile/' in home_soup.find('meta', property='al:android:url')['content']:
+                    gather_user_info(username, home_soup, result_dir)
 
-            # If its a FB page
-            elif 'fb://page/' in home_soup.find('meta', property='al:android:url')['content']:
-                gather_page_info(username, home_soup, result_dir)
+                    print(json.dumps({"INFO": "Facebook data fetched"}))
 
-                print(json.dumps({"INFO": "Facebook data fetched"}))
+                # If its a FB page
+                elif 'fb://page/' in home_soup.find('meta', property='al:android:url')['content']:
+                    gather_page_info(username, home_soup, result_dir)
 
-            # If its not a FB profile or page
+                    print(json.dumps({"INFO": "Facebook data fetched"}))
+
+                # If its not a FB profile or page
+                else:
+                    print(json.dumps({"ERROR": "This doesn't seem to be a facebook profile or page. Please try again."}))
+
+            # If the profile or page is not verified
             else:
-                print(json.dumps({"ERROR": "This doesn't seem to be a facebook profile or page. Please try again."}))
+                print(json.dumps({"ERROR": username + " is not verified, unable to fetch data"}))
 
         else:
             print(json.dumps({"ERROR": "There is no facebook profile or page by this name. Please try again."}))
