@@ -19,7 +19,7 @@ facebook-scraper==0.2.19
         zipp==3.4.0
       pyee==8.1.0
       tqdm==4.56.0
-      urllib3==1.25.10
+      urllib3==1.25.11
       websockets==8.1
     pyquery==1.4.3
       cssselect==1.1.0
