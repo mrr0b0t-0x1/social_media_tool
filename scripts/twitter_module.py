@@ -125,7 +125,7 @@ def gather_info(username):
         #         temp_dict = json.loads(line)
         #         twitter_user_info.append(temp_dict)
 
-        # print(json.dumps({"INFO": "Twitter data fetched"}))
+        print(json.dumps({"INFO": "Twitter data fetched"}))
 
     except Exception as err:
         # print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
