@@ -13,6 +13,15 @@ body {
     word-wrap: break-word !important;
     word-break: break-word !important; }
 
+table tr,
+table th,
+table td,
+#liveResults span {
+    -webkit-user-select: text;
+    user-select: text;
+    cursor: text;
+}
+
 .container {
     min-height: calc(100vh - 15px) !important;
     max-height: calc(100vh - 15px) !important; }
