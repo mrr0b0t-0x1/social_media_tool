@@ -373,8 +373,8 @@ def gather_page_info(username, home_soup, result_dir):
     # Dictionary to store result data
     facebook_page_info = {
         "about": {},
-        "photos": {},
-        "videos": {},
+        # "photos": {},
+        # "videos": {},
         "events": {},
         "community": {}
     }
@@ -808,13 +808,13 @@ def gather_page_info(username, home_soup, result_dir):
 
     time.sleep(round(uniform(5, 7), 1))
 
-    get_page_photos()
-
-    time.sleep(round(uniform(5, 7), 1))
-
-    get_page_videos()
-
-    time.sleep(round(uniform(5, 7), 1))
+    # get_page_photos()
+    #
+    # time.sleep(round(uniform(5, 7), 1))
+    #
+    # get_page_videos()
+    #
+    # time.sleep(round(uniform(5, 7), 1))
 
     get_page_events()
 
