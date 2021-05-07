@@ -91,6 +91,7 @@ def gather_info(username):
                     print(json.dumps({"ERROR": username + " is not verified on Twitter, unable to fetch data"}))
 
                     (result_dir / (username + "-about-twitter.json")).unlink()
+                    return
 
                 else:
                     # Sleep for 2 seconds to avoid getting banned
