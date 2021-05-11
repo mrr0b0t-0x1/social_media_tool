@@ -7,7 +7,8 @@ const liveResults = document.getElementById('liveResults');
 // Import the export_data module to perform export operations
 const { exportData } = require( path.resolve(__dirname, './export_data.js') );
 
-let username;
+let username= null;
+let profile_urls = {};
 
 const siteList = [
     'facebook',
@@ -91,7 +92,7 @@ function generateID(length) {
     return result.join('');
 }
 
-function JSONToHTMLTable(data, sectionElement) {
+function JSONToHTMLTable(data, site, sectionElement) {
     const options = {
         mode: 'json',
         pythonPath: '../venv1/bin/python',
@@ -112,13 +113,18 @@ function JSONToHTMLTable(data, sectionElement) {
             sectionElement.innerHTML = message.DATA;
 
             sectionElement.firstElementChild.id = "root" + generateID(4);
+
+            let tr = document.createElement('tr')
+            tr.innerHTML = '<th>Profile URL</th><td>' + profile_urls[site] + '</td>';
+
+            sectionElement.firstElementChild.firstElementChild.prepend( tr );
         }
     });
 }
 
-function traverseDataTree(obj, site, section, table, key=null) {
+function traverseDataTree(obj, site, section) {
     const sectionElement = getCreateSection(section);
-    JSONToHTMLTable(obj, sectionElement);
+    JSONToHTMLTable(obj, site, sectionElement);
 
     // if (!table)
     //     table = sectionElement.querySelector(".table.table-striped");
@@ -187,12 +193,15 @@ function traverseDBTree(obj, site) {
             if (obj[key] !== null && typeof obj[key] === 'object')
                 traverseDBTree(obj[key], site);
             else {
+                if (key === 'profile_url') {
+                    profile_urls[site] = obj[key];
+                }
                 if (obj[key].split('.').pop() === 'json') {
                     readJSONFile(obj[key], (err, data) => {
                         if (err) {
                             console.log(err);
                         } else {
-                            traverseDataTree(data, site, key, null);
+                            traverseDataTree(data, site, key);
                         }
                     });
                 }

@@ -3,6 +3,8 @@
     font-family: "Android-Euclid";
     font-size: 1rem; }
 
+html {
+    height: 100% !important; }
 body {
     font-family: Android-Euclid, sans-serif;
     font-size: 16px !important;
@@ -23,8 +25,20 @@ table td,
 }
 
 .container {
-    min-height: calc(100vh - 15px) !important;
-    max-height: calc(100vh - 15px) !important; }
+    /*min-height: calc(100vh - 15px) !important;*/
+    min-height: calc(100vh - 2vh) !important;
+    /*max-height: calc(100vh - 15px) !important; }*/
+    max-height: calc(100vh - 2vh) !important; }
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1300px !important;
+    }
+}
+@media (max-width: 1400px) {
+    .container {
+        max-width: calc(100vw - 100px) !important;
+    }
+}
 
 .fs-default {
     font-size: 1rem;}
@@ -72,8 +86,11 @@ table td,
     cursor: text; }
 
 #mainView {
-    min-height: calc(100vh - 210px) !important;
-    max-height: calc(100vh - 210px) !important; }
+    min-height: calc(100vh - 250px) !important;
+    max-height: calc(100vh - 250px) !important; }
+@media (min-height: 992px) {
+    #mainTab {
+        height: 0; }}
 #mainView > div > .list-group {
     flex-direction: row; }
 #mainView > div > .list-group * {
@@ -90,7 +107,12 @@ table td,
     border-left: 0;
     border-bottom-left-radius: 0 !important;
     border-top-left-radius: 0 !important; }
+#search-tab {
+    max-width: 1000px;
+}
 
+#search-tabContent {
+    min-height: 100% !important; }
 #searchDiv {
     align-items: center; }
 #searchBox, #liveResults {
@@ -113,13 +135,17 @@ table td,
     font-size: 0.6rem;
     vertical-align: text-top; }
 
+#list-results {
+    height: calc(100vh - 37vh); }
 #resultsDiv {
     word-wrap: break-word; }
 #resultTabs,
 #result-menu,
 #results-tabContent > .tab-pane {
-    min-height: calc(100vh - 320px) !important;
-    max-height: calc(100vh - 320px) !important; }
+    /*min-height: calc(100vh - 280px) !important;*/
+    min-height: calc(100vh - 36vh) !important;
+    /*max-height: calc(100vh - 280px) !important; }*/
+    max-height: calc(100vh - 36vh) !important; }
 #results-tab > a {
     cursor: pointer; !important; }
 #results-tab > a:first-child {
@@ -144,15 +170,29 @@ table td,
     background-color: #edf1f5;
     color: inherit; }
 
+#list-tab-fb,
+#list-tab-instagram,
+#list-tab-twitter,
+#list-tab-reddit {
+    max-width: 805px !important; }
 #fb-results .tab-pane,
 #instagram-results .tab-pane,
 #twitter-results .tab-pane,
 #reddit-results .tab-pane,
 #linkedin-results .tab-pane {
-    min-height: 49vh;
-    max-height: 49vh;
+    min-height: calc(100vh - 44vh) !important;
+    max-height: calc(100vh - 44vh) !important;
     margin: 12px 8px 0;
     overflow-x: scroll; }
+#nav-tabContent-fb,
+#nav-tabContent-instagram,
+#nav-tabContent-twitter,
+#nav-tabContent-reddit {
+    /*min-height: calc(100vh - 370px);*/
+    min-height: calc(100vh - 42vh);
+    /*max-height: calc(100vh - 370px);*/
+    max-height: calc(100vh - 42vh);
+    overflow-x: auto; }
 
 #results-tabContent table {
     white-space: normal;
@@ -173,6 +213,12 @@ table td,
 #results-tabContent table td {
     padding: 0.4rem !important; }
 
+@media (min-height: 992px) {
+    #alertsView {
+        padding-top: 0; }}
+@media (max-height: 991px) {
+    #alertsView {
+        padding-top: 40px; }}
 .alert {
     padding: 4px 20px !important;
     display: inline-block; }

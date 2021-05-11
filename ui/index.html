@@ -23,50 +23,59 @@
         </div>
       </div>
       <div id="mainView" class="row">
-        <div class="col-12">
-          <div class="list-group text-center p-2" id="search-tab" role="tablist">
-            <a class="list-group-item list-group-item-action br-10px active w-50 mr-0 fs-larger" id="list-search-list" data-toggle="list" href="#list-search" role="tab" aria-controls="search"><h4>Search</h4></a>
-            <a class="list-group-item list-group-item-action br-10px w-50 ml-0 fs-larger" id="list-results-list" data-toggle="list" href="#list-results" role="tab" aria-controls="profile"><h4>Results</h4></a>
+        <div id="mainTab" class="col-12">
+          <div class="list-group text-center p-2 m-auto" id="search-tab" role="tablist">
+            <a class="list-group-item list-group-item-action br-10px active w-50 mr-0 fs-larger" id="list-search-list"
+               data-toggle="list" href="#list-search" role="tab" aria-controls="search"><h4>Search</h4></a>
+            <a class="list-group-item list-group-item-action br-10px w-50 ml-0 fs-larger" id="list-results-list"
+               data-toggle="list" href="#list-results" role="tab" aria-controls="profile"><h4>Results</h4></a>
           </div>
         </div>
         <div class="col-12">
-          <div class="tab-content p-2" id="search-tabContent">
+          <div class="tab-content px-2 pt-2 pb-0" id="search-tabContent">
             <div class="tab-pane fade show active" id="list-search" role="tabpanel" aria-labelledby="list-search-list">
               <div id="searchDiv" class="row m-3 pb-3">
-                <div id="searchBox" class="text-center col-10 offset-1 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+                <div id="searchBox" class="text-center col-10 offset-1 col-sm-10 offset-sm-1 col-md-8 offset-md-2
+                col-lg-6 offset-lg-3">
                   <form id="usernameForm">
                     <div class="form-group mb-4">
                       <label class="mb-2 fs-larger" for="userName">Enter a username:</label>
-                      <input id="userName" type="text" class="form-control fs-larger br-7px p-20px" placeholder="Ex: johndoe" required autofocus>
+                      <input id="userName" type="text" class="form-control fs-larger br-7px p-20px"
+                             placeholder="Ex: johndoe" required autofocus>
                     </div>
                   </form>
-                  <button id="btnSearchUser" class="btn btn-outline-primary w-50 br-7px p-8px btn-large border-primary fs-larger m-4 fade show">
+                  <button id="btnSearchUser" class="btn btn-outline-primary w-50 br-7px p-8px btn-large border-primary
+                  fs-larger m-4 fade show">
                     Search
                   </button>
-                  <button id="btnNewSearch" class="btn btn-outline-primary w-50 br-7px p-8px btn-large border-primary fs-larger m-4 fade hide d-none">
+                  <button id="btnNewSearch" class="btn btn-outline-primary w-50 br-7px p-8px btn-large border-primary
+                  fs-larger m-4 fade hide d-none">
                     New Search
                   </button>
-                  <button id="btnCancelSearch" class="btn btn-outline-danger w-50 br-7px p-8px btn-large border-danger fs-larger mt-2 mb-0 fade hide" disabled>
+                  <button id="btnCancelSearch" class="btn btn-outline-danger w-50 br-7px p-8px btn-large border-danger
+                  fs-larger mt-2 mb-0 fade hide" disabled>
                     Cancel
                   </button>
                 </div>
-                <div id="liveResults" class="fade hide d-none col-10 offset-1 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 scroll-enabled">
+                <div id="liveResults" class="fade hide d-none col-10 offset-1 col-sm-10 offset-sm-1 col-md-8 offset-md-2
+                 col-lg-6 offset-lg-3 scroll-enabled">
                   <div class="border-secondary scroll-enabled br-10px h-100 p-2"></div>
                 </div>
               </div>
               <div class="text-center text-muted fs-smaller" style="margin-top: 4vh;">
-                Having issues? Try <u><a id="reindexDB" class="text-muted text-underlined c-pointer">re-indexing the database</a></u>
+                Having issues? Try <u><a id="reindexDB" class="text-muted text-underlined c-pointer">re-indexing the
+                  database</a></u>
               </div>
             </div>
             <div class="tab-pane fade" id="list-results" role="tabpanel" aria-labelledby="list-results-list">
-              <div id="resultsDiv" class="row p-3" data-placeholder="hey">
-<!--                <div id="noResults" class="col-12 text-center text-muted">-->
-<!--                  <h4>Results will be displayed here</h4>-->
-<!--                </div>-->
-<!--                <div id="resultTabs" class="col-12 scroll-enabled d-none">-->
-                <div id="resultTabs" class="col-12 scroll-enabled">
+              <div id="resultsDiv" class="row h-100 p-3" data-placeholder="results">
+                <div id="noResults" class="col-12 text-center text-muted align-self-center">
+                  <h4>Results will be displayed here</h4>
+                </div>
+                <div id="resultTabs" class="col-12 scroll-enabled d-none">
+<!--                <div id="resultTabs" class="col-12 scroll-enabled">-->
                   <div class="row">
-                    <div id="result-menu" class="col-4 scroll-enabled">
+                    <div id="result-menu" class="col-3 scroll-enabled">
                       <div id="user-resultTab" class="p-3">
                         <h4 class="mt-2 mb-2 text-center"></h4>
                       </div>
@@ -83,93 +92,127 @@
 <!--                        <a class="list-group-item list-group-item-action pl-3 fs-larger" id="list-linkedin-list" data-toggle="list" href="#list-linkedin" role="tab" aria-controls="linkedin">LinkedIn</a>-->
                       </div>
                       <div class="row mt-4">
-                        <div class="col-6 mb-3">
+                        <div class="col-12 mb-3">
                           <button id="btnUpdateUserData" class="btn btn-outline-primary w-100 br-7px p-8px btn-large h-100 border-primary fs-larger fade show">
                             Update Data
                           </button>
                         </div>
-                        <div class="col-6 mb-3">
+                        <div class="col-12 mb-3">
                           <button id="btnRemoveUserFromDB" class="btn btn-outline-danger w-100 br-7px p-8px btn-large h-100 border-danger fs-larger fade show">
                             Remove Data
                           </button>
                         </div>
-                        <div class="col-6 mb-3">
+                        <div class="col-12 mb-3">
                           <button id="btnExportData" class="btn btn-outline-dark w-100 br-7px p-8px btn-large h-100 border-dark fs-larger fade show">
                             Export
                           </button>
                         </div>
                       </div>
                     </div>
-                    <div class="col-8">
+                    <div class="col-9">
                       <div class="tab-content" id="results-tabContent">
-<!--                        <div class="tab-pane scroll-enabled fade d-none" id="list-facebook" role="tabpanel" aria-labelledby="list-facebook-list"></div>-->
-<!--                        <div class="tab-pane scroll-enabled fade d-none" id="list-instagram" role="tabpanel" aria-labelledby="list-instagram-list"></div>-->
-<!--                        <div class="tab-pane scroll-enabled fade d-none" id="list-twitter" role="tabpanel" aria-labelledby="list-twitter-list"></div>-->
-<!--                        <div class="tab-pane scroll-enabled fade d-none" id="list-reddit" role="tabpanel" aria-labelledby="list-reddit-list"></div>-->
-<!--                        <div class="tab-pane scroll-enabled fade d-none" id="list-linkedin" role="tabpanel" aria-labelledby="list-linkedin-list"></div>-->
-                        <div class="tab-pane br-10px fade show active" id="list-facebook" role="tabpanel" aria-labelledby="list-facebook-list">
+
+                        <div class="tab-pane br-10px fade show active" id="list-facebook" role="tabpanel"
+                             aria-labelledby="list-facebook-list">
                           <div id="fb-results" class="row">
                             <div class="col-12">
-                              <div class="list-group text-center" id="list-tab-fb" role="tablist" style="flex-direction: row;">
-                                <a class="list-group-item list-group-item-action fs-default mr-0 c-pointer active" id="list-about-fb-list" data-toggle="list" href="#list-about-fb" role="tab" aria-controls="about-fb">About</a>
-                                <a class="list-group-item list-group-item-action fs-default ml-0 c-pointer" id="list-posts-fb-list" data-toggle="list" href="#list-posts-fb" role="tab" aria-controls="posts-fb">Posts</a>
+                              <div class="list-group text-center" id="list-tab-fb" role="tablist"
+                                   style="flex-direction: row;">
+                                <a class="list-group-item list-group-item-action fs-default mr-0 c-pointer active"
+                                   id="list-about-fb-list" data-toggle="list" href="#list-about-fb" role="tab"
+                                   aria-controls="about-fb">About</a>
+                                <a class="list-group-item list-group-item-action fs-default ml-0 c-pointer"
+                                   id="list-posts-fb-list" data-toggle="list" href="#list-posts-fb" role="tab"
+                                   aria-controls="posts-fb">Posts</a>
                               </div>
                             </div>
                             <div class="col-12">
                               <div class="tab-content" id="nav-tabContent-fb">
-                                <div class="tab-pane scroll-enabled fade show active" id="list-about-fb" role="tabpanel" aria-labelledby="list-about-fb-list"></div>
-                                <div class="tab-pane scroll-enabled fade" id="list-posts-fb" role="tabpanel" aria-labelledby="list-posts-fb-list"></div>
+                                <div class="tab-pane scroll-enabled fade show active" id="list-about-fb" role="tabpanel"
+                                     aria-labelledby="list-about-fb-list"></div>
+                                <div class="tab-pane scroll-enabled fade" id="list-posts-fb" role="tabpanel"
+                                     aria-labelledby="list-posts-fb-list"></div>
                               </div>
                             </div>
                           </div>
                         </div>
-                        <div class="tab-pane br-10px fade show" id="list-instagram" role="tabpanel" aria-labelledby="list-instagram-list">
+
+                        <div class="tab-pane br-10px fade show" id="list-instagram" role="tabpanel"
+                             aria-labelledby="list-instagram-list">
                           <div id="instagram-results" class="row">
                             <div class="col-12">
-                              <div class="list-group text-center" id="list-tab-instagram" role="tablist" style="flex-direction: row;">
-                                <a class="list-group-item list-group-item-action fs-default mr-0 c-pointer active" id="list-about-instagram-list" data-toggle="list" href="#list-about-instagram" role="tab" aria-controls="about-instagram">About</a>
+                              <div class="list-group text-center" id="list-tab-instagram" role="tablist"
+                                   style="flex-direction: row;">
+                                <a class="list-group-item list-group-item-action fs-default mr-0 c-pointer active"
+                                   id="list-about-insta-list" data-toggle="list" href="#list-about-insta"
+                                   role="tab" aria-controls="about-insta">About</a>
+                                <a class="list-group-item list-group-item-action fs-default mr-0 c-pointer"
+                                   id="list-posts-insta-list" data-toggle="list" href="#list-posts-insta"
+                                   role="tab" aria-controls="posts-insta">Posts</a>
                               </div>
                             </div>
                             <div class="col-12">
                               <div class="tab-content" id="nav-tabContent-instagram">
-                                <div class="tab-pane scroll-enabled fade show active" id="list-about-instagram" role="tabpanel" aria-labelledby="list-about-instagram-list"></div>
+                                <div class="tab-pane scroll-enabled fade show active" id="list-about-insta"
+                                     role="tabpanel" aria-labelledby="list-about-insta-list"></div>
+                                <div class="tab-pane scroll-enabled fade show" id="list-posts-insta"
+                                     role="tabpanel" aria-labelledby="list-posts-insta-list"></div>
                               </div>
                             </div>
                           </div>
                         </div>
-                        <div class="tab-pane br-10px fade show" id="list-twitter" role="tabpanel" aria-labelledby="list-twitter-list">
+
+                        <div class="tab-pane br-10px fade show" id="list-twitter" role="tabpanel"
+                             aria-labelledby="list-twitter-list">
                           <div id="twitter-results" class="row">
                             <div class="col-12">
-                              <div class="list-group text-center" id="list-tab-twitter" role="tablist" style="flex-direction: row;">
-                                <a class="list-group-item list-group-item-action fs-default mr-0 c-pointer active" id="list-about-twitter-list" data-toggle="list" href="#list-about-twitter" role="tab" aria-controls="about-twitter">About</a>
-                                <a class="list-group-item list-group-item-action fs-default ml-0 c-pointer" id="list-timeline-twitter-list" data-toggle="list" href="#list-timeline-twitter" role="tab" aria-controls="timeline-twitter">Posts</a>
+                              <div class="list-group text-center" id="list-tab-twitter" role="tablist"
+                                   style="flex-direction: row;">
+                                <a class="list-group-item list-group-item-action fs-default mr-0 c-pointer active"
+                                   id="list-about-twitter-list" data-toggle="list" href="#list-about-twitter"
+                                   role="tab" aria-controls="about-twitter">About</a>
+                                <a class="list-group-item list-group-item-action fs-default ml-0 c-pointer"
+                                   id="list-timeline-twitter-list" data-toggle="list" href="#list-timeline-twitter"
+                                   role="tab" aria-controls="timeline-twitter">Posts</a>
                               </div>
                             </div>
                             <div class="col-12">
                               <div class="tab-content" id="nav-tabContent-twitter">
-                                <div class="tab-pane scroll-enabled fade show active" id="list-about-twitter" role="tabpanel" aria-labelledby="list-about-twitter-list"></div>
-                                <div class="tab-pane scroll-enabled fade" id="list-timeline-twitter" role="tabpanel" aria-labelledby="list-timeline-twitter-list"></div>
+                                <div class="tab-pane scroll-enabled fade show active" id="list-about-twitter"
+                                     role="tabpanel" aria-labelledby="list-about-twitter-list"></div>
+                                <div class="tab-pane scroll-enabled fade" id="list-timeline-twitter" role="tabpanel"
+                                     aria-labelledby="list-timeline-twitter-list"></div>
                               </div>
                             </div>
                           </div>
                         </div>
-                        <div class="tab-pane br-10px fade show" id="list-reddit" role="tabpanel" aria-labelledby="list-reddit-list">
+
+                        <div class="tab-pane br-10px fade show" id="list-reddit" role="tabpanel"
+                             aria-labelledby="list-reddit-list">
                           <div id="reddit-results" class="row">
                             <div class="col-12">
-                              <div class="list-group text-center" id="list-tab-reddit" role="tablist" style="flex-direction: row;">
-                                <a class="list-group-item list-group-item-action fs-default mr-0 c-pointer active" id="list-about-reddit-list" data-toggle="list" href="#list-about-reddit" role="tab" aria-controls="about-reddit">About</a>
-                                <a class="list-group-item list-group-item-action fs-default ml-0 c-pointer" id="list-overview-reddit-list" data-toggle="list" href="#list-overview-reddit" role="tab" aria-controls="overview-reddit">Overview</a>
+                              <div class="list-group text-center" id="list-tab-reddit" role="tablist"
+                                   style="flex-direction: row;">
+                                <a class="list-group-item list-group-item-action fs-default mr-0 c-pointer active"
+                                   id="list-about-reddit-list" data-toggle="list" href="#list-about-reddit" role="tab"
+                                   aria-controls="about-reddit">About</a>
+                                <a class="list-group-item list-group-item-action fs-default ml-0 c-pointer"
+                                   id="list-overview-reddit-list" data-toggle="list" href="#list-overview-reddit"
+                                   role="tab" aria-controls="overview-reddit">Overview</a>
                               </div>
                             </div>
                             <div class="col-12">
                               <div class="tab-content" id="nav-tabContent-reddit">
-                                <div class="tab-pane scroll-enabled fade show active" id="list-about-reddit" role="tabpanel" aria-labelledby="list-about-reddit-list"></div>
-                                <div class="tab-pane scroll-enabled fade" id="list-overview-reddit" role="tabpanel" aria-labelledby="list-overview-reddit-list"></div>
+                                <div class="tab-pane scroll-enabled fade show active" id="list-about-reddit"
+                                     role="tabpanel" aria-labelledby="list-about-reddit-list"></div>
+                                <div class="tab-pane scroll-enabled fade" id="list-overview-reddit" role="tabpanel"
+                                     aria-labelledby="list-overview-reddit-list"></div>
                               </div>
                             </div>
                           </div>
                         </div>
-<!--                        <div class="tab-pane br-10px fade show" id="list-linkedin" role="tabpanel" aria-labelledby="list-linkedin-list"></div>-->
+<!--                        <div class="tab-pane br-10px fade show" id="list-linkedin" role="tabpanel"
+                                aria-labelledby="list-linkedin-list"></div>-->
                       </div>
                     </div>
                   </div>

@@ -1,0 +1,34 @@
+{
+  "username": "cristiano",
+  "user id": "173560420",
+  "name": "Cristiano Ronaldo",
+  "followers": "284583405",
+  "following": "471",
+  "posts img": "3047",
+  "posts vid": "7",
+  "reels": "0",
+  "bio": "",
+  "external url": "http",
+  "private": "False",
+  "verified": "True",
+  "profile img": "https",
+  "business account": "False",
+  "joined recently": "False",
+  "business category": "None",
+  "category": "None",
+  "has guides": "False",
+  "most_used_tags": {
+    "finoallafine": "3",
+    "workdone": "2",
+    "stayhome": "1",
+    "stayactive": "1",
+    "forzajuve": "1"
+  },
+  "most_used_mentions": {
+    "juventus": "8",
+    "georginagio": "5",
+    "cr7cristianoronaldo": "1",
+    "gianluca_frabotta": "1",
+    "aaronramsey": "1"
+  }
+}

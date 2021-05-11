@@ -19,7 +19,7 @@ facebook-scraper==0.2.19
         zipp==3.4.0
       pyee==8.1.0
       tqdm==4.56.0
-      urllib3==1.25.11
+      urllib3==1.25.10
       websockets==8.1
     pyquery==1.4.3
       cssselect==1.1.0
@@ -74,7 +74,7 @@ torrequest==0.1.0
     idna==2.10
     urllib3==1.25.10
   stem==1.8.0
--e git+git@github.com:mrr0b0t-0x1/social_media_tool.git@d9622be43e0887b360a003cb9b248f87d682820d#egg=twint
+twint==2.1.21
   aiodns==2.0.0
     pycares==3.1.1
       cffi==1.14.3

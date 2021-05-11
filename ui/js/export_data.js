@@ -22,7 +22,8 @@ fs.readFile(
 const sectionList = {
     "list-about-fb": "Facebook - About",
     "list-posts-fb": "Facebook - Posts",
-    "list-about-instagram": "Instagram - About",
+    "list-about-insta": "Instagram - About",
+    "list-posts-insta": "Instagram - About",
     "list-about-twitter": "Twitter - About",
     "list-timeline-twitter": "Twitter - Timeline",
     "list-about-reddit": "Reddit - About",
@@ -85,7 +86,7 @@ function exportTableToFile(username, sections) {
     head.appendChild(style);
 
     let h1 = document.createElement('h1')
-    h1.innerHTML = "Username: " + username
+    h1.innerHTML = "Searched query: " + username
     body.appendChild(h1);
 
     fixLongStrings();

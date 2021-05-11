@@ -152,15 +152,17 @@ $(document).ready(function () {
     }
 
     // Show/Hide the "No results" div if results are empty/filled respectively
-    // $('body').on('DOMSubtreeModified', resultsTabContent, function () {
-    //     if ($('#results-tabContent > div').text().trim() === '') {
-    //         $(resultTabs).addClass('d-none')
-    //         $('#noResults').removeClass('d-none')
-    //     } else {
-    //         $(resultTabs).removeClass('d-none')
-    //         $('#noResults').addClass('d-none')
-    //     }
-    // });
+    $('body').on('DOMSubtreeModified', resultsTabContent, function () {
+        if ($('#results-tabContent div[id^="nav-tabContent"] > div').text().trim() === '') {
+            console.log('full' + this.id);
+            $(resultTabs).addClass('d-none');
+            $('#noResults').removeClass('d-none');
+        } else {
+            console.log('empty' + this.id);
+            $(resultTabs).removeClass('d-none');
+            $('#noResults').addClass('d-none');
+        }
+    });
     // $('#list-results-list').click();
 
     // Re-index DB
@@ -207,6 +209,10 @@ $(document).ready(function () {
             $(userName).attr('disabled', true);
             $(btnSearchUser).removeClass('show').addClass('hide');
 
+            // $('#results-tabContent > div[id^="list-"]').each(function() {
+            //     console.log( this.id );
+            // })
+
             liveResults.firstElementChild.innerHTML += "<span class='d-block'><span class='text-grey'>❯</span>&emsp;" +
                 "<span class='text-info'>Starting search...</span></span>";
         }
@@ -239,7 +245,7 @@ $(document).ready(function () {
             $(liveResults).removeClass('show').addClass('hide');
             $(btnSearchUser).attr('disabled', false);
             $('#btnNewSearch, #btnCancelSearch').removeClass('show').addClass('hide');
-            $('#results-tabContent > div').empty().removeClass('show active');
+            $('#results-tabContent div[id^="nav-tabContent"] > div').empty();
             $('#results-tab > a').removeClass('active');
             Object.keys(siteList).forEach(function (site) {
                 $(tabAndPanes[siteList[site]][0]).addClass('d-none');

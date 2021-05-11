@@ -26,6 +26,36 @@
           "billgates-about-reddit": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/billgates/reddit/billgates-about-reddit.json"
         }
       }
+    },
+    "2": {
+      "name": "Cristiano",
+      "sites_found": {
+        "facebook": {
+          "dir_url": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/facebook",
+          "profile_url": "https://www.facebook.com/Cristiano",
+          "Cristiano-about-fb-page": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/facebook/Cristiano-about-fb-page.json",
+          "Cristiano-posts-fb-page": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/facebook/Cristiano-posts-fb-page.json"
+        },
+        "instagram": {
+          "dir_url": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram",
+          "profile_url": "https://www.instagram.com/Cristiano",
+          "Cristiano-posts-insta": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/Cristiano-posts-insta.json",
+          "Cristiano-about-insta": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/instagram/Cristiano-about-insta.json",
+          "photos": {}
+        },
+        "twitter": {
+          "dir_url": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/twitter",
+          "profile_url": "https://mobile.twitter.com/Cristiano",
+          "Cristiano-about-twitter": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/twitter/Cristiano-about-twitter.json",
+          "Cristiano-timeline-twitter": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/twitter/Cristiano-timeline-twitter.json"
+        },
+        "reddit": {
+          "dir_url": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/reddit",
+          "profile_url": "https://www.reddit.com/user/Cristiano",
+          "Cristiano-about-reddit": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/reddit/Cristiano-about-reddit.json",
+          "Cristiano-overview-reddit": "/home/mrr0b0t/PycharmProjects/social_media_tool/scripts/results/Cristiano/reddit/Cristiano-overview-reddit.json"
+        }
+      }
     }
   }
 }
