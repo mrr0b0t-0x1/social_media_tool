@@ -25,6 +25,8 @@ $(document).ready(function () {
                       'col-sm-6 col-md-6 col-lg-6');
     }
 
+    let prevUserName = null
+
     // Show a dismissable alert
     function showDismissableAlert(alert) {
         if ($('#alertsView > div').text().trim() !== '') {
@@ -59,6 +61,8 @@ $(document).ready(function () {
             args: args
         };
 
+        let data = false;
+
         // Create a python-shell instance
         const pyshell = new PythonShell('main.py', options);
         console.log("pyshell child pid: " + pyshell.childProcess.pid)
@@ -85,6 +89,7 @@ $(document).ready(function () {
                     "&emsp;<span class='text-info'>Data Fetched!</span></span>"
                 parseDBData(userName.value, message.DATA);
                 // Show appropriate divs and add border-radius to last div
+                data = true;
                 $('#user-resultTab > h4')[0].innerText = userName.value;
                 $('#results-tab > a:first').addClass('active');
                 $('#results-tabContent > div:first').addClass('show active');
@@ -112,14 +117,22 @@ $(document).ready(function () {
                 });
             }
             else if (btn === btnSearchUser) {
-                showDismissableAlert({
-                    'id': 'done-alert',
-                    'class': 'alert-success',
-                    'msg': 'Done! Crunching data...'
-                });
-                setTimeout(function() {
-                    $('#list-results-list').click()
-                }, 1000);
+                if (data) {
+                    showDismissableAlert({
+                        'id': 'done-alert',
+                        'class': 'alert-success',
+                        'msg': 'Done! Crunching data...'
+                    });
+                    setTimeout(function() {
+                        $('#list-results-list').click()
+                    }, 1000);
+                } else {
+                    showDismissableAlert({
+                        'id': 'error-alert',
+                        'class': 'alert-danger',
+                        'msg': 'Snap! An error occurred'
+                    });
+                }
             }
             else if (btn === btnCancelSearch) {
                 showDismissableAlert({
@@ -151,39 +164,11 @@ $(document).ready(function () {
         return pyshell;
     }
 
-    // Show/Hide the "No results" div if results are empty/filled respectively
-    $('body').on('DOMSubtreeModified', resultsTabContent, function () {
-        if ($('#results-tabContent div[id^="nav-tabContent"] > div').text().trim() === '') {
-            console.log('full' + this.id);
-            $(resultTabs).addClass('d-none');
-            $('#noResults').removeClass('d-none');
-        } else {
-            console.log('empty' + this.id);
-            $(resultTabs).removeClass('d-none');
-            $('#noResults').addClass('d-none');
-        }
-    });
-    // $('#list-results-list').click();
-
-    // Re-index DB
-    $(reindexDB).click( function () {
-        createPythonShell(
-            ['--reindex-db'],
-            reindexDB
-        )
-    });
-
-    // "Search" button actions
-    $(btnSearchUser).click(function () {
-        showDismissableAlert({
-            'id': 'search-alert',
-            'class': 'alert-primary',
-            'msg': 'Starting search...'
-        });
-
+    // Search or update user data
+    function searchUpdateUser(operation) {
         // Create a python-shell instance to get user data
         let searchUser = createPythonShell(
-            ['--username', userName.value],
+            ['--username', userName.value, operation],
             btnSearchUser
         )
 
@@ -209,10 +194,6 @@ $(document).ready(function () {
             $(userName).attr('disabled', true);
             $(btnSearchUser).removeClass('show').addClass('hide');
 
-            // $('#results-tabContent > div[id^="list-"]').each(function() {
-            //     console.log( this.id );
-            // })
-
             liveResults.firstElementChild.innerHTML += "<span class='d-block'><span class='text-grey'>❯</span>&emsp;" +
                 "<span class='text-info'>Starting search...</span></span>";
         }
@@ -221,6 +202,39 @@ $(document).ready(function () {
             // Kill python-shell and all running child processes
             kill(searchUser.childProcess.pid);
         });
+    }
+
+    // Show/Hide the "No results" div if results are empty/filled respectively
+    $('body').on('DOMSubtreeModified', resultsTabContent, function () {
+        if ($('#results-tabContent div[id^="nav-tabContent"] > div').text().trim() === '') {
+            $(resultTabs).addClass('d-none');
+            $('#noResults').removeClass('d-none');
+        } else {
+            $(resultTabs).removeClass('d-none');
+            $('#noResults').addClass('d-none');
+        }
+    });
+    // $('#list-results-list').click();
+
+    // Re-index DB
+    $(reindexDB).click( function () {
+        createPythonShell(
+            ['--reindex-db'],
+            reindexDB
+        )
+    });
+
+    // "Search" button actions
+    $(btnSearchUser).on('click', function () {
+        prevUserName = userName.value;
+
+        showDismissableAlert({
+            'id': 'search-alert',
+            'class': 'alert-primary',
+            'msg': 'Starting search...'
+        });
+
+        searchUpdateUser("--search");
     });
 
     // "New Search" button actions
@@ -267,11 +281,19 @@ $(document).ready(function () {
 
     // "Update data" button actions
     $(btnUpdateData).click(function () {
-        // Create a python-shell instance to update user data
-        createPythonShell(
-            ['--username', userName.value],
-            btnUpdateData
-        )
+        showDismissableAlert({
+            'id': 'update-alert',
+            'class': 'alert-primary',
+            'msg': 'Updating data...'
+        });
+        $('#list-search-list').click();
+        $(btnNewSearch).click();
+        setTimeout( function () {
+            $(userName).val(prevUserName);
+            setTimeout( function () {
+                searchUpdateUser("--update");
+            }, 200);
+        }, 1000);
     });
 
     // "Remove data" button actions
@@ -285,6 +307,11 @@ $(document).ready(function () {
 
     // "Export" button actions
     $(btnExportData).click( function () {
+        showDismissableAlert({
+            'id': 'export-alert',
+            'class': 'alert-primary',
+            'msg': 'Exporting...'
+        });
         exportTables();
     })
 

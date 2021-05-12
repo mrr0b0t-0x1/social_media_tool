@@ -43,6 +43,35 @@ def execute_module(site):
         facebook_module.gather_info(username)
 
 
+# Run the search operation
+def run_search(uname, dbs):
+    # Get the list of sites on which user exists
+    sites_found = sherlock_module.check_username(uname)
+    # sites_found = ['Twitter', 'Instagram', 'Reddit']    # debug
+
+    # Make respective module directories
+    make_dirs(sites_found)
+
+    # If sites found, execute respective modules concurrently
+    if sites_found:
+        try:
+            with multiprocessing.Pool() as pool:
+                pool.map(execute_module, sites_found)
+
+            # Update user data in DB
+            dbs.update_user()
+
+            # Get data from DB
+            print(json.dumps({"DATA": dbs.get_data()}))
+
+        except Exception as err:
+            # print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
+            print(json.dumps({"ERROR": str(err)}))
+
+    else:
+        print(json.dumps({"ERROR": "Username not found on any of the social media websites."}))
+
+
 # Main
 if __name__ == '__main__':
 
@@ -63,42 +92,22 @@ if __name__ == '__main__':
             # Initialize database connection
             with database.DatabaseConnection(username) as db:
 
-                if not db.check_user():
-                    # print(json.dumps(Fore.RED + "ERROR" + ": " + Fore.RESET + username + " not in DB"))
-                    print(json.dumps({"INFO": username + " does not exist in local database!"}))
+                if sys.argv[3] == '--search':
+                    if not db.check_user():
+                        # print(json.dumps(Fore.RED + "ERROR" + ": " + Fore.RESET + username + " not in DB"))
+                        print(json.dumps({"INFO": username + " does not exist in local database!"}))
 
-                    # Get the list of sites on which user exists
-                    sites_found = sherlock_module.check_username(username)
-                    # sites_found = ['Twitter', 'Instagram', 'Reddit']    # debug
-
-                    # Make respective module directories
-                    make_dirs(sites_found)
-
-                    # If sites found, execute respective modules concurrently
-                    if sites_found:
-                        try:
-                            with multiprocessing.Pool() as pool:
-                                pool.map(execute_module, sites_found)
-
-                            # Update user data in DB
-                            db.update_user()
-
-                            # Get data from DB
-                            print(json.dumps({"DATA": db.get_data()}))
-
-                        except Exception as err:
-                            # print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
-                            print(json.dumps({"ERROR": str(err)}))
+                        run_search(username, db)
 
                     else:
-                        print(json.dumps({"ERROR": "Username not found on any of the social media websites."}))
+                        # print(json.dumps(Fore.RED + "ERROR" + ": " + Fore.RESET + username + " in DB"))
+                        print(json.dumps({"INFO": username + " exists in local database!"}))
 
-                else:
-                    # print(json.dumps(Fore.RED + "ERROR" + ": " + Fore.RESET + username + " in DB"))
-                    print(json.dumps({"INFO": username + " exists in local database!"}))
+                        # Get data from DB
+                        print(json.dumps({"DATA": db.get_data()}))
 
-                    # Get data from DB
-                    print(json.dumps({"DATA": db.get_data()}))
+                elif sys.argv[3] == '--update':
+                    run_search(username, db)
 
             # Stop timer
             print(json.dumps({"ELAPSED_TIME": t.stop()}))

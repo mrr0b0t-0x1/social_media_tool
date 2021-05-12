@@ -7,6 +7,7 @@ import time
 from random import randint, uniform
 from globals import *
 from colorama import Fore
+from pprint import pprint
 from facebook_scraper import get_posts
 
 # Generate new headers each time the program is run
@@ -413,17 +414,32 @@ def gather_page_info(username, home_soup, result_dir):
                 for i, item in enumerate(subsec):
                     facebook_page_info['about'][sec][i] = {}
 
+                    link_key = 'link'
+                    text_key = 'text'
+
                     # Get the link, if any
                     if item.findChildren('a'):
                         if len(item.findChildren('a')) == 1:
-                            facebook_page_info['about'][sec][i]['link'] = item.findChild('a')['href']
+                            if 'www.instagram.com' in item.findChild('a')['href']:
+                                link_key = 'instagram_link'
+                                text_key = 'instagram'
+                            elif 'twitter.com' in item.findChild('a')['href']:
+                                link_key = 'twitter_link'
+                                text_key = 'twitter'
+                            elif 'www.youtube.com' in item.findChild('a')['href']:
+                                link_key = 'youtube_link'
+                                text_key = 'youtube'
+                            elif 'www.' + username.lower() in item.findChild('a')['href']:
+                                link_key = 'website_link'
+                                text_key = 'website'
+                            facebook_page_info['about'][sec][i][link_key] = item.findChild('a')['href']
                         elif len(item.findChildren('a')) > 1:
                             enum = enumerate([child['href'] for child in item.findChildren('a')])
                             facebook_page_info['about'][sec][i]['links'] = dict((x, y) for x, y in enum)
 
                     # Get the text/title of the sub-section
                     if item.select('._5aj7._3-8j ._4bl9 ._50f4'):
-                        facebook_page_info['about'][sec][i]['text'] = item.select('._5aj7._3-8j ._4bl9 ._50f4')[0].text
+                        facebook_page_info['about'][sec][i][text_key] = item.select('._5aj7._3-8j ._4bl9 ._50f4')[0].text
 
                     # Get the description, if any
                     if item.findChild('div', class_='_3-8w') is not None:
@@ -509,6 +525,8 @@ def gather_page_info(username, home_soup, result_dir):
         # If milestones section is not present
         else:
             facebook_page_info['about']['milestones'] = "N/A"
+
+        pprint(facebook_page_info['about'])
 
     # Get Posts
     def get_page_posts():
@@ -802,35 +820,35 @@ def gather_page_info(username, home_soup, result_dir):
     get_page_about()
 
     # Sleep for 5 seconds to avoid getting banned
-    time.sleep(round(uniform(5, 7), 1))
-
-    get_page_posts()
-
-    time.sleep(round(uniform(5, 7), 1))
-
-    # get_page_photos()
+    # time.sleep(round(uniform(5, 7), 1))
+    #
+    # get_page_posts()
     #
     # time.sleep(round(uniform(5, 7), 1))
     #
-    # get_page_videos()
+    # # get_page_photos()
+    # #
+    # # time.sleep(round(uniform(5, 7), 1))
+    # #
+    # # get_page_videos()
+    # #
+    # # time.sleep(round(uniform(5, 7), 1))
+    #
+    # get_page_events()
     #
     # time.sleep(round(uniform(5, 7), 1))
-
-    get_page_events()
-
-    time.sleep(round(uniform(5, 7), 1))
-
-    get_page_home_community()
-
-    # pprint(facebook_page_info)
-
-    # Store result data to file
-    try:
-        with open(result_dir / (username + '-about-fb-page.json'), 'w+') as handle:
-            json.dump(facebook_page_info, handle, indent=2)
-    except Exception as err:
-        # print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
-        print(json.dumps({"ERROR": str(err)}))
+    #
+    # get_page_home_community()
+    #
+    # # pprint(facebook_page_info)
+    #
+    # # Store result data to file
+    # try:
+    #     with open(result_dir / (username + '-about-fb-page.json'), 'w+') as handle:
+    #         json.dump(facebook_page_info, handle, indent=2)
+    # except Exception as err:
+    #     # print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
+    #     print(json.dumps({"ERROR": str(err)}))
 
 
 # Gather info about username
