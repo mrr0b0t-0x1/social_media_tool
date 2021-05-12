@@ -89,28 +89,32 @@ if __name__ == '__main__':
             # Start timer
             t.start()
 
-            # Initialize database connection
-            with database.DatabaseConnection(username) as db:
+            try:
+                # Initialize database connection
+                with database.DatabaseConnection(username) as db:
 
-                if sys.argv[3] == '--search':
-                    if not db.check_user():
-                        # print(json.dumps(Fore.RED + "ERROR" + ": " + Fore.RESET + username + " not in DB"))
-                        print(json.dumps({"INFO": username + " does not exist in local database!"}))
+                    if sys.argv[3] == '--search':
+                        if not db.check_user():
+                            # print(json.dumps(Fore.RED + "ERROR" + ": " + Fore.RESET + username + " not in DB"))
+                            print(json.dumps({"INFO": username + " does not exist in local database!"}))
 
+                            run_search(username, db)
+
+                        else:
+                            # print(json.dumps(Fore.RED + "ERROR" + ": " + Fore.RESET + username + " in DB"))
+                            print(json.dumps({"INFO": username + " exists in local database!"}))
+
+                            # Get data from DB
+                            print(json.dumps({"DATA": db.get_data()}))
+
+                    elif sys.argv[3] == '--update':
                         run_search(username, db)
 
-                    else:
-                        # print(json.dumps(Fore.RED + "ERROR" + ": " + Fore.RESET + username + " in DB"))
-                        print(json.dumps({"INFO": username + " exists in local database!"}))
+                # Stop timer
+                print(json.dumps({"ELAPSED_TIME": t.stop()}))
 
-                        # Get data from DB
-                        print(json.dumps({"DATA": db.get_data()}))
-
-                elif sys.argv[3] == '--update':
-                    run_search(username, db)
-
-            # Stop timer
-            print(json.dumps({"ELAPSED_TIME": t.stop()}))
+            except Exception as err:
+                print(json.dumps({"ERROR": str(err)}))
 
         else:
             # print(json.dumps(Fore.RED + "ERROR" + Fore.RESET + ": " + result))
@@ -129,7 +133,11 @@ if __name__ == '__main__':
     # Remove Data
     elif sys.argv[1] == '--remove-data':
         username = str(sys.argv[2])
-        print(json.dumps({"INFO": str(username) + ' remove-db elif block'}))
+        try:
+            with database.DatabaseConnection(username) as db:
+                db.remove_user()
+        except Exception as e:
+            print(json.dumps({"ERROR": str(e)}))
 
     # Re-index DB
     elif sys.argv[1] == '--reindex-db':

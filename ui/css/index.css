@@ -213,6 +213,7 @@ table td,
 #results-tabContent table td {
     padding: 0.4rem !important; }
 
+
 @media (min-height: 992px) {
     #alertsView {
         padding-top: 0; }}
@@ -222,3 +223,8 @@ table td,
 .alert {
     padding: 4px 20px !important;
     display: inline-block; }
+
+
+.modal-open .modal {
+    overflow: hidden !important;
+}

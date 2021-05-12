@@ -116,6 +116,13 @@ $(document).ready(function () {
                     'msg': 'Database re-indexed'
                 });
             }
+            else if (btn === btnCancelSearch) {
+                showDismissableAlert({
+                    'id': 'cancel-alert',
+                    'class': 'alert-danger',
+                    'msg': 'Operation cancelled!'
+                });
+            }
             else if (btn === btnSearchUser) {
                 if (data) {
                     showDismissableAlert({
@@ -134,13 +141,6 @@ $(document).ready(function () {
                     });
                 }
             }
-            else if (btn === btnCancelSearch) {
-                showDismissableAlert({
-                    'id': 'cancel-alert',
-                    'class': 'alert-danger',
-                    'msg': 'Cancelled!'
-                });
-            }
             else if (btn === btnUpdateData) {
                 showDismissableAlert({
                     'id': 'update-alert',
@@ -151,7 +151,7 @@ $(document).ready(function () {
             else if (btn === btnRemoveData) {
                 showDismissableAlert({
                     'id': 'remove-alert',
-                    'class': 'alert-danger',
+                    'class': 'alert-success',
                     'msg': 'User data removed!'
                 });
             }
@@ -169,7 +169,7 @@ $(document).ready(function () {
         // Create a python-shell instance to get user data
         let searchUser = createPythonShell(
             ['--username', userName.value, operation],
-            btnSearchUser
+            (operation === "--search") ? btnSearchUser : btnUpdateData
         )
 
         // Make changes in UI
@@ -218,6 +218,11 @@ $(document).ready(function () {
 
     // Re-index DB
     $(reindexDB).click( function () {
+        showDismissableAlert({
+            'id': 'reindexing-alert',
+            'class': 'alert-primary',
+            'msg': 'Re-indexing...'
+        });
         createPythonShell(
             ['--reindex-db'],
             reindexDB
@@ -225,7 +230,7 @@ $(document).ready(function () {
     });
 
     // "Search" button actions
-    $(btnSearchUser).on('click', function () {
+    $(btnSearchUser).click(function () {
         prevUserName = userName.value;
 
         showDismissableAlert({
@@ -298,11 +303,23 @@ $(document).ready(function () {
 
     // "Remove data" button actions
     $(btnRemoveData).click(function () {
+        showDismissableAlert({
+            'id': 'removing-alert',
+            'class': 'alert-danger',
+            'msg': 'Removing data...'
+        });
+
         // Create a python-shell instance to remove user data
         createPythonShell(
             ['--remove-data', userName.value],
             btnRemoveData
         )
+        $("#removeData").modal('hide');
+        $(btnNewSearch).click();
+        setTimeout(function () {
+            $("#list-search-list").click();
+            $(userName).focus();
+        }, 300);
     });
 
     // "Export" button actions
