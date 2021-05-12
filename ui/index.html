@@ -85,9 +85,9 @@
 <!--                        <a class="list-group-item list-group-item-action pl-3 fs-larger d-none" id="list-twitter-list" data-toggle="list" href="#list-twitter" role="tab" aria-controls="twitter">Twitter</a>-->
 <!--                        <a class="list-group-item list-group-item-action pl-3 fs-larger d-none" id="list-reddit-list" data-toggle="list" href="#list-reddit" role="tab" aria-controls="reddit">Reddit</a>-->
 <!--                        <a class="list-group-item list-group-item-action pl-3 fs-larger d-none" id="list-linkedin-list" data-toggle="list" href="#list-linkedin" role="tab" aria-controls="linkedin">LinkedIn</a>-->
-                        <a class="list-group-item list-group-item-action pl-3 fs-larger active" id="list-facebook-list" data-toggle="list" href="#list-facebook" role="tab" aria-controls="facebook">Facebook</a>
+                        <a class="list-group-item list-group-item-action pl-3 fs-larger active" id="list-twitter-list" data-toggle="list" href="#list-twitter" role="tab" aria-controls="twitter">Twitter</a>
+                        <a class="list-group-item list-group-item-action pl-3 fs-larger" id="list-facebook-list" data-toggle="list" href="#list-facebook" role="tab" aria-controls="facebook">Facebook</a>
                         <a class="list-group-item list-group-item-action pl-3 fs-larger" id="list-instagram-list" data-toggle="list" href="#list-instagram" role="tab" aria-controls="instagram">Instagram</a>
-                        <a class="list-group-item list-group-item-action pl-3 fs-larger" id="list-twitter-list" data-toggle="list" href="#list-twitter" role="tab" aria-controls="twitter">Twitter</a>
                         <a class="list-group-item list-group-item-action pl-3 fs-larger" id="list-reddit-list" data-toggle="list" href="#list-reddit" role="tab" aria-controls="reddit">Reddit</a>
 <!--                        <a class="list-group-item list-group-item-action pl-3 fs-larger" id="list-linkedin-list" data-toggle="list" href="#list-linkedin" role="tab" aria-controls="linkedin">LinkedIn</a>-->
                       </div>
@@ -113,7 +113,32 @@
                     <div class="col-9">
                       <div class="tab-content" id="results-tabContent">
 
-                        <div class="tab-pane br-10px fade show active" id="list-facebook" role="tabpanel"
+                        <div class="tab-pane br-10px fade show active" id="list-twitter" role="tabpanel"
+                             aria-labelledby="list-twitter-list">
+                          <div id="twitter-results" class="row">
+                            <div class="col-12">
+                              <div class="list-group text-center" id="list-tab-twitter" role="tablist"
+                                   style="flex-direction: row;">
+                                <a class="list-group-item list-group-item-action fs-default mr-0 c-pointer active"
+                                   id="list-about-twitter-list" data-toggle="list" href="#list-about-twitter"
+                                   role="tab" aria-controls="about-twitter">About</a>
+                                <a class="list-group-item list-group-item-action fs-default ml-0 c-pointer"
+                                   id="list-timeline-twitter-list" data-toggle="list" href="#list-timeline-twitter"
+                                   role="tab" aria-controls="timeline-twitter">Posts</a>
+                              </div>
+                            </div>
+                            <div class="col-12">
+                              <div class="tab-content" id="nav-tabContent-twitter">
+                                <div class="tab-pane scroll-enabled fade show active" id="list-about-twitter"
+                                     role="tabpanel" aria-labelledby="list-about-twitter-list"></div>
+                                <div class="tab-pane scroll-enabled fade" id="list-timeline-twitter" role="tabpanel"
+                                     aria-labelledby="list-timeline-twitter-list"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="tab-pane br-10px fade show" id="list-facebook" role="tabpanel"
                              aria-labelledby="list-facebook-list">
                           <div id="fb-results" class="row">
                             <div class="col-12">
@@ -158,31 +183,6 @@
                                      role="tabpanel" aria-labelledby="list-about-insta-list"></div>
                                 <div class="tab-pane scroll-enabled fade show" id="list-posts-insta"
                                      role="tabpanel" aria-labelledby="list-posts-insta-list"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="tab-pane br-10px fade show" id="list-twitter" role="tabpanel"
-                             aria-labelledby="list-twitter-list">
-                          <div id="twitter-results" class="row">
-                            <div class="col-12">
-                              <div class="list-group text-center" id="list-tab-twitter" role="tablist"
-                                   style="flex-direction: row;">
-                                <a class="list-group-item list-group-item-action fs-default mr-0 c-pointer active"
-                                   id="list-about-twitter-list" data-toggle="list" href="#list-about-twitter"
-                                   role="tab" aria-controls="about-twitter">About</a>
-                                <a class="list-group-item list-group-item-action fs-default ml-0 c-pointer"
-                                   id="list-timeline-twitter-list" data-toggle="list" href="#list-timeline-twitter"
-                                   role="tab" aria-controls="timeline-twitter">Posts</a>
-                              </div>
-                            </div>
-                            <div class="col-12">
-                              <div class="tab-content" id="nav-tabContent-twitter">
-                                <div class="tab-pane scroll-enabled fade show active" id="list-about-twitter"
-                                     role="tabpanel" aria-labelledby="list-about-twitter-list"></div>
-                                <div class="tab-pane scroll-enabled fade" id="list-timeline-twitter" role="tabpanel"
-                                     aria-labelledby="list-timeline-twitter-list"></div>
                               </div>
                             </div>
                           </div>
