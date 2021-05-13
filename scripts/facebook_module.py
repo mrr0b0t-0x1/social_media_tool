@@ -56,37 +56,37 @@ def gather_user_info(username, home_soup, result_dir):
         all_items = work_contents.find_all('li')
 
         if all_items:
-            facebook_user_info['about_user']['work'] = {}
+            facebook_user_info['about user']['work'] = {}
 
             for i, item in enumerate(all_items):
-                facebook_user_info['about_user']['work'][i] = {}
+                facebook_user_info['about user']['work'][i] = {}
 
                 if item.find('div', class_='_2lzr _50f5 _50f7') is not None:
                     # Get the company name
-                    facebook_user_info['about_user']['work'][i]['company_name'] = item.select(
+                    facebook_user_info['about user']['work'][i]['company name'] = item.select(
                         'div._2lzr._50f5._50f7 a')[0].get_text()
                     # Get the company URL
-                    facebook_user_info['about_user']['work'][i]['company_link'] = item.select(
+                    facebook_user_info['about user']['work'][i]['company link'] = item.select(
                         'div._2lzr._50f5._50f7 a')[0].attrs['href']
 
                 if item.find('div', class_='fsm fwn fcg') is not None:
                     # Get work details
-                    facebook_user_info['about_user']['work'][i]['work_details'] = item.select(
+                    facebook_user_info['about user']['work'][i]['work details'] = item.select(
                         'div.fsm.fwn.fcg')[0].get_text().split(' · ')
 
                 if item.find('div', class_='_3-8w _50f8') is not None:
                     # Get work description
-                    facebook_user_info['about_user']['work'][i]['description'] = item.select(
+                    facebook_user_info['about user']['work'][i]['description'] = item.select(
                         'div._3-8w._50f8')[0].get_text()
 
                 if item.find('img', class_='img') is not None:
                     # Get company image
-                    facebook_user_info['about_user']['work'][i]['image'] = item.select(
+                    facebook_user_info['about user']['work'][i]['image'] = item.select(
                         'div._2tdc img')[0].attrs['src'].replace('amp;', '')
 
         # If no items are present in Work section
         else:
-            facebook_user_info['about_user']['work'] = "No work details to show"
+            facebook_user_info['about user']['work'] = "No work details to show"
 
     # Get Education info
     def get_user_edu(education_contents):
@@ -99,37 +99,37 @@ def gather_user_info(username, home_soup, result_dir):
         all_items = education_contents.find_all('li')
 
         if all_items:
-            facebook_user_info['about_user']['education'] = {}
+            facebook_user_info['about user']['education'] = {}
 
             for i, item in enumerate(all_items):
-                facebook_user_info['about_user']['education'][i] = {}
+                facebook_user_info['about user']['education'][i] = {}
 
                 if item.find('div', class_='_2lzr _50f5 _50f7') is not None:
                     # Get institute name
-                    facebook_user_info['about_user']['education'][i]['institute_name'] = item.select(
+                    facebook_user_info['about user']['education'][i]['institute name'] = item.select(
                         'div._2lzr._50f5._50f7 a')[0].get_text()
                     # Get institute URL
-                    facebook_user_info['about_user']['education'][i]['institute_link'] = item.select(
+                    facebook_user_info['about user']['education'][i]['institute link'] = item.select(
                         'div._2lzr._50f5._50f7 a')[0].attrs['href']
 
                 if item.find('div', class_='fsm fwn fcg') is not None:
                     # Get graduation details
-                    facebook_user_info['about_user']['education'][i]['graduation_details'] = item.select(
+                    facebook_user_info['about user']['education'][i]['graduation details'] = item.select(
                         'div.fsm.fwn.fcg')[0].get_text().split(' · ')
 
                 if item.find('div', class_='_3-8w _50f8') is not None:
                     # Get education description
-                    facebook_user_info['about_user']['education'][i]['description'] = item.select(
+                    facebook_user_info['about user']['education'][i]['description'] = item.select(
                         'div._3-8w._50f8')[0].get_text()
 
                 if item.find('img', class_='img') is not None:
                     # Get institute image
-                    facebook_user_info['about_user']['education'][i]['image'] = item.select(
+                    facebook_user_info['about user']['education'][i]['image'] = item.select(
                         'div._2tdc img')[0].attrs['src'].replace('amp;', '')
 
         # If no items are present in Education section
         else:
-            facebook_user_info['about_user']['education'] = "No education details to show"
+            facebook_user_info['about user']['education'] = "No education details to show"
 
     # Get City and Home details
     def get_user_city_home(city_home_contents):
@@ -142,24 +142,24 @@ def gather_user_info(username, home_soup, result_dir):
         all_items = city_home_contents.find_all('li')
 
         if all_items:
-            facebook_user_info['about_user']['city_home'] = {}
+            facebook_user_info['about user']['city home'] = {}
 
             for i, item in enumerate(all_items):
-                facebook_user_info['about_user']['city_home'][i] = {}
+                facebook_user_info['about user']['city home'][i] = {}
 
                 # Get city name
                 if item.find('div', class_='_6a _6b') is not None:
-                    facebook_user_info['about_user']['city_home'][i]['city'] = item.select(
+                    facebook_user_info['about user']['city home'][i]['city'] = item.select(
                         'div._6a._6b span')[0].get_text()
 
                 # Get city image
                 if item.find('img', class_='img') is not None:
-                    facebook_user_info['about_user']['city_home'][i]['image'] = item.select('div img')[0].attrs[
+                    facebook_user_info['about user']['city home'][i]['image'] = item.select('div img')[0].attrs[
                         'src'].replace('amp;', '')
 
         # If no items are present in City and Home section
         else:
-            facebook_user_info['about_user']['city_home'] = "No city or home details to show"
+            facebook_user_info['about user']['city home'] = "No city or home details to show"
 
     # Get About info
     def get_user_about(about_contents):
@@ -172,14 +172,14 @@ def gather_user_info(username, home_soup, result_dir):
         item = about_contents.find('li')
 
         if item.find('div', class_='_4bl9') is not None:
-            facebook_user_info['about_user']['about'] = item.select('div._4bl9 span')[0].get_text()
+            facebook_user_info['about user']['about'] = item.select('div._4bl9 span')[0].get_text()
 
         elif about_contents.find('li', class_='_3pw9 _2pi4') is not None:
-            facebook_user_info['about_user']['about'] = about_contents.select('li._3pw9._2pi4')[0].get_text()
+            facebook_user_info['about user']['about'] = about_contents.select('li._3pw9._2pi4')[0].get_text()
 
         # If no items are present in About section
         else:
-            facebook_user_info['about_user']['about'] = "No about details to show"
+            facebook_user_info['about user']['about'] = "No about details to show"
 
     # Get Favourite quotes
     def get_user_fav_quotes(fav_quotes_contents):
@@ -192,11 +192,11 @@ def gather_user_info(username, home_soup, result_dir):
         item = fav_quotes_contents.find('li')
 
         if item.find('div', class_='_4bl9') is not None:
-            facebook_user_info['about_user']['fav_quotes'] = item.select('div._4bl9 span')[0].get_text()
+            facebook_user_info['about user']['fav quotes'] = item.select('div._4bl9 span')[0].get_text()
 
         # If no items are present in Favourite quotes section
         else:
-            facebook_user_info['about_user']['fav_quotes'] = "No favourite quotes to show"
+            facebook_user_info['about user']['fav quotes'] = "No favourite quotes to show"
 
     # Get Contact info
     def get_user_contact(contact_contents):
@@ -209,18 +209,18 @@ def gather_user_info(username, home_soup, result_dir):
         all_items = contact_contents.find_all('li', class_='_3pw9 _2pi4 _2ge8')
 
         if all_items:
-            facebook_user_info['about_user']['contact'] = {}
+            facebook_user_info['about user']['contact'] = {}
 
             for i, item in enumerate(all_items):
-                facebook_user_info['about_user']['contact'][i] = {}
+                facebook_user_info['about user']['contact'][i] = {}
 
                 if item.find('div', class_='_4bl7 _3xdi _52ju') is not None:
                     # Get the contact info details
-                    facebook_user_info['about_user']['contact'][i][
+                    facebook_user_info['about user']['contact'][i][
                         item.select('div._4bl7._3xdi._52ju span')[0].get_text()] = \
                         item.select('span._50f7')[0].get_text()
         else:
-            facebook_user_info['about_user']['contact'] = contact_contents.find('li', class_='_3pw9 _2pi4').text
+            facebook_user_info['about user']['contact'] = contact_contents.find('li', class_='_3pw9 _2pi4').text
 
     # Get Favourites info
     def get_user_favourites(fav_section, fav_contents):
@@ -270,7 +270,7 @@ def gather_user_info(username, home_soup, result_dir):
                 # Update photo info
                 facebook_user_info['photos'].update(
                     {i: {'src': photo_url,
-                         'src_set': item.attrs['data-src'].replace('amp;', ''),
+                         'src set': item.attrs['data-src'].replace('amp;', ''),
                          'height': item.attrs['height'],
                          'width': item.attrs['width'],
                          'caption': item.attrs['caption']
@@ -298,18 +298,18 @@ def gather_user_info(username, home_soup, result_dir):
 
         # Get the profile photo
         if home_soup.find('div', class_='_1nv3 _11kg _1nv5 profilePicThumb').find('img') is not None:
-            facebook_user_info['about_user']['profile_photo'] = {}
-            facebook_user_info['about_user']['profile_photo']['src'] = home_soup.find(
+            facebook_user_info['about user']['profile photo'] = {}
+            facebook_user_info['about user']['profile photo']['src'] = home_soup.find(
                 'div', class_='_1nv3 _11kg _1nv5 profilePicThumb').find('img').attrs['src']
-            facebook_user_info['about_user']['profile_photo']['alt_text'] = home_soup.find(
+            facebook_user_info['about user']['profile photo']['alt_text'] = home_soup.find(
                 'div', class_='_1nv3 _11kg _1nv5 profilePicThumb').find('img').attrs['alt']
 
         # Get the Cover image
         if home_soup.find('span', id='fbCoverImageContainer').find('img', class_='coverPhotoImg photo img') is not None:
-            facebook_user_info['about_user']['cover_photo'] = {}
-            facebook_user_info['about_user']['cover_photo']['src'] = home_soup.find(
+            facebook_user_info['about user']['cover photo'] = {}
+            facebook_user_info['about user']['cover photo']['src'] = home_soup.find(
                 'span', id='fbCoverImageContainer').find('img', class_='coverPhotoImg photo img').attrs['src']
-            facebook_user_info['about_user']['cover_photo']['alt_text'] = home_soup.find(
+            facebook_user_info['about user']['cover photo']['alt_text'] = home_soup.find(
                 'span', id='fbCoverImageContainer').find('img', class_='coverPhotoImg photo img').attrs['alt']
 
     # Get data sections
@@ -347,7 +347,7 @@ def gather_user_info(username, home_soup, result_dir):
     favourites = home_soup.select('div._5h60.allFavorites th.label')
     for section in favourites:
         # Get section name
-        sec_name = section.get_text().lower().replace(' ', '_')
+        sec_name = section.get_text().lower()
         # Get section content
         sec_con = section.next_sibling
 
@@ -405,7 +405,7 @@ def gather_page_info(username, home_soup, result_dir):
                     continue
 
                 # Remove any spaces and lowercase everything
-                sec = sec.lower().replace(' ', '_')
+                sec = sec.lower()
                 facebook_page_info['about'][sec] = {}
 
                 # Find all sub-sections
@@ -465,7 +465,7 @@ def gather_page_info(username, home_soup, result_dir):
             for section in sections:
                 if section.find('div', class_='_50f7') is not None:
                     # Get the section name
-                    sec = section.find('div', class_='_50f7').text.lower().replace(' ', '_')
+                    sec = section.find('div', class_='_50f7').text.lower()
 
                     facebook_page_info['about'][sec] = {}
 
@@ -501,7 +501,7 @@ def gather_page_info(username, home_soup, result_dir):
             for section in sections:
                 if section.find('div', class_='_4bl9') is not None:
                     # Get the section name
-                    sec = section.find('div', class_='_4bl9').text.lower().replace(' ', '_')
+                    sec = section.find('div', class_='_4bl9').text.lower()
 
                     facebook_page_info['about'][sec] = {}
 
@@ -525,8 +525,6 @@ def gather_page_info(username, home_soup, result_dir):
         # If milestones section is not present
         else:
             facebook_page_info['about']['milestones'] = "N/A"
-
-        pprint(facebook_page_info['about'])
 
     # Get Posts
     def get_page_posts():
@@ -566,13 +564,13 @@ def gather_page_info(username, home_soup, result_dir):
         if photos_soup.find(id='u_0_d') is not None:
             if photos_soup.find(id='u_0_d').find('img') is not None:
                 # Get profile photo URL
-                facebook_page_info['about']['profile_photo'] = photos_soup.find(id='u_0_d').find('img').attrs['src']
+                facebook_page_info['about']['profile photo'] = photos_soup.find(id='u_0_d').find('img').attrs['src']
 
         # Get the Cover photo
         if photos_soup.find(id='u_0_o') is not None:
             if photos_soup.find(id='u_0_o').find('img') is not None:
                 # Get the cover photo URL
-                facebook_page_info['about']['cover_photo'] = photos_soup.find(id='u_0_o').find('img').attrs['src']
+                facebook_page_info['about']['cover photo'] = photos_soup.find(id='u_0_o').find('img').attrs['src']
 
         # Check if All Photos section is present
         if photos_soup.select('._2pie ._2pie ._2y_h._4-u2._4-u8'):
@@ -742,12 +740,12 @@ def gather_page_info(username, home_soup, result_dir):
                             if event.select('td._4dmi._51m- div._4dml.fsm.fwn.fcg'):
                                 day_time_guests = event.select('td._4dmi._51m- div._4dml.fsm.fwn.fcg')[0].get_text()
                                 if " · " in day_time_guests:
-                                    facebook_page_info['events'][status][i]['day_time'] = day_time_guests.split(
+                                    facebook_page_info['events'][status][i]['day time'] = day_time_guests.split(
                                         " · ")[0].strip()
                                     facebook_page_info['events'][status][i]['guests'] = day_time_guests.split(
                                         " · ")[1].strip()
                                 else:
-                                    facebook_page_info['events'][status][i]['day_time_guests'] = day_time_guests
+                                    facebook_page_info['events'][status][i]['day time guests'] = day_time_guests
 
                             # Check if event has any place or location
                             if event.select('td._5pxd._51m- div._4dmn'):
@@ -801,54 +799,54 @@ def gather_page_info(username, home_soup, result_dir):
             # Get the top 10 pages from the list
             items = pages_liked.find_all(class_='_4-lt', limit=10)
 
-            facebook_page_info['community']['pages_liked'] = {}
+            facebook_page_info['community']['pages liked'] = {}
 
             for i, item in enumerate(items):
-                facebook_page_info['community']['pages_liked'][i] = {}
+                facebook_page_info['community']['pages liked'][i] = {}
                 # Get the page name and link
                 if item.find('a', class_='_4-lu ellipsis') is not None:
-                    facebook_page_info['community']['pages_liked'][i]['link'] = item.find(
+                    facebook_page_info['community']['pages liked'][i]['link'] = item.find(
                         'a', class_='_4-lu ellipsis').attrs['href']
-                    facebook_page_info['community']['pages_liked'][i]['name'] = item.find(
+                    facebook_page_info['community']['pages liked'][i]['name'] = item.find(
                         'a', class_='_4-lu ellipsis').text
 
         # If "Pages liked by page" section is not present
         else:
-            facebook_page_info['community']['pages_liked'] = "No info about liked pages"
+            facebook_page_info['community']['pages liked'] = "No info about liked pages"
 
     # Execute all functions
     get_page_about()
 
     # Sleep for 5 seconds to avoid getting banned
-    # time.sleep(round(uniform(5, 7), 1))
-    #
-    # get_page_posts()
-    #
-    # time.sleep(round(uniform(5, 7), 1))
-    #
-    # # get_page_photos()
-    # #
-    # # time.sleep(round(uniform(5, 7), 1))
-    # #
-    # # get_page_videos()
-    # #
-    # # time.sleep(round(uniform(5, 7), 1))
-    #
-    # get_page_events()
+    time.sleep(round(uniform(5, 7), 1))
+
+    get_page_posts()
+
+    time.sleep(round(uniform(5, 7), 1))
+
+    # get_page_photos()
     #
     # time.sleep(round(uniform(5, 7), 1))
     #
-    # get_page_home_community()
+    # get_page_videos()
     #
-    # # pprint(facebook_page_info)
-    #
-    # # Store result data to file
-    # try:
-    #     with open(result_dir / (username + '-about-fb-page.json'), 'w+') as handle:
-    #         json.dump(facebook_page_info, handle, indent=2)
-    # except Exception as err:
-    #     # print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
-    #     print(json.dumps({"ERROR": str(err)}))
+    # time.sleep(round(uniform(5, 7), 1))
+
+    get_page_events()
+
+    time.sleep(round(uniform(5, 7), 1))
+
+    get_page_home_community()
+
+    # pprint(facebook_page_info)
+
+    # Store result data to file
+    try:
+        with open(result_dir / (username + '-about-fb-page.json'), 'w+') as handle:
+            json.dump(facebook_page_info, handle, indent=2)
+    except Exception as err:
+        # print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
+        print(json.dumps({"ERROR": str(err)}))
 
 
 # Gather info about username
