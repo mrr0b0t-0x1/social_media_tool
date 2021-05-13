@@ -30,13 +30,13 @@ def gather_info(username):
 
     # Target URLs and headers
     reddit_user_info = {}
-    overview_url = 'https://www.reddit.com/user/' + username + '/overview/.json'
+    posts_url = 'https://www.reddit.com/user/' + username + '/submitted/.json'
     about_url = 'https://www.reddit.com/user/' + username + '/about/.json'
     headers = generate_headers()
 
     try:
         # Request the JSON data of user
-        reddit_user_info['overview'] = requests.get(url=overview_url, headers=headers).json()
+        reddit_user_info['posts'] = requests.get(url=posts_url, headers=headers).json()
         # Sleep for 2 seconds to avoid getting banned
         time.sleep(2)
         reddit_user_info['about'] = requests.get(url=about_url, headers=headers).json()
@@ -44,8 +44,8 @@ def gather_info(username):
         # Store result data to respective files
         with open(result_dir / (username + "-about-reddit.json"), "w+") as handle:
             json.dump(reddit_user_info['about'], handle, indent=2)
-        with open(result_dir / (username + "-overview-reddit.json"), "w+") as handle:
-            json.dump(reddit_user_info['overview'], handle, indent=2)
+        with open(result_dir / (username + "-posts-reddit.json"), "w+") as handle:
+            json.dump(reddit_user_info['posts'], handle, indent=2)
 
         # TODO: Remove this in final build
         # Print result data
