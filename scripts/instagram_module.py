@@ -43,11 +43,12 @@ def convert_to_json(username, result_dir):
                     pass
 
                 elif flag.startswith(tuple(["user_info", "most_used", "post"])):
+                    val = line.split(":", 1)
 
-                    if len(line.split(":")) == 1:
-                        temp[key] += line.split(":")[0].strip()
+                    if len(val) == 1:
+                        temp[key] += val[0].strip()
                     else:
-                        key, val = line.split(":")[0].strip(), line.split(":")[1].strip()
+                        key, val = val[0].strip(), val[1].strip()
                         # print(key + ": " + val)
                         if key == "verified" and val == "False":
                             print(json.dumps({"ERROR": username + " is not verified on Instagram, unable to fetch data"}))
