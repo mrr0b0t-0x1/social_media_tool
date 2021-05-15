@@ -112,12 +112,11 @@ function exportTableToFile(username, sections) {
     all_data.append( head, body );
     doc.append(all_data);
 
-    fs.writeFile(path.join(__dirname, "../../exports/table.html"), doc.innerHTML, err => {
-        if (err) {
-            console.log(err)
-        }
-    });
-    // console.log(all_data);
+    // fs.writeFile(path.join(__dirname, "../../exports/table.html"), doc.innerHTML, err => {
+    //     if (err) {
+    //         console.log(err)
+    //     }
+    // });
 
     let opts = {
       uri: 'https://api.sejda.com/v2/html-pdf',
