@@ -23,11 +23,11 @@ const sectionList = {
     "list-about-fb": "Facebook - About",
     "list-posts-fb": "Facebook - Posts",
     "list-about-insta": "Instagram - About",
-    "list-posts-insta": "Instagram - About",
+    "list-posts-insta": "Instagram - Posts",
     "list-about-twitter": "Twitter - About",
     "list-timeline-twitter": "Twitter - Timeline",
     "list-about-reddit": "Reddit - About",
-    "list-overview-reddit": "Reddit - Overview"
+    "list-posts-reddit": "Reddit - Posts"
 }
 
 // Show a dismissable alert
@@ -86,13 +86,13 @@ function exportTableToFile(username, sections) {
     head.appendChild(style);
 
     let h1 = document.createElement('h1')
-    h1.innerHTML = "Searched query: " + username
+    h1.innerHTML = "Searched username: " + username
     body.appendChild(h1);
 
     fixLongStrings();
 
     sections.forEach( function (section) {
-        if ( section.id !== 'list-overview-reddit') {
+        // if ( section.id !== 'list-overview-reddit') {
             let h3 = document.createElement('h3')
             h3.innerHTML = sectionList[ section.id ]
 
@@ -106,12 +106,17 @@ function exportTableToFile(username, sections) {
             div.innerHTML = section.innerHTML
             body.appendChild(div);
 
-        }
+        // }
     });
 
     all_data.append( head, body );
     doc.append(all_data);
 
+    fs.writeFile(path.join(__dirname, "../../exports/table.html"), doc.innerHTML, err => {
+        if (err) {
+            console.log(err)
+        }
+    });
     // console.log(all_data);
 
     let opts = {
@@ -138,7 +143,7 @@ function exportTableToFile(username, sections) {
             })
             .on('response', function (response) {
                 if (response.statusCode === 200) {
-                    response.pipe(fs.createWriteStream(path.join(dir, username + '.pdf')))
+                    response.pipe(fs.createWriteStream(path.join(dir, username + '.pdf'), {flags: "w"}))
                         .on('finish', function () {
                             showDismissableAlert({
                                 'id': 'export-success',

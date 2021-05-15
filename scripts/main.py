@@ -108,6 +108,7 @@ if __name__ == '__main__':
                             print(json.dumps({"DATA": db.get_data()}))
 
                     elif sys.argv[3] == '--update':
+                        db.remove_user("rd")
                         run_search(username, db)
 
                 # Stop timer

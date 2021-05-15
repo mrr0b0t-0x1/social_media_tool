@@ -14,11 +14,14 @@ def fix_filename(username, result_dir):
 
 # Strip ANSI colors from output for osi.ig scraper
 def strip_color(username, result_dir):
-    with open((result_dir / username).with_suffix(".txt"), "r") as handle:
-        lines = handle.readlines()
-    with open((result_dir / username).with_suffix(".txt"), "w") as handle:
-        for line in lines:
-            handle.writelines(re.sub("\033\\[([0-9]+)(;[0-9]+)*m", "", line))
+    try:
+        with open((result_dir / username).with_suffix(".txt"), "r") as handle:
+            lines = handle.readlines()
+        with open((result_dir / username).with_suffix(".txt"), "w") as handle:
+            for line in lines:
+                handle.writelines(re.sub("\033\\[([0-9]+)(;[0-9]+)*m", "", line))
+    except FileNotFoundError as err:
+        print(json.dumps({"ERROR": str(err)}))
 
 # Convert data to JSON for osi.ig scraper
 def convert_to_json(username, result_dir):
@@ -140,10 +143,13 @@ def gather_info(username):
 
         # osi.ig scraper
         with open((result_dir / username).with_suffix(".txt"), "w") as handle:
-            subprocess.run([
-                "python", ROOT_DIR / "venv1" / "src" / "osi.ig" / "main.py",
-                "-u", username, "-p"
-            ], shell=False, stdout=handle, check=True)
+            try:
+                subprocess.run([
+                    "python", ROOT_DIR / "venv1" / "src" / "osi.ig" / "main.py",
+                    "-u", username, "-p"
+                ], shell=False, stdout=handle, check=True)
+            except Exception as err:
+                print(json.dumps({"ERROR": "Some error occurred while fetching Instagram data"}))
 
         # Strip colors from output
         strip_color(username, result_dir)

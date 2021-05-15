@@ -28,9 +28,8 @@ def fix_timeline_file(file):
         with open(file, 'w') as handle:
             handle.write(json.dumps(timeline_data, indent=2))
 
-    except Exception as e:
-        # print(Fore.RED + type(e).__name__ + Fore.RESET + ": " + str(e))
-        print(json.dumps({"ERROR": str(e)}))
+    except Exception:
+        print(json.dumps({"ERROR": "Error reading file at " + str(file)}))
 
 
 def gather_info(username):
@@ -80,7 +79,10 @@ def gather_info(username):
             "--json",
             "--output", result_dir / (username + "-about-twitter.json")
         ], shell=False, stdout=subprocess.DEVNULL, check=True)
+    except Exception:
+        print(json.dumps({"ERROR": "Some error occurred while fetching Twitter about data"}))
 
+    try:
         # Check if user is verified
         if (result_dir / (username + "-about-twitter.json")).exists():
             with open(result_dir / (username + "-about-twitter.json"), "r") as handle:
@@ -97,18 +99,23 @@ def gather_info(username):
                     # Sleep for 2 seconds to avoid getting banned
                     time.sleep(2)
 
-                    subprocess.run([
-                        "python", ROOT_DIR / "venv1/bin/twint",
-                        "--username", username,
-                        "--timeline",
-                        "--limit", "5",
-                        "--json",
-                        "--output", result_dir / (username + "-timeline-twitter.json")
-                    ], shell=False, stdout=subprocess.DEVNULL, check=True)
+                    try:
+                        subprocess.run([
+                            "python", ROOT_DIR / "venv1/bin/twint",
+                            "--username", username,
+                            "--timeline",
+                            "--limit", "5",
+                            "--json",
+                            "--output", result_dir / (username + "-timeline-twitter.json")
+                        ], shell=False, stdout=subprocess.DEVNULL, check=True)
+                    except Exception:
+                        print(json.dumps({"ERROR": "Some error occurred while fetching Twitter timeline data"}))
 
                     # Fix the timeline formatting of JSON data
                     if (result_dir / (username + "-timeline-twitter.json")).exists():
                         fix_timeline_file(str(result_dir / (username + "-timeline-twitter.json")))
+
+                print(json.dumps({"INFO": "Twitter data fetched"}))
 
         # Read data from result files and store in twitter_user_info
         # twitter_user_info = []
@@ -124,8 +131,6 @@ def gather_info(username):
         #     for line in timeline:
         #         temp_dict = json.loads(line)
         #         twitter_user_info.append(temp_dict)
-
-        print(json.dumps({"INFO": "Twitter data fetched"}))
 
     except Exception as err:
         # print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))

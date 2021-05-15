@@ -124,7 +124,7 @@ $(document).ready(function () {
                 });
             }
             else if (btn === btnSearchUser) {
-                if (data) {
+                if ($('#results-tabContent div[id^="nav-tabContent"] > div').text().trim() === '') {
                     showDismissableAlert({
                         'id': 'done-alert',
                         'class': 'alert-success',
@@ -142,11 +142,22 @@ $(document).ready(function () {
                 }
             }
             else if (btn === btnUpdateData) {
-                showDismissableAlert({
-                    'id': 'update-alert',
-                    'class': 'alert-success',
-                    'msg': 'User data updated!'
-                });
+                if ($('#results-tabContent div[id^="nav-tabContent"] > div').text().trim() === '') {
+                    showDismissableAlert({
+                        'id': 'update-alert',
+                        'class': 'alert-success',
+                        'msg': 'User data updated!'
+                    });
+                    setTimeout(function() {
+                        $('#list-results-list').click()
+                    }, 1000);
+                } else {
+                    showDismissableAlert({
+                        'id': 'error-alert',
+                        'class': 'alert-danger',
+                        'msg': 'Snap! An error occurred'
+                    });
+                }
             }
             else if (btn === btnRemoveData) {
                 showDismissableAlert({

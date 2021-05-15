@@ -6,6 +6,7 @@ const liveResults = document.getElementById('liveResults');
 
 // Import the export_data module to perform export operations
 const { exportData } = require( path.resolve(__dirname, './export_data.js') );
+const { filterData } = require( path.resolve(__dirname, './data_models.js') );
 
 let username= null;
 let profile_urls = {};
@@ -110,6 +111,7 @@ function JSONToHTMLTable(data, site, sectionElement) {
             console.log("Error: " + message.ERROR);
         }
         else if (message.DATA) {
+            console.log(sectionElement)
             sectionElement.innerHTML = message.DATA;
 
             sectionElement.firstElementChild.id = "root" + generateID(4);
@@ -124,8 +126,13 @@ function JSONToHTMLTable(data, site, sectionElement) {
 
 function traverseDataTree(obj, site, section) {
     const sectionElement = getCreateSection(section);
-    JSONToHTMLTable(obj, site, sectionElement);
 
+    if (section.includes("about-fb")) {
+        JSONToHTMLTable(obj, site, sectionElement);
+    } else {
+        const filteredData = filterData(username, obj, site, section);
+        JSONToHTMLTable(filteredData, site, sectionElement);
+    }
     // if (!table)
     //     table = sectionElement.querySelector(".table.table-striped");
     //
