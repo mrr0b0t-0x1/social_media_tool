@@ -1,2 +1,5 @@
 # Default ignored files
 *__pycache__*
+/exports/*
+/scripts/results/*
+/scripts/database/*
