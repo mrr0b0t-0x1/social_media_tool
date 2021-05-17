@@ -1,12 +1,2 @@
 # Default ignored files
 *__pycache__*
-
-# exclude everything
-exports/*
-scripts/results/*
-scripts/database/*
-
-# exception to the rule
-!exports/.gitkeep
-!scripts/results/.gitkeep
-!scripts/database/.gitkeep
