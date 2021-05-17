@@ -111,7 +111,6 @@ function JSONToHTMLTable(data, site, sectionElement) {
             console.log("Error: " + message.ERROR);
         }
         else if (message.DATA) {
-            console.log(sectionElement)
             sectionElement.innerHTML = message.DATA;
 
             sectionElement.firstElementChild.id = "root" + generateID(4);

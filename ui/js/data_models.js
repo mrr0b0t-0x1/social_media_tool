@@ -125,7 +125,6 @@ function createNewInstance(key) {
 
 function filter(username, data, site, section) {
     const sectionName = getSectionName(username, section)
-    console.log(sectionName)
 
     let check = map_obj[sectionName]
 
