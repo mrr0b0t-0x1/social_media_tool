@@ -1,6 +1,0 @@
-[submodule "venv1/src/sherlock"]
-	path = venv1/src/sherlock
-	url = https://github.com/sherlock-project/sherlock.git
-[submodule "venv1/src/twint"]
-	path = venv1/src/twint
-	url = https://github.com/twintproject/twint.git
