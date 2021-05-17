@@ -17,7 +17,7 @@ $(document).ready(function () {
     const btnExportData = document.getElementById("btnExportData");
 
     // Import the get_data module to perform DB operations
-    const { parseDBData, siteList, tabAndPanes, exportTables } = require( path.resolve(__dirname, './js/get_data.js') );
+    const { parseDBData, siteList, tabAndPanes, exportTables } = require( path.resolve(__dirname, 'js' , 'get_data.js') );
 
     // Toggle the live results box when "Search" or "New Search" button is clicked
     function toggleLiveResults() { $('#searchBox, #liveResults').toggleClass(
@@ -55,9 +55,9 @@ $(document).ready(function () {
 
         const options = {
             mode: 'json',
-            pythonPath: '../venv1/bin/python',
+            pythonPath: path.resolve(__dirname, '..', 'venv1', 'bin', 'python'),
             pythonOptions: ['-u'], // get print results in real-time
-            scriptPath: '../scripts',
+            scriptPath: path.resolve(__dirname, '..', 'scripts'),
             args: args
         };
 

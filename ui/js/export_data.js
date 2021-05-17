@@ -4,7 +4,7 @@ const path = require('path');
 
 let base_css = null;
 fs.readFile(
-    path.join(__dirname, "../node_modules/bootstrap/dist/css/bootstrap.min.css"),
+    path.resolve(__dirname, '..' , 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.min.css'),
     'utf8',
     function(err, data) {
         if (err) throw err;
@@ -12,7 +12,7 @@ fs.readFile(
 });
 let export_css = null;
 fs.readFile(
-    path.join(__dirname, "../css/export.css"),
+    path.resolve(__dirname, '..', 'css', 'export.css'),
     'utf8',
     function(err, data) {
         if (err) throw err;
@@ -132,7 +132,7 @@ function exportTableToFile(username, sections) {
       }
     };
 
-    const dir = path.join(__dirname, "../../exports/" + username)
+    const dir = path.resolve(__dirname, '..', '..', 'exports', username)
     const res = createDir(dir)
 
     if ( res ) {
@@ -142,7 +142,7 @@ function exportTableToFile(username, sections) {
             })
             .on('response', function (response) {
                 if (response.statusCode === 200) {
-                    response.pipe(fs.createWriteStream(path.join(dir, username + '.pdf'), {flags: "w"}))
+                    response.pipe(fs.createWriteStream(path.resolve(dir, username + '.pdf'), {flags: "w"}))
                         .on('finish', function () {
                             showDismissableAlert({
                                 'id': 'export-success',

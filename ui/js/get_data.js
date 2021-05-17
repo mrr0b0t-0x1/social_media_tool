@@ -5,8 +5,8 @@ const { PythonShell } = require('python-shell');
 const liveResults = document.getElementById('liveResults');
 
 // Import the export_data module to perform export operations
-const { exportData } = require( path.resolve(__dirname, './export_data.js') );
-const { filterData } = require( path.resolve(__dirname, './data_models.js') );
+const { exportData } = require( path.resolve(__dirname, 'export_data.js') );
+const { filterData } = require( path.resolve(__dirname, 'data_models.js') );
 
 let username= null;
 let profile_urls = {};
@@ -96,9 +96,9 @@ function generateID(length) {
 function JSONToHTMLTable(data, site, sectionElement) {
     const options = {
         mode: 'json',
-        pythonPath: '../venv1/bin/python',
+        pythonPath: path.resolve(__dirname, '..', '..', 'venv1', 'bin', 'python'),
         pythonOptions: ['-u'], // get print results in real-time
-        scriptPath: '../scripts',
+        scriptPath: path.resolve(__dirname, '..', '..', 'scripts'),
         args: ['--json-to-html', JSON.stringify(data)]
     };
 
