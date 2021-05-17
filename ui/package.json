@@ -7,7 +7,7 @@
     "request": "^2.88.2"
   },
   "scripts": {
-    "start": "node_modules/.bin/electron ."
+    "start": "node node_modules/.bin/electron ."
   },
   "author": "Arpan Adlakhiya",
   "license": "ISC",
