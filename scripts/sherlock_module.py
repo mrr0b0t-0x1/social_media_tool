@@ -14,7 +14,7 @@ def check_username(username):
     # Run sherlock as a subprocess
     try:
         res = subprocess.run([
-            "python", ROOT_DIR / "venv1/src/sherlock/sherlock",
+            "python", ROOT_DIR / "venv1" / "src" / "sherlock" / "sherlock",
             username,
             "--site", "Twitter",
             "--site", "Reddit",

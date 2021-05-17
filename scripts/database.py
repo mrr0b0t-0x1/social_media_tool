@@ -63,12 +63,12 @@ class DatabaseConnection(object):
                 self.site_dirs = self.result_dir.glob('*/')
 
                 for site in self.site_dirs:
-                    site_name = str(site).split('/')[-1]
+                    site_name = str(site.parts[-1])
 
                     # Update data file paths
                     data_files = site.glob('*.json')
                     for file in data_files:
-                        filename = str(file).split('/')[-1].split('.json')[0]
+                        filename = str(file.parts[-1].split('.json')[0])
 
                         self.db.update(set_nested([
                             'sites_found',
@@ -107,7 +107,7 @@ class DatabaseConnection(object):
             self.db.insert({
                 'name': self.username,
                 'sites_found': {
-                    str(site).split('/')[-1]: {
+                    str(site.parts[-1]): {
                         'dir_url': str(site),
                     } for site in self.site_dirs
                 }
@@ -153,7 +153,7 @@ class DatabaseConnection(object):
 
         for user_dir in data_dir.iterdir():
             if user_dir.is_dir():
-                uname = str(user_dir).split('/')[-1]
+                uname = str(user_dir.parts[-1])
 
                 self.username = uname
                 self.result_dir = ROOT_DIR / "scripts" / "results" / uname

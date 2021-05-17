@@ -73,7 +73,7 @@ def gather_info(username):
     # subprocess.run("twint -u " + username + " --user-full --json -o " + username + "-about-twitter.json", shell=True)
     try:
         subprocess.run([
-            "python", ROOT_DIR / "venv1/bin/twint",
+            "python", ROOT_DIR / "venv1" / "bin" / "twint",
             "--username", username,
             "--user-full",
             "--json",
@@ -101,7 +101,7 @@ def gather_info(username):
 
                     try:
                         subprocess.run([
-                            "python", ROOT_DIR / "venv1/bin/twint",
+                            "python", ROOT_DIR / "venv1" / "bin" / "twint",
                             "--username", username,
                             "--timeline",
                             "--limit", "5",
