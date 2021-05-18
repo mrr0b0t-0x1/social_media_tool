@@ -1,10 +1,11 @@
 import subprocess
 import json
 # from colorama import Fore
-from globals import ROOT_DIR
+from globals import ROOT_DIR, scripts_path
 import time
 import logging
 # import tweepy
+import os
 
 # Start a logger
 logger = logging.getLogger('twitter module')
@@ -83,13 +84,18 @@ def gather_info(username):
     # subprocess.run("twint -u " + username + " --user-full --json -o " + username + "-about-twitter.json", shell=True)
     logger.info("Fetching Twitter about data...")
     try:
+        logger.info("Removing previous twint about results...")
+        if (result_dir / (username + "-about-twitter.json")).exists():
+            (result_dir / (username + "-about-twitter.json")).unlink()
+
         logger.info("Running twint...")
         subprocess.run([
-            "python", ROOT_DIR / "venv1" / "bin" / "twint",
+            os.path.join(scripts_path, "python"),
+            os.path.join(scripts_path, "twint"),
             "--username", username,
             "--user-full",
             "--json",
-            "--output", result_dir / (username + "-about-twitter.json")
+            "--output", os.path.join(str(result_dir), username + "-about-twitter.json")
         ], shell=False, stdout=subprocess.DEVNULL, check=True)
         logger.info("Fetched Twitter about data")
     except Exception:
@@ -127,13 +133,18 @@ def gather_info(username):
 
                     logger.info("Fetching Twitter timeline data...")
                     try:
+                        logger.info("Removing previous twint timeline results...")
+                        if (result_dir / (username + "-timeline-twitter.json")).exists():
+                            (result_dir / (username + "-timeline-twitter.json")).unlink()
+
                         subprocess.run([
-                            "python", ROOT_DIR / "venv1" / "bin" / "twint",
+                            os.path.join(scripts_path, "python"),
+                            os.path.join(scripts_path, "twint"),
                             "--username", username,
                             "--timeline",
                             "--limit", "5",
                             "--json",
-                            "--output", result_dir / (username + "-timeline-twitter.json")
+                            "--output", os.path.join(str(result_dir), username + "-timeline-twitter.json")
                         ], shell=False, stdout=subprocess.DEVNULL, check=True)
                         logger.info("Fetched Twitter timeline data")
                     except Exception:

@@ -1,11 +1,18 @@
 from pathlib import Path
 import os
+import platform
 import logging
 from logging.handlers import RotatingFileHandler
 
-# Sets current working directory
-# as constant variable
+# Sets current working directory as constant variable
 ROOT_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
+
+# Check platform and set venv path
+scripts_path = ''
+if platform.system() == "Windows":
+    scripts_path = str(os.path.join(ROOT_DIR, "venv1", "Scripts"))
+elif platform.system() == "Linux":
+    scripts_path = str(os.path.join(ROOT_DIR, "venv1", "bin"))
 
 # List of random User Agents
 USER_AGENTS = [

@@ -1,7 +1,8 @@
+import os
 import subprocess
 import re
 import json
-from globals import ROOT_DIR
+from globals import ROOT_DIR, scripts_path
 import logging
 
 # Start a logger
@@ -19,7 +20,8 @@ def check_username(username):
     try:
         logger.info("Running sherlock...")
         res = subprocess.run([
-            "python", ROOT_DIR / "venv1" / "src" / "sherlock" / "sherlock",
+            os.path.join(scripts_path, "python"),
+            os.path.join(str(ROOT_DIR), "venv1", "src", "sherlock", "sherlock"),
             username,
             "--site", "Twitter",
             "--site", "Reddit",

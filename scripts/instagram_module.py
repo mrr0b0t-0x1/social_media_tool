@@ -1,5 +1,6 @@
+import os
 import subprocess
-from globals import ROOT_DIR
+from globals import ROOT_DIR, scripts_path
 import json
 import re
 import logging
@@ -162,7 +163,8 @@ def gather_info(username):
             try:
                 logger.info("Running osi.ig...")
                 subprocess.run([
-                    "python", ROOT_DIR / "venv1" / "src" / "osi.ig" / "main.py",
+                    os.path.join(scripts_path, "python"),
+                    os.path.join(str(ROOT_DIR), "venv1", "src", "osi.ig", "main.py"),
                     "-u", username, "-p"
                 ], shell=False, stdout=handle, check=True)
                 logger.info("Executed osi.ig successfully")
