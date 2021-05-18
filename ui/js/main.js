@@ -1,12 +1,16 @@
 const { app, BrowserWindow } = require('electron')
+const os = require('os');
 const path = require('path')
 const { PythonShell } = require('python-shell')
+
+// Set python-shell venv path
+const scripts_path = path.resolve(__dirname, '..', '..', 'venv1', os.platform() === 'win32' ? 'Scripts' : 'bin')
 
 // Only for python logging
 function log_msg(args) {
     const options = {
         mode: 'json',
-        pythonPath: path.resolve(__dirname, '..', '..', 'venv1', 'bin', 'python'),
+        pythonPath: path.resolve(scripts_path, 'python'),
         pythonOptions: ['-u'], // get print results in real-time
         scriptPath: path.resolve(__dirname, '..', '..', 'scripts'),
         args: args

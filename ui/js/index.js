@@ -1,3 +1,4 @@
+const os = require('os');
 const path = require('path');
 const { PythonShell } = require('python-shell')
 const kill = require('tree-kill');
@@ -51,12 +52,15 @@ $(document).ready(function () {
         }
     }
 
+    // Set python-shell venv path
+    const scripts_path = path.resolve(__dirname, '..', 'venv1', os.platform() === 'win32' ? 'Scripts' : 'bin')
+
     // Create a python-shell instance
     function createPythonShell(args, btn) {
 
         const options = {
             mode: 'json',
-            pythonPath: path.resolve(__dirname, '..', 'venv1', 'bin', 'python'),
+            pythonPath: path.resolve(scripts_path, 'python'),
             pythonOptions: ['-u'], // get print results in real-time
             scriptPath: path.resolve(__dirname, '..', 'scripts'),
             args: args
