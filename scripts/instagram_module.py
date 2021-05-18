@@ -2,31 +2,39 @@ import subprocess
 from globals import ROOT_DIR
 import json
 import re
-from colorama import Fore
+import logging
+# from colorama import Fore
 
+# Start a logger
+logger = logging.getLogger('instagram module')
 
 # Fix filename for consistency
-def fix_filename(username, result_dir):
-    if (result_dir / (username + ".json")).exists():
-        (result_dir / (username + ".json")).rename(
-            result_dir / (username + "-about-instagram.json")
-        )
+# def fix_filename(username, result_dir):
+#     if (result_dir / (username + ".json")).exists():
+#         (result_dir / (username + ".json")).rename(
+#             result_dir / (username + "-about-instagram.json")
+#         )
 
 # Strip ANSI colors from output for osi.ig scraper
 def strip_color(username, result_dir):
+    logger.info("Stripping colors from Instagram results...")
     try:
         with open((result_dir / username).with_suffix(".txt"), "r") as handle:
             lines = handle.readlines()
         with open((result_dir / username).with_suffix(".txt"), "w") as handle:
             for line in lines:
                 handle.writelines(re.sub("\033\\[([0-9]+)(;[0-9]+)*m", "", line))
+        logger.info("Stripped colors from Instagram results")
     except FileNotFoundError as err:
-        print(json.dumps({"ERROR": str(err)}))
+        logger.exception("Exception occurred")
+        print(json.dumps({"ERROR": "Error occurred while simplifying Instagram results, see logs for more details."}))
 
 # Convert data to JSON for osi.ig scraper
 def convert_to_json(username, result_dir):
     data = {}
     private = False
+
+    logger.info("Converting Instagram text file to JSON file...")
     try:
         # Open the txt fiel and convert data to dictionary
         with open((result_dir / username).with_suffix(".txt"), "r") as handle:
@@ -54,16 +62,19 @@ def convert_to_json(username, result_dir):
                         key, val = val[0].strip(), val[1].strip()
                         # print(key + ": " + val)
                         if key == "verified" and val == "False":
-                            print(json.dumps({"ERROR": username + " is not verified on Instagram, unable to fetch data"}))
+                            logger.error(f"{username} is not verified on Instagram, unable to fetch data")
+                            print(json.dumps({"ERROR": f"{username} is not verified on Instagram, unable to fetch data"}))
                             return
 
                         elif key == "private" and val == "True":
+                            logger.error(f"{username}'s profile is private on Instagram, unable to fetch posts")
                             private = True
-                            print(json.dumps({"ERROR": username + "'s profile is private on Instagram, unable to fetch posts"}))
+                            print(json.dumps({"ERROR": f"{username}'s profile is private on Instagram, unable to fetch posts"}))
 
                         else:
                             temp[key] = val
 
+        logger.info("Storing Instagram about data to JSON file...")
         # Store about data in JSON
         with open((result_dir / (username + "-about-insta")).with_suffix(".json"), "w") as handle:
 
@@ -76,9 +87,11 @@ def convert_to_json(username, result_dir):
                     about[key] = data[key]
 
             json.dump(about, handle, indent=2)
+        logger.info("Stored Instagram about data to JSON file")
 
         # Store posts data in JSON if not private
         if not private:
+            logger.info("Storing Instagram posts data to JSON file...")
             with open((result_dir / (username + "-posts-insta")).with_suffix(".json"), "w") as handle:
 
                 posts_keys = [key for key in data.keys() if key.startswith('post')]
@@ -87,9 +100,11 @@ def convert_to_json(username, result_dir):
                     posts[key] = data[key]
 
                 json.dump(posts, handle, indent=2)
+            logger.info("Stored Instagram posts data to JSON file")
 
     except Exception as err:
-        print(json.dumps({"ERROR": str(err)}))
+        logger.exception("Exception occurred")
+        print(json.dumps({"ERROR": "Error occurred while converting Instagram data, see logs for more details."}))
 
 
 def gather_info(username):
@@ -100,6 +115,7 @@ def gather_info(username):
     """
 
     print(json.dumps({"INFO": "Fetching Instagram Data..."}))
+    logger.info("Fetching Instagram data...")
 
     # Target directory
     result_dir = ROOT_DIR / "scripts" / "results" / username / "instagram"
@@ -144,12 +160,15 @@ def gather_info(username):
         # osi.ig scraper
         with open((result_dir / username).with_suffix(".txt"), "w") as handle:
             try:
+                logger.info("Running osi.ig...")
                 subprocess.run([
                     "python", ROOT_DIR / "venv1" / "src" / "osi.ig" / "main.py",
                     "-u", username, "-p"
                 ], shell=False, stdout=handle, check=True)
+                logger.info("Executed osi.ig successfully")
             except Exception as err:
-                print(json.dumps({"ERROR": "Some error occurred while fetching Instagram data"}))
+                logger.exception("Exception occurred")
+                print(json.dumps({"ERROR": "Error occurred while fetching Instagram data, see logs for more details."}))
 
         # Strip colors from output
         strip_color(username, result_dir)
@@ -158,10 +177,14 @@ def gather_info(username):
         convert_to_json(username, result_dir)
 
         # Remove the txt file
+        logger.info("Removing Instagram text file...")
         (result_dir / username).with_suffix(".txt").unlink()
+        logger.info("Removed Instagram text file")
 
         print(json.dumps({"INFO": "Instagram data fetched"}))
+        logger.info("Fetched Instagram data")
 
     except Exception as err:
+        logger.exception("Exception occurred")
         # print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
-        print(json.dumps({"ERROR": str(err)}))
+        print(json.dumps({"ERROR": "Error occurred while fetching Instagram data, see logs for more details."}))

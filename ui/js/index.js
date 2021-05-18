@@ -2,6 +2,7 @@ const path = require('path');
 const { PythonShell } = require('python-shell')
 const kill = require('tree-kill');
 
+
 $(document).ready(function () {
     const userName = document.getElementById('userName');
     const usernameForm = document.getElementById('usernameForm');

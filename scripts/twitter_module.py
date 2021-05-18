@@ -1,9 +1,13 @@
 import subprocess
 import json
-from colorama import Fore
+# from colorama import Fore
 from globals import ROOT_DIR
 import time
+import logging
 # import tweepy
+
+# Start a logger
+logger = logging.getLogger('twitter module')
 
 def fix_timeline_file(file):
     """
@@ -11,12 +15,16 @@ def fix_timeline_file(file):
     :param file:
     :return:
     """
+    logger.info("Fixing Twitter timeline file formatting")
+
     timeline_data = {}
 
     i = 0
     try:
+        logger.info("Fixing Twitter timeline file...")
         with open(file, 'r') as handle:
             lines = handle.readlines()
+
             for line in lines:
                 # Keep only latest 10 tweets
                 if i < 10:
@@ -24,12 +32,13 @@ def fix_timeline_file(file):
                     i += 1
                 else:
                     break
-
         with open(file, 'w') as handle:
             handle.write(json.dumps(timeline_data, indent=2))
+        logger.info("Fixed Twitter timeline file")
 
     except Exception:
-        print(json.dumps({"ERROR": "Error reading file at " + str(file)}))
+        logger.exception("Exception occurred")
+        print(json.dumps({"ERROR": "Error occurred while fixing Twitter timeline file, see logs for more details."}))
 
 
 def gather_info(username):
@@ -39,6 +48,7 @@ def gather_info(username):
     :return:
     """
 
+    logger.info("Fetching Twitter data...")
     print(json.dumps({"INFO": "Fetching Twitter Data..."}))
 
     # Target directory
@@ -71,7 +81,9 @@ def gather_info(username):
 
     # Run twint as a subprocess
     # subprocess.run("twint -u " + username + " --user-full --json -o " + username + "-about-twitter.json", shell=True)
+    logger.info("Fetching Twitter about data...")
     try:
+        logger.info("Running twint...")
         subprocess.run([
             "python", ROOT_DIR / "venv1" / "bin" / "twint",
             "--username", username,
@@ -79,26 +91,41 @@ def gather_info(username):
             "--json",
             "--output", result_dir / (username + "-about-twitter.json")
         ], shell=False, stdout=subprocess.DEVNULL, check=True)
+        logger.info("Fetched Twitter about data")
     except Exception:
-        print(json.dumps({"ERROR": "Some error occurred while fetching Twitter about data"}))
+        logger.exception("Exception occurred")
+        print(json.dumps({"ERROR": "Error occurred while fetching Twitter about data, see logs for more details."}))
 
     try:
         # Check if user is verified
+        logger.info("Checking if Twitter about file exists")
         if (result_dir / (username + "-about-twitter.json")).exists():
+            logger.info("Twitter about file exists")
+
             with open(result_dir / (username + "-about-twitter.json"), "r") as handle:
+                logger.info("Opened Twitter about file")
+
                 about = json.load(handle)
+                logger.info("Loaded Twitter about data from file")
 
                 # If not verified, remove the fetched file and exit
+                logger.info("Checking if Twitter user is verified...")
                 if not about['verified']:
+                    logger.error("Twitter user is not verified")
                     print(json.dumps({"ERROR": username + " is not verified on Twitter, unable to fetch data"}))
 
+                    logger.info("Removing fetched Twitter data...")
                     (result_dir / (username + "-about-twitter.json")).unlink()
+                    logger.info("Twitter data removed")
+
                     return
 
                 else:
+                    logger.info("Twitter user is verified")
                     # Sleep for 2 seconds to avoid getting banned
                     time.sleep(2)
 
+                    logger.info("Fetching Twitter timeline data...")
                     try:
                         subprocess.run([
                             "python", ROOT_DIR / "venv1" / "bin" / "twint",
@@ -108,14 +135,20 @@ def gather_info(username):
                             "--json",
                             "--output", result_dir / (username + "-timeline-twitter.json")
                         ], shell=False, stdout=subprocess.DEVNULL, check=True)
+                        logger.info("Fetched Twitter timeline data")
                     except Exception:
-                        print(json.dumps({"ERROR": "Some error occurred while fetching Twitter timeline data"}))
+                        logger.exception("Exception occurred")
+                        print(json.dumps({"ERROR": "Error occurred while fetching Twitter timeline data, see logs for more details."}))
 
                     # Fix the timeline formatting of JSON data
+                    logger.info("Checking if Twitter timeline file exists")
                     if (result_dir / (username + "-timeline-twitter.json")).exists():
+                        logger.info("Twitter timeline file exists")
+
                         fix_timeline_file(str(result_dir / (username + "-timeline-twitter.json")))
 
                 print(json.dumps({"INFO": "Twitter data fetched"}))
+                logger.info("Fetched Twitter data")
 
         # Read data from result files and store in twitter_user_info
         # twitter_user_info = []
@@ -133,10 +166,6 @@ def gather_info(username):
         #         twitter_user_info.append(temp_dict)
 
     except Exception as err:
+        logger.exception("Exception occurred")
         # print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
-        print(json.dumps({"ERROR": str(err)}))
-
-    # TODO: Remove this in final build
-    # Print result data
-    # print('\nTwitter Data:')
-    # print(json.dumps(twitter_user_info, indent=2))
+        print(json.dumps({"ERROR": "Error occurred while fetching Twitter data, see logs for more details."}))

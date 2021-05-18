@@ -1,5 +1,7 @@
 from pathlib import Path
 import os
+import logging
+from logging.handlers import RotatingFileHandler
 
 # Sets current working directory
 # as constant variable
@@ -41,3 +43,11 @@ HEADERS = {
     'DNT': '1',
     "Upgrade-Insecure-Requests": "1"
 }
+
+# Logging config
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    level=logging.INFO,
+    handlers=[RotatingFileHandler(filename=ROOT_DIR / 'logs' / 'app.log', maxBytes=100000, backupCount=10)]
+)

@@ -6,9 +6,11 @@ import re
 import time
 from random import randint, uniform
 from globals import *
-from colorama import Fore
-from pprint import pprint
+# from colorama import Fore
 from facebook_scraper import get_posts
+
+# Start a logger
+logger = logging.getLogger('facebook module')
 
 # Generate new headers each time the program is run
 headers = {
@@ -361,8 +363,9 @@ def gather_user_info(username, home_soup, result_dir):
         with open(result_dir / (username + "-about-fb-user.json"), "w+") as handle:
             json.dump(facebook_user_info, handle, indent=2)
     except Exception as err:
+        logger.exception("Exception occurred")
         # print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
-        print(json.dumps({"ERROR": str(err)}))
+        print(json.dumps({"ERROR": "Error occurred while storing Facebook user data, see logs for more details."}))
 
     # TODO: Remove this in final build
     # Print result data
@@ -544,8 +547,9 @@ def gather_page_info(username, home_soup, result_dir):
             with open(result_dir / (username + "-posts-fb-page.json"), 'w+', encoding='utf-8') as jsonf:
                 jsonf.write(json.dumps(json_posts, indent=2, ))
         except Exception as e:
+            logger.exception("Exception occurred")
             # print(Fore.RED + type(e).__name__ + Fore.RESET + ": " + str(e))
-            print(json.dumps({"ERROR": str(e)}))
+            print(json.dumps({"ERROR": "Error occurred while storing Facebook page posts data, see logs for more details."}))
 
     # Get Photos
     def get_page_photos():
@@ -845,14 +849,16 @@ def gather_page_info(username, home_soup, result_dir):
         with open(result_dir / (username + '-about-fb-page.json'), 'w+') as handle:
             json.dump(facebook_page_info, handle, indent=2)
     except Exception as err:
+        logger.exception("Exception occurred")
         # print(Fore.RED + type(err).__name__ + Fore.RESET + ": " + str(err))
-        print(json.dumps({"ERROR": str(err)}))
+        print(json.dumps({"ERROR": "Error occurred while storing Facebook page about data, see logs for more details."}))
 
 
 # Gather info about username
 def gather_info(username):
 
     print(json.dumps({"INFO": "Fetching Facebook Data..."}))
+    logger.info("Fetching Facebook data...")
 
     try:
         # Fetch the home page
@@ -864,37 +870,48 @@ def gather_info(username):
         # Create the BeautifulSoup object
         home_soup = bs4.BeautifulSoup(home_page.html.html, 'html.parser')
 
+        logger.info("Checking if Facebook profile or page exists...")
         # Check if it is a FB profile or FB page
         if home_soup.find('meta', property='al:android:url') is not None:
             # Target directory
             result_dir = ROOT_DIR / "scripts" / "results" / username / "facebook"
 
+            logger.info("Checking if Facebook profile or page is verified...")
             # Check if the profile or page is verified
             if home_soup.find('a', class_='_56_f _5dzy _5d-1 _3twv _33v-') is not None\
                     or home_soup.find('i', class_='sp_6GzVah_U6-w sx_1a3bfc') is not None:
 
+                logger.info("Checking if it's a Facebook profile or page...")
                 # If its a FB profile
                 if 'fb://profile/' in home_soup.find('meta', property='al:android:url')['content']:
+                    logger.info("Its a Facebook profile, fetching profile data...")
                     gather_user_info(username, home_soup, result_dir)
 
+                    logger.info("Fetched Facebook profile data")
                     print(json.dumps({"INFO": "Facebook data fetched"}))
 
                 # If its a FB page
                 elif 'fb://page/' in home_soup.find('meta', property='al:android:url')['content']:
+                    logger.info("Its a Facebook page, fetching page data...")
                     gather_page_info(username, home_soup, result_dir)
 
+                    logger.info("Fetched Facebook page data")
                     print(json.dumps({"INFO": "Facebook data fetched"}))
 
                 # If its not a FB profile or page
                 else:
+                    logger.error("Not a Facebook page or profile, try again")
                     print(json.dumps({"ERROR": "This doesn't seem to be a facebook profile or page. Please try again."}))
 
             # If the profile or page is not verified
             else:
-                print(json.dumps({"ERROR": username + " is not verified on Facebook, unable to fetch data"}))
+                logger.error(f"{username} is not verified on Facebook")
+                print(json.dumps({"ERROR": f"{username} is not verified on Facebook, unable to fetch data"}))
 
         else:
+            logger.error("There is no Facebook profile or page by this name, try again")
             print(json.dumps({"ERROR": "There is no facebook profile or page by this name. Please try again."}))
 
     except Exception as err:
-        print(json.dumps({"ERROR": str(err)}))
+        logger.exception("Exception occurred")
+        print(json.dumps({"ERROR": "Error occurred while fetching Facebook data, see logs for more details."}))
