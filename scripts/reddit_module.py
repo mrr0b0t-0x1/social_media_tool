@@ -51,12 +51,12 @@ def gather_info(username):
 
         # Store result data to respective files
         logger.info("Storing Reddit about data to file...")
-        with open(result_dir / (username + "-about-reddit.json"), "w+") as handle:
+        with open(result_dir / (username + "-about-reddit.json"), "w+", encoding='utf-8') as handle:
             json.dump(reddit_user_info['about'], handle, indent=2)
         logger.info("Stored Reddit about data to file")
 
         logger.info("Storing Reddit posts data to file...")
-        with open(result_dir / (username + "-posts-reddit.json"), "w+") as handle:
+        with open(result_dir / (username + "-posts-reddit.json"), "w+", encoding='utf-8') as handle:
             json.dump(reddit_user_info['posts'], handle, indent=2)
         logger.info("Stored Reddit posts data to file")
 

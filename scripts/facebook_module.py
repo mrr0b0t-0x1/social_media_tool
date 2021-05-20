@@ -360,7 +360,7 @@ def gather_user_info(username, home_soup, result_dir):
 
     # Store result data to file
     try:
-        with open(result_dir / (username + "-about-fb-user.json"), "w+") as handle:
+        with open(result_dir / (username + "-about-fb-user.json"), "w+", encoding='utf-8') as handle:
             json.dump(facebook_user_info, handle, indent=2)
     except Exception as err:
         logger.exception("Exception occurred")
@@ -846,7 +846,7 @@ def gather_page_info(username, home_soup, result_dir):
 
     # Store result data to file
     try:
-        with open(result_dir / (username + '-about-fb-page.json'), 'w+') as handle:
+        with open(result_dir / (username + '-about-fb-page.json'), 'w+', encoding='utf-8') as handle:
             json.dump(facebook_page_info, handle, indent=2)
     except Exception as err:
         logger.exception("Exception occurred")

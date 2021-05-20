@@ -6,6 +6,7 @@ import time
 import logging
 # import tweepy
 import os
+import platform
 
 # Start a logger
 logger = logging.getLogger('twitter module')
@@ -23,7 +24,7 @@ def fix_timeline_file(file):
     i = 0
     try:
         logger.info("Fixing Twitter timeline file...")
-        with open(file, 'r') as handle:
+        with open(file, 'r', encoding='utf-8') as handle:
             lines = handle.readlines()
 
             for line in lines:
@@ -33,7 +34,7 @@ def fix_timeline_file(file):
                     i += 1
                 else:
                     break
-        with open(file, 'w') as handle:
+        with open(file, 'w', encoding='utf-8') as handle:
             handle.write(json.dumps(timeline_data, indent=2))
         logger.info("Fixed Twitter timeline file")
 
@@ -90,15 +91,14 @@ def gather_info(username):
 
         logger.info("Running twint...")
         subprocess.run([
-            os.path.join(scripts_path, "python"),
-            os.path.join(scripts_path, "twint"),
+            os.path.join(scripts_path, "twint.exe") if platform.system() == "Windows" else os.path.join(scripts_path, "twint"),
             "--username", username,
             "--user-full",
             "--json",
             "--output", os.path.join(str(result_dir), username + "-about-twitter.json")
         ], shell=False, stdout=subprocess.DEVNULL, check=True)
         logger.info("Fetched Twitter about data")
-    except Exception:
+    except Exception as err:
         logger.exception("Exception occurred")
         print(json.dumps({"ERROR": "Error occurred while fetching Twitter about data, see logs for more details."}))
 
@@ -108,7 +108,7 @@ def gather_info(username):
         if (result_dir / (username + "-about-twitter.json")).exists():
             logger.info("Twitter about file exists")
 
-            with open(result_dir / (username + "-about-twitter.json"), "r") as handle:
+            with open(result_dir / (username + "-about-twitter.json"), "r", encoding='utf-8') as handle:
                 logger.info("Opened Twitter about file")
 
                 about = json.load(handle)
@@ -138,8 +138,7 @@ def gather_info(username):
                             (result_dir / (username + "-timeline-twitter.json")).unlink()
 
                         subprocess.run([
-                            os.path.join(scripts_path, "python"),
-                            os.path.join(scripts_path, "twint"),
+                            os.path.join(scripts_path, "twint.exe") if platform.system() == "Windows" else os.path.join(scripts_path, "twint"),
                             "--username", username,
                             "--timeline",
                             "--limit", "5",
@@ -147,7 +146,7 @@ def gather_info(username):
                             "--output", os.path.join(str(result_dir), username + "-timeline-twitter.json")
                         ], shell=False, stdout=subprocess.DEVNULL, check=True)
                         logger.info("Fetched Twitter timeline data")
-                    except Exception:
+                    except Exception as err:
                         logger.exception("Exception occurred")
                         print(json.dumps({"ERROR": "Error occurred while fetching Twitter timeline data, see logs for more details."}))
 
@@ -164,13 +163,13 @@ def gather_info(username):
         # Read data from result files and store in twitter_user_info
         # twitter_user_info = []
 
-        # with open(result_dir / (username + "-about-twitter.json"), "r") as about:
+        # with open(result_dir / (username + "-about-twitter.json"), "r", encoding='utf-8') as about:
         #     twitter_user_info.append('About User')
         #     for line in about:
         #         temp_dict = json.loads(line)
         #         twitter_user_info.append(temp_dict)
         #
-        # with open(result_dir / (username + "-timeline-twitter.json"), 'r') as timeline:
+        # with open(result_dir / (username + "-timeline-twitter.json"), 'r', encoding='utf-8') as timeline:
         #     twitter_user_info.append('Timeline')
         #     for line in timeline:
         #         temp_dict = json.loads(line)
