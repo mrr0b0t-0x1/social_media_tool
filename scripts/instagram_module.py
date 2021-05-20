@@ -20,9 +20,9 @@ logger = logging.getLogger('instagram module')
 def strip_color(username, result_dir):
     logger.info("Stripping colors from Instagram results...")
     try:
-        with open((result_dir / username).with_suffix(".txt"), "r") as handle:
+        with open((result_dir / username).with_suffix(".txt"), "r", encoding='utf-8') as handle:
             lines = handle.readlines()
-        with open((result_dir / username).with_suffix(".txt"), "w") as handle:
+        with open((result_dir / username).with_suffix(".txt"), "w", encoding='utf-8') as handle:
             for line in lines:
                 handle.writelines(re.sub("\033\\[([0-9]+)(;[0-9]+)*m", "", line))
         logger.info("Stripped colors from Instagram results")
@@ -38,7 +38,7 @@ def convert_to_json(username, result_dir):
     logger.info("Converting Instagram text file to JSON file...")
     try:
         # Open the txt fiel and convert data to dictionary
-        with open((result_dir / username).with_suffix(".txt"), "r") as handle:
+        with open((result_dir / username).with_suffix(".txt"), "r", encoding='utf-8') as handle:
             temp = {}
             flag = ''
             for line in handle:
@@ -77,7 +77,7 @@ def convert_to_json(username, result_dir):
 
         logger.info("Storing Instagram about data to JSON file...")
         # Store about data in JSON
-        with open((result_dir / (username + "-about-insta")).with_suffix(".json"), "w") as handle:
+        with open((result_dir / (username + "-about-insta")).with_suffix(".json"), "w", encoding='utf-8') as handle:
 
             about_keys = [key for key in data.keys() if key.startswith(tuple(['user_info', 'most_used']))]
             about = {}
@@ -93,7 +93,7 @@ def convert_to_json(username, result_dir):
         # Store posts data in JSON if not private
         if not private:
             logger.info("Storing Instagram posts data to JSON file...")
-            with open((result_dir / (username + "-posts-insta")).with_suffix(".json"), "w") as handle:
+            with open((result_dir / (username + "-posts-insta")).with_suffix(".json"), "w", encoding='utf-8') as handle:
 
                 posts_keys = [key for key in data.keys() if key.startswith('post')]
                 posts = {}
@@ -144,7 +144,7 @@ def gather_info(username):
         # fix_filename(username, result_dir)
         #
         # # Read data from result file
-        # # with open(result_dir / (username + ".json"), "r") as about:
+        # # with open(result_dir / (username + ".json"), "r", encoding='utf-8') as about:
         # #     data = json.load(about)
         #
         # # TODO: Remove this in final build
@@ -159,29 +159,32 @@ def gather_info(username):
         #     (ROOT_DIR / "instagram-scraper").with_suffix(".log").unlink()
 
         # osi.ig scraper
-        with open((result_dir / username).with_suffix(".txt"), "w") as handle:
-            try:
-                logger.info("Running osi.ig...")
-                subprocess.run([
-                    os.path.join(scripts_path, "python"),
-                    os.path.join(str(ROOT_DIR), "venv1", "src", "osi.ig", "main.py"),
-                    "-u", username, "-p"
-                ], shell=False, stdout=handle, check=True)
-                logger.info("Executed osi.ig successfully")
-            except Exception as err:
-                logger.exception("Exception occurred")
-                print(json.dumps({"ERROR": "Error occurred while fetching Instagram data, see logs for more details."}))
+        # with open((result_dir / username).with_suffix(".txt"), "w", encoding='utf-8') as handle:
+        try:
+            logger.info("Running osi.ig...")
 
-        # Strip colors from output
-        strip_color(username, result_dir)
+            subprocess.run([
+                os.path.join(scripts_path, "python"),
+                os.path.join(str(ROOT_DIR), "venv1", "src", "osi.ig", "main.py"),
+                "-u", username, "-p",
+                "-o", os.path.join(str(result_dir))
+            ], shell=False, stdout=subprocess.DEVNULL, check=True)
 
-        # Convert output to JSON
-        convert_to_json(username, result_dir)
+            logger.info("Executed osi.ig successfully")
+        except Exception as err:
+            logger.exception("Exception occurred")
+            print(json.dumps({"ERROR": "Error occurred while fetching Instagram data, see logs for more details."}))
 
-        # Remove the txt file
-        logger.info("Removing Instagram text file...")
-        (result_dir / username).with_suffix(".txt").unlink()
-        logger.info("Removed Instagram text file")
+        # # Strip colors from output
+        # strip_color(username, result_dir)
+        #
+        # # Convert output to JSON
+        # convert_to_json(username, result_dir)
+        #
+        # # Remove the txt file
+        # logger.info("Removing Instagram text file...")
+        # (result_dir / username).with_suffix(".txt").unlink()
+        # logger.info("Removed Instagram text file")
 
         print(json.dumps({"INFO": "Instagram data fetched"}))
         logger.info("Fetched Instagram data")

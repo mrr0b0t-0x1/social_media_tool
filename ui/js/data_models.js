@@ -66,12 +66,11 @@ const about_insta = {
 }
 
 const posts_insta = {
-    "image url": '',
-    "accessibility": '',
+    "images": [],
     "comments": '',
     "timestamp": '',
     "likes": '',
-    "captions": ''
+    "caption": ''
 }
 
 const about_reddit = {
@@ -185,6 +184,7 @@ function filter(username, data, site, section) {
                                     obj[key_in_obj] = post["data"][key]
                                 }
                             });
+
                             posts[index] = obj
                         }
                     });
@@ -197,12 +197,14 @@ function filter(username, data, site, section) {
                         let key_in_obj = key.split('_').join(' ')
 
                         if (key_in_obj in obj && data[post][key] !== '' && data[post][key] !== null) {
+
                             // for twitter timeline
                             if (key === "mentions" && Array.isArray(data[post][key]) && data[post][key].length > 0) {
                                 data[post][key].forEach(function (item) {
                                     obj[key_in_obj].push(item["screen_name"])
                                 });
                             }
+
                             // for fb date
                             else if (key === "time") {
                                 const date_time = data[post]["time"].split(' ')
@@ -213,7 +215,29 @@ function filter(username, data, site, section) {
                                 obj[key_in_obj] = data[post][key]
                             }
                         }
+
+                        // for insta
+                        if (sectionName === "posts_insta") {
+                            if (key === "info" && data[post][key] !== '' && data[post][key] !== null) {
+                                Object.keys(data[post][key]).forEach( function (k) {
+                                    if (k in obj) {
+                                        obj[k] = data[post][key][k]
+                                    }
+                                });
+                            }
+                            if (key === "imgs" && Array.isArray(data[post][key]) && data[post][key].length > 0) {
+                                let arr = []
+                                data[post][key].forEach(img => {
+                                    arr.push({
+                                        "link": img["image url"],
+                                        "accessibility": img["accessibility"]
+                                    });
+                                });
+                                obj["images"] = arr
+                            }
+                        }
                     });
+
                     posts[post] = obj
                 });
             }

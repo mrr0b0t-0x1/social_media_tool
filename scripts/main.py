@@ -14,11 +14,8 @@ import json
 # Start a logger
 logger = logging.getLogger('main')
 
-# Initialize global username
-username = ''
-
 # Make directories
-def make_dirs(sites):
+def make_dirs(username, sites):
     if sites:
         logger.info(f"Creating directory for {username}...")
         for site in sites:
@@ -35,29 +32,29 @@ def make_dirs(sites):
 
 
 # Execute respective site modules
-def execute_module(site):
-    logger.info(f"Executing {str(site).capitalize()} module...")
+def execute_module(username, site):
+    logger.info(f"Executing {site} module...")
     # Twitter
-    if site == 'Twitter':
-        twitter_module.gather_info(username)
+    # if site == 'Twitter':
+    #     twitter_module.gather_info(username)
 
-    # Reddit
-    elif site == 'Reddit':
-        reddit_module.gather_info(username)
-
+    # # Reddit
+    # elif site == 'Reddit':
+    #     reddit_module.gather_info(username)
+    #
     # Instagram
-    elif site == 'Instagram':
+    if site == 'Instagram':
         instagram_module.gather_info(username)
-
-    # Facebook
-    elif site == 'Facebook':
-        facebook_module.gather_info(username)
+    #
+    # # Facebook
+    # elif site == 'Facebook':
+    #     facebook_module.gather_info(username)
 
     logger.info(f"Executed {str(site).capitalize()} module")
 
 
 # Run the search operation
-def run_search(dbs):
+def run_search(username, dbs):
     # Get the list of sites on which user exists
     logger.info("Starting sherlock search...")
     sites_found = sherlock_module.check_username(username)
@@ -66,7 +63,7 @@ def run_search(dbs):
 
     # Make respective module directories
     logger.info("Creating respective directories...")
-    make_dirs(sites_found)
+    make_dirs(username, sites_found)
     logger.info("Directories created")
 
     # If sites found, execute respective modules concurrently
@@ -76,7 +73,7 @@ def run_search(dbs):
             logger.info("Starting multiprocessing module...")
             with multiprocessing.Pool() as pool:
                 logger.info("Executing respective site modules...")
-                pool.map(execute_module, sites_found)
+                pool.starmap(execute_module, [(username, site) for site in sites_found])
                 logger.info("Site modules executed")
 
             # Update user data in DB
@@ -140,16 +137,16 @@ if __name__ == '__main__':
                             logger.info("User does not exists in database")
 
                             # print(json.dumps(Fore.RED + "ERROR" + ": " + Fore.RESET + username + " not in DB"))
-                            print(json.dumps({"INFO": username + " does not exist in local database!"}))
+                            print(json.dumps({"INFO": f"{username} does not exist in local database!"}))
 
                             logger.info("Starting search...")
-                            run_search(db)
+                            run_search(username, db)
                             logger.info("Search finished")
 
                         else:
                             logger.info("User exists in database")
                             # print(json.dumps(Fore.RED + "ERROR" + ": " + Fore.RESET + username + " in DB"))
-                            print(json.dumps({"INFO": username + " exists in local database!"}))
+                            print(json.dumps({"INFO": f"{username} exists in local database!"}))
 
                             # Get data from DB
                             logger.info("Fetching user data...")
@@ -161,7 +158,7 @@ if __name__ == '__main__':
 
                         logger.info("Updating user data...")
                         db.remove_user("rd")
-                        run_search(db)
+                        run_search(username, db)
                         logger.info("User data updated")
 
                     logger.info("Database connection terminated")
