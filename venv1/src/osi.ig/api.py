@@ -4,11 +4,14 @@ import requests
 import random
 import json
 import sys
+import os
 from local import *
 
+username = None
 resp_js = None
 is_private = False
-total_uploads = 12
+total_uploads = 10
+out_dir = None
 
 def proxy_session():
 	session = requests.session()
@@ -19,7 +22,8 @@ def proxy_session():
 	return session
 
 def get_page(usrname):
-	global resp_js
+	global resp_js, username
+	username = usrname
 	session = requests.session()
 	session.headers = {'User-Agent': random.choice(useragent)}
 	resp_js = session.get('https://www.instagram.com/'+usrname+'/?__a=1').text
@@ -49,22 +53,26 @@ def exinfo():
 	tags = sort_list(raw['tags'])
 	ment = sort_list(raw['mention'])
 
-	if mail != []:
-		if len(mail) == 1:
-			print(f"{su} {re}email found : \n{gr}  %s" % mail[0])
-			print()
-		else:
-			print(f"{su} {re}email found : \n{gr}  ")
-			for x in range(len(mail)):
-				print(mail[x])
-			print()
+	# if mail != []:
+	# 	if len(mail) == 1:
+	# 		print(f"{su} {re}email found : \n{gr}  %s" % mail[0])
+	# 		print()
+	# 	else:
+	# 		print(f"{su} {re}email found : \n{gr}  ")
+	# 		for x in range(len(mail)):
+	# 			print(mail[x])
+	# 		print()
+	#
+	# xprint(tags, "tags")
+	# xprint(ment, "mentions")
 
-	xprint(tags, "tags")
-	xprint(ment, "mentions")
+	return [mail, tags, ment]
 	
-def user_info(usrname):
+def user_info(usrname, out):
 
-	global total_uploads, is_private
+	global total_uploads, is_private, out_dir
+
+	out_dir = out
 	
 	resp_js = get_page(usrname)
 	js = json.loads(resp_js)
@@ -73,7 +81,7 @@ def user_info(usrname):
 	if js['is_private'] != False:
 		is_private = True
 	
-	if js['edge_owner_to_timeline_media']['count'] > 12:
+	if js['edge_owner_to_timeline_media']['count'] > 10:
 		pass
 	else:
 		total_uploads = js['edge_owner_to_timeline_media']['count']
@@ -100,15 +108,17 @@ def user_info(usrname):
 		'has guides': js['has_guides'],
 	}
 
-	banner()
+	exinf = exinfo()
 
-	print(f"{su}{re} user info")
-	for key, val in usrinfo.items():
-		print(f"  {gr}%s : {wh}%s" % (key, val))
+	usrinfo['email'] = exinf[0]
+	usrinfo['most used tags'] = exinf[1]
+	usrinfo['most used mentions'] = exinf[2]
 
-	print("")
+	# Write output to file
+	with open(os.path.join(out_dir, username + "-about-insta.json"), "w", encoding="utf-8") as f:
+		json.dump(usrinfo, f, indent=2)
+		print("Saved user info")
 
-	exinfo()
 
 def highlight_post_info(i):
 
@@ -194,32 +204,19 @@ def highlight_post_info(i):
 
 	return postinfo
 
+
 def post_info():
 	
 	if is_private != False:
 		print(f"{fa} {gr}cannot use -p for private accounts !\n")
 	
 	else:
-		posts = []
+		posts_json = {}
 		
 		for x in range(total_uploads):
-			posts.append(highlight_post_info(x))
+			posts_json[x] = highlight_post_info(x)
 
-		for x in range(len(posts)):
-			# get 1 item from post list
-			print(f"{su}{re} post %s :" % x)
-			for key, val in posts[x].items():
-				if key == 'imgs':
-					# how many child imgs post has
-					postlen = len(val)
-					# loop over all child img
-					print(f"{su}{re} contains %s media" % postlen) 
-					for y in range(postlen):
-						# print k,v of all child img in loop
-						for xkey, xval in val[y].items():
-							print(f"  {gr}%s : {wh}%s" % (xkey, xval))
-				if key == 'info':
-					print(f"{su}{re} info :")
-					for key, val in val.items():
-						print(f"  {gr}%s : {wh}%s" % (key, val))
-					print("")	
+		# Write output to file
+		with open(os.path.join(out_dir, username + "-posts-insta.json"), "w", encoding="utf-8") as f:
+			json.dump(posts_json, f, indent=2)
+			print("Saved posts info")
