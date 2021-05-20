@@ -169,8 +169,8 @@ function filter(username, data, site, section) {
                             Object.keys(post["data"]).forEach(function (key) {
                                 let key_in_obj = key.split('_').join(' ')
 
-                                if (key === "selftext_html")
-                                    obj["text"] = post["data"]["selftext_html"]
+                                if (key === "selftext")
+                                    obj["text"] = post["data"]["selftext"]
                                 else if (key === "ups")
                                     obj["upvotes"] = post["data"]["ups"]
                                 else if (key === "downs")

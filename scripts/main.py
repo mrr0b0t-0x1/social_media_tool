@@ -35,20 +35,20 @@ def make_dirs(username, sites):
 def execute_module(username, site):
     logger.info(f"Executing {site} module...")
     # Twitter
-    # if site == 'Twitter':
-    #     twitter_module.gather_info(username)
+    if site == 'Twitter':
+        twitter_module.gather_info(username)
 
-    # # Reddit
-    # elif site == 'Reddit':
-    #     reddit_module.gather_info(username)
-    #
+    # Reddit
+    elif site == 'Reddit':
+        reddit_module.gather_info(username)
+
     # Instagram
-    if site == 'Instagram':
+    elif site == 'Instagram':
         instagram_module.gather_info(username)
-    #
-    # # Facebook
-    # elif site == 'Facebook':
-    #     facebook_module.gather_info(username)
+
+    # Facebook
+    elif site == 'Facebook':
+        facebook_module.gather_info(username)
 
     logger.info(f"Executed {str(site).capitalize()} module")
 
