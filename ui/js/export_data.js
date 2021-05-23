@@ -83,6 +83,9 @@ function exportTableToFile(username, sections) {
 
     let style = document.createElement('style');
     style.innerHTML += base_css + "\n\n" + export_css;
+
+    head.innerHTML += '<link rel="preconnect" href="https://fonts.gstatic.como">' +
+        '<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap" rel="stylesheet">'
     head.appendChild(style);
 
     let h1 = document.createElement('h1')

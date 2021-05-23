@@ -2,11 +2,15 @@
     src: url("../fonts/AndroidEuclid-Medium.otf");
     font-family: "Android-Euclid";
     font-size: 1rem; }
+@font-face {
+    src: url("../fonts/Nunito-Bold.ttf");
+    font-family: "Nunito-Bold";
+    font-size: 1rem; }
 
 html {
     height: 100% !important; }
 body {
-    font-family: Android-Euclid, sans-serif;
+    font-family: Nunito-Bold, sans-serif;
     font-size: 16px !important;
     min-height: 800px;
     min-width: 600px;
@@ -81,6 +85,9 @@ table td,
     white-space: normal !important; }
 .list-group-item+.list-group-item.active {
     margin-top: 0; }
+
+#tool-name {
+    font-family: Android-Euclid, sans-serif !important; }
 
 #userName {
     cursor: text; }

@@ -38,7 +38,6 @@ const posts_fb = {
     "text": '',
     "date": '',
     "time": '',
-    "image": '',
     "images": [],
     "video": '',
     "likes": '',
