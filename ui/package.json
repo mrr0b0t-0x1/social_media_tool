@@ -16,10 +16,8 @@
     "@popperjs/core": "^2.8.2",
     "bootstrap": "^4.6.0",
     "jquery": "^3.5.1",
-    "pdfmake": "^0.1.71",
     "popper.js": "^1.16.1",
     "python-shell": "^2.0.3",
-    "tableexport": "^5.2.0",
     "tree-kill": "^1.2.2"
   }
 }
