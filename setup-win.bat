@@ -38,7 +38,10 @@ if %ERRORLEVEL% equ 0 (
 ) else (
 	:: Check alternate paths where Python 3.6 may be installed
 	if exist %USERPROFILE%\AppData\Local\Programs\Python\Python36\python.exe ( 
-		set python=%USERPROFILE%\AppData\Local\Programs\Python\Python36\python.exe 
+		set PYLOC=%USERPROFILE%\AppData\Local\Programs\Python\Python36\python.exe
+		for /f "delims=" %%i in ('%PYLOC% --version') do set PYVER=%%i
+        echo %PYVER% | findstr /C:"Python 3.6" 1>nul
+        echo Required Python version found: %PYVER%
 	) else ( 
 		echo ERROR: Please make sure Python 3.6 is installed
 		goto :SETTITLE
@@ -104,11 +107,20 @@ echo.
 
 :: Make Python venv for project
 echo Creating venv and activating... & echo.
-cmd /C "cd %USERPROFILE%\Desktop\social_media_tool & %PYLOC% -m venv venv1 & venv1\Scripts\activate"
+cmd /C "%PYLOC% -m venv venv1 & venv1\Scripts\activate"
+
+:: Updating pip
+echo Updating pip...
+cmd /C "venv1\Scripts\python.exe -m pip install --upgrade --no-cache-dir pip"
+echo.
+
+:: Install setuptools
+echo Installing setuptools...
+cmd /C "venv1\Scripts\python.exe -m pip install --upgrade --no-cache-dir --force-reinstall setuptools"
 
 :: Install python modules
 echo Installing required Python modules...
-venv1\Scripts\pip3.6 install -r requirements.txt
+cmd /C "venv1\Scripts\python.exe -m pip install --upgrade --force-reinstall --exists-action i -r requirements.txt"
 echo.
 
 :: Install npm modules
