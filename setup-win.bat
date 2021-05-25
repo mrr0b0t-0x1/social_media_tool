@@ -41,7 +41,13 @@ if %ERRORLEVEL% equ 0 (
 		set PYLOC=%USERPROFILE%\AppData\Local\Programs\Python\Python36\python.exe
 		for /f "delims=" %%i in ('%PYLOC% --version') do set PYVER=%%i
         echo %PYVER% | findstr /C:"Python 3.6" 1>nul
-        echo Required Python version found: %PYVER%
+
+        if %ERRORLEVEL% equ 0 (
+            echo Required Python version found: %PYVER%
+        ) else (
+            echo Some error occurred while checking Python version
+            goto :SETTITLE
+        )
 	) else ( 
 		echo ERROR: Please make sure Python 3.6 is installed
 		goto :SETTITLE
@@ -82,7 +88,7 @@ if defined NPMLOC (
 :: Check NPM version
 :NPMFOUND
 for /f "delims=" %%i in ('%NPMLOC% -v') do set NPMVER=%%i
-echo %NODEVER% | findstr /C:"v15." 1>nul
+echo %NPMVER% | findstr /C:"v7." 1>nul
 
 if %ERRORLEVEL% equ 0 (
 	echo Required NPM version found: %NPMVER%
@@ -92,22 +98,23 @@ if %ERRORLEVEL% equ 0 (
 )
 echo.
 
-:: Check if Git is insta
-for /f "delims=" %%i in ('where git 2^>nul') do set GITLOC=%%i
+:: Check if Git is installed
+::for /f "delims=" %%i in ('where git 2^>nul') do set GITLOC=%%i
 
-if defined GITLOC (
-	echo Git is installed
-) else (
-	echo ERROR: Git is not installed
-	goto :SETTITLE
-)
-echo.
+::if defined GITLOC (
+::	echo Git is installed
+::) else (
+::	echo ERROR: Git is not installed
+::	goto :SETTITLE
+::)
+::echo.
 
 ::===============================================================
 
 :: Make Python venv for project
-echo Creating venv and activating... & echo.
+echo Creating venv and activating...
 cmd /C "%PYLOC% -m venv venv1 & venv1\Scripts\activate"
+echo.
 
 :: Updating pip
 echo Updating pip...
@@ -117,6 +124,7 @@ echo.
 :: Install setuptools
 echo Installing setuptools...
 cmd /C "venv1\Scripts\python.exe -m pip install --upgrade --no-cache-dir --force-reinstall setuptools"
+echo.
 
 :: Install python modules
 echo Installing required Python modules...
