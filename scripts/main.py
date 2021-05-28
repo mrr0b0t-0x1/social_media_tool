@@ -10,6 +10,10 @@ import multiprocessing
 import logging
 # from colorama import Fore
 import json
+import scripts.arg_parser as ap
+
+# Get an argument parser
+parser = ap.get_parser()
 
 # Start a logger
 logger = logging.getLogger('main')
@@ -98,6 +102,19 @@ def run_search(username, dbs):
 
 # Main
 if __name__ == '__main__':
+    # Parse args
+    args = parser.parse_args()
+
+    # If no args are given
+    if len(sys.argv) == 1:
+        parser.print_help()
+        exit()
+    # Check if --search, --update or --remove is used without --username
+    if not args.username and (args.search or args.update or args.remove):
+        parser.error("Specify username with --username flag to perform this operation")
+    # Check if --search, --update or --remove is not used with --username
+    if args.username and not (args.search or args.update or args.remove):
+        parser.error("Specify operation with --username: --search, --update or --remove")
 
     logger.info("Starting main module")
 
@@ -108,11 +125,11 @@ if __name__ == '__main__':
     logger.info("Timer started")
 
     # Search or update data
-    if sys.argv[1] == '--username':
+    if args.username and (args.search or args.update):
         logger.info("Operation: Search or Update user data")
 
         # Get username as input
-        username = str(sys.argv[2])
+        username = str(args.username)
         logger.info(f"Username = {username}")
 
         logger.info("Validating username...")
@@ -129,7 +146,7 @@ if __name__ == '__main__':
                     logger.info("Database connection established")
 
                     logger.info("Checking search type...")
-                    if sys.argv[3] == '--search':
+                    if args.search:
                         logger.info("Operation type: 'search'")
 
                         logger.info("Checking user in database...")
@@ -153,7 +170,7 @@ if __name__ == '__main__':
                             print(json.dumps({"DATA": db.get_data()}))
                             logger.info("User data fetched")
 
-                    elif sys.argv[3] == '--update':
+                    elif args.update:
                         logger.info("Operation type: 'update'")
 
                         logger.info("Updating user data...")
@@ -173,11 +190,11 @@ if __name__ == '__main__':
             print(json.dumps({"ERROR": str(result)}))
 
     # Convert JSON data to HTML Table format
-    elif sys.argv[1] == '--json-to-html':
+    elif args.json_to_html:
         logger.info("Operation: Convert JSON to HTML Table")
 
         logger.info("Loading JSON data...")
-        data = json.loads(sys.argv[2])
+        data = json.loads(args.json_to_html)
         logger.info("JSON data loaded")
 
         try:
@@ -191,10 +208,10 @@ if __name__ == '__main__':
             # print(str(err))
 
     # Remove Data
-    elif sys.argv[1] == '--remove-data':
+    elif args.username and args.remove:
         logger.info("Operation: Remove user data")
 
-        username = str(sys.argv[2])
+        username = str(args.username)
         logger.info(f"Username = {username}")
 
         try:
@@ -203,7 +220,7 @@ if __name__ == '__main__':
                 logger.info("Database connection established")
 
                 logger.info("Removing user data...")
-                db.remove_user()
+                db.remove_user("rd")
                 logger.info("User data removed")
 
             logger.info("Database connection terminated")
@@ -212,7 +229,7 @@ if __name__ == '__main__':
             print(json.dumps({"ERROR": "Error occurred while removing data, see logs for more details."}))
 
     # Re-index DB
-    elif sys.argv[1] == '--reindex-db':
+    elif args.reindex_db:
         logger.info("Operation: Re-index database")
         try:
             logger.info("Establishing database connection...")

@@ -240,7 +240,7 @@ $(document).ready(function () {
             'msg': 'Re-indexing...'
         });
         createPythonShell(
-            ['--reindex-db'],
+            ['--reindex_db'],
             reindexDB
         )
     });
@@ -327,7 +327,7 @@ $(document).ready(function () {
 
         // Create a python-shell instance to remove user data
         createPythonShell(
-            ['--remove-data', userName.value],
+            ['--username', userName.value, '--remove'],
             btnRemoveData
         )
         $("#removeData").modal('hide');

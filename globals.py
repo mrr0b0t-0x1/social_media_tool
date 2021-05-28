@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import sys
 import platform
 import logging
 from logging.handlers import RotatingFileHandler
@@ -43,7 +44,12 @@ HEADERS = {
 
 
 # Sets current working directory as constant variable
-ROOT_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
+if getattr(sys, 'frozen', False):
+    # Checks if program is run as executable
+    ROOT_DIR = Path(os.path.dirname(sys.executable))
+else:
+    # Check if program is run as .py script
+    ROOT_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Check platform and set venv path
