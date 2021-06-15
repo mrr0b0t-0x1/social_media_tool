@@ -103,7 +103,7 @@ function JSONToHTMLTable(data, site, sectionElement) {
         pythonPath: path.resolve(scripts_path, 'python'),
         pythonOptions: ['-u'], // get print results in real-time
         scriptPath: path.resolve(__dirname, '..', '..', 'scripts'),
-        args: ['--json-to-html', JSON.stringify(data)]
+        args: ['--json_to_html', JSON.stringify(data)]
     };
 
     const pyshell = new PythonShell('main.py', options);
