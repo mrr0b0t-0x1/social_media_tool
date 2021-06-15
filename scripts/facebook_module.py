@@ -879,7 +879,8 @@ def gather_info(username):
             logger.info("Checking if Facebook profile or page is verified...")
             # Check if the profile or page is verified
             if home_soup.find('a', class_='_56_f _5dzy _5d-1 _3twv _33v-') is not None\
-                    or home_soup.find('i', class_='sp_6GzVah_U6-w sx_1a3bfc') is not None:
+                    or home_soup.find('i', class_='sp_6GzVah_U6-w sx_1a3bfc') is not None\
+                    or home_soup.find('i', class_='sp_yyAcBSuh_0s sx_24dd09') is not None:
 
                 logger.info("Checking if it's a Facebook profile or page...")
                 # If its a FB profile

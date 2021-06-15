@@ -108,7 +108,7 @@ if __name__ == '__main__':
     # If no args are given
     if len(sys.argv) == 1:
         parser.print_help()
-        exit()
+        sys.exit()
     # Check if --search, --update or --remove is used without --username
     if not args.username and (args.search or args.update or args.remove):
         parser.error("Specify username with --username flag to perform this operation")
@@ -174,7 +174,7 @@ if __name__ == '__main__':
                         logger.info("Operation type: 'update'")
 
                         logger.info("Updating user data...")
-                        db.remove_user("rd")
+                        db.remove_user()
                         run_search(username, db)
                         logger.info("User data updated")
 
