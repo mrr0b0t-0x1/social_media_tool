@@ -2,3 +2,6 @@
 
 # Social Media Tool
 An ~~illegal~~ tool to gather information about a user from multiple social media platforms
+
+## Licensing
+The source code is licensed under GPL v3. License is available [here](./LICENSE.md).
